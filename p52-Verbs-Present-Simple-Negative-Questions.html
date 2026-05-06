@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Present Simple: Noah's Day (Sorting Quiz)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary-blue: #0288d1;
+    --success-green: #2e7d32;
+    --bg-color: #f0f7ff;
+    --border-color: #b3e5fc;
+    --main-font: "Zen Maru Gothic", sans-serif;
+  }
+  body { font-family: var(--main-font); background-color: var(--bg-color); margin: 0; padding: 15px; display: flex; flex-direction: column; align-items: center; }
+  .container { background: white; max-width: 700px; width: 100%; padding: 25px; border-radius: 20px; box-shadow: 0 8px 24px rgba(0,0,0,0.1); text-align: left; }
+  
+  .header-area { margin-bottom: 20px; border-bottom: 2px solid #e1f5fe; padding-bottom: 10px; }
+  h2 { color: var(--primary-blue); margin: 0; font-size: 1.4rem; }
+  
+  .progress-info { font-size: 0.9rem; color: #666; text-align: right; margin-bottom: 5px; }
+  .progress-bar { background: #e9ecef; height: 8px; border-radius: 4px; overflow: hidden; margin-bottom: 20px; }
+  .progress-fill { background: var(--primary-blue); height: 100%; width: 0%; transition: width 0.4s; }
+
+  .question-box { font-size: 1.2rem; margin-bottom: 20px; padding: 20px; background: #f9f9f9; border-radius: 12px; border-left: 8px solid var(--primary-blue); line-height: 1.6; }
+  
+  /* 並べ替えエリア */
+  .answer-area { min-height: 60px; border-bottom: 3px solid var(--primary-blue); margin-bottom: 20px; display: flex; flex-wrap: wrap; gap: 8px; padding: 10px; background-color: #fafafa; border-radius: 10px; align-items: center; font-size: 1.3rem; font-weight: bold; }
+  .word-bank { text-align: left; margin-bottom: 20px; }
+  .word-btn { border: 2px solid var(--primary-blue); padding: 8px 16px; border-radius: 20px; cursor: pointer; background: white; font-weight: bold; font-size: 1.1rem; margin: 4px; transition: 0.2s; }
+  .word-btn.used { color: #ccc; border-color: #eee; cursor: default; }
+
+  /* フィードバック */
+  .feedback-area { min-height: 120px; }
+  .explanation { background: #fff3cd; padding: 15px; border-radius: 12px; font-size: 0.95rem; line-height: 1.6; display: none; margin-top: 10px; border: 1px solid #ffeeba; }
+  .speak-btn { background: var(--primary-blue); color: white; border: none; padding: 10px 25px; border-radius: 50px; cursor: pointer; font-weight: bold; display: none; margin-bottom: 10px; }
+
+  .action-btn { padding: 14px 40px; font-size: 1.1rem; border-radius: 30px; cursor: pointer; border: none; font-weight: bold; margin-top: 10px; color: white; width: 100%; }
+
+  /* 印刷用設定 */
+  #worksheet-print-area { display: none; }
+  @media print {
+    body { background: white; }
+    .container { display: none; }
+    #worksheet-print-area { display: block; width: 100%; }
+    .ws-title { text-align: center; font-size: 1.6rem; font-weight: bold; margin-bottom: 30px; }
+    .ws-q { margin-bottom: 20px; border-bottom: 1px dashed #ccc; padding-bottom: 10px; }
+    .ws-q-num { font-weight: bold; margin-right: 10px; }
+    .ws-ans-line { border-bottom: 1px solid #000; height: 30px; margin: 10px 0; width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header-area">
+    <h2>現在形の並べ替え問題 【肯定文・否定文・疑問文】</h2>
+  </div>
+
+  <div id="quiz-screen">
+    <div id="progressText" class="progress-info"></div>
+    <div class="progress-bar"><div id="progressFill" class="progress-fill"></div></div>
+    
+    <div id="qText" class="question-box"></div>
+    
+    <div class="answer-area" id="answerArea">
+      <span style="color:#aaa; font-size:0.9rem;">(下の単語をタップして並び替えてね)</span>
+    </div>
+    
+    <div class="word-bank" id="wordBank"></div>
+
+    <div class="feedback-area">
+      <button class="speak-btn" id="speakBtn" onclick="playAudio()">🔊 お手本を聞く</button>
+      <div class="explanation" id="explanationArea"></div>
+    </div>
+
+    <button class="action-btn" id="checkBtn" style="display:none; background: var(--success-green);" onclick="handleCheck()">答え合わせ</button>
+    <button class="action-btn" id="nextBtn" style="display:none; background: var(--primary-blue);" onclick="nextQuestion()">次の問題へ ➔</button>
+  </div>
+</div>
+
+<!-- 印刷用 -->
+<div id="worksheet-print-area">
+  <div class="ws-title">現在形の並べ替え問題 【肯定文・否定文・疑問文】</div>
+  <div id="ws-content"></div>
+</div>
+
+<script>
+  const quizData = [
+    {
+      ja: "ノアは毎日、自転車に乗ります。（肯定文）",
+      words: ["Noah", "rides", "his", "bike", "every", "day", "."],
+      audio: "Noah rides his bike every day.",
+      exp: "【肯定文】Noah（一人）が主語なので、動詞はsがついた<b>rides</b>になります。"
+    },
+    {
+      ja: "ノアは毎日、自転車に乗りません。（否定文）",
+      words: ["Noah", "doesn't", "ride", "his", "bike", "every", "day", "."],
+      audio: "Noah doesn't ride his bike every day.",
+      exp: "【否定文】三人称単数の否定は<b>doesn't</b>。その後の動詞はsを取って原形(<b>ride</b>)に戻します。"
+    },
+    {
+      ja: "ノアは毎日、自転車に乗りますか？（疑問文）",
+      words: ["Does", "Noah", "ride", "his", "bike", "every", "day", "?"],
+      audio: "Does Noah ride his bike every day?",
+      exp: "【疑問文】<b>Does</b>で始めます。疑問文でも動詞はsをつけない原形(<b>ride</b>)にします。"
+    },
+    {
+      ja: "ノアとエリーは夕食後にテレビを見ます。（肯定文）",
+      words: ["Noah", "and", "Ellie", "watch", "TV", "after", "dinner", "."],
+      audio: "Noah and Ellie watch TV after dinner.",
+      exp: "【肯定文】主語が二人（複数）なので、動詞にsはつけません。そのまま<b>watch</b>です。"
+    },
+    {
+      ja: "ノアとエリーは夕食後にテレビを見ません。（否定文）",
+      words: ["Noah", "and", "Ellie", "don't", "watch", "TV", "after", "dinner", "."],
+      audio: "Noah and Ellie don't watch TV after dinner.",
+      exp: "【否定文】主語が複数のときは<b>don't</b>を使います。"
+    },
+    {
+      ja: "ノアとエリーは夕食後にテレビを見ますか？（疑問文）",
+      words: ["Do", "Noah", "and", "Ellie", "watch", "TV", "after", "dinner", "?"],
+      audio: "Do Noah and Ellie watch TV after dinner?",
+      exp: "【疑問文】主語が複数のときは<b>Do</b>で質問を始めます。"
+    }
+  ];
+
+  let currentIdx = 0;
+  let userSort = [];
+
+  function loadQuestion() {
+    const q = quizData[currentIdx];
+    document.getElementById('progressText').textContent = `Question ${currentIdx + 1} / ${quizData.length}`;
+    document.getElementById('progressFill').style.width = `${((currentIdx + 1) / quizData.length) * 100}%`;
+    document.getElementById('qText').innerHTML = `<b>${q.ja}</b>`;
+    document.getElementById('explanationArea').style.display = "none";
+    document.getElementById('speakBtn').style.display = "none";
+    document.getElementById('nextBtn').style.display = "none";
+    document.getElementById('checkBtn').style.display = "none";
+    
+    userSort = [];
+    renderSortArea();
+    
+    const bank = document.getElementById('wordBank');
+    bank.innerHTML = "";
+    [...q.words].sort(() => Math.random() - 0.5).forEach((w, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'word-btn';
+      btn.textContent = w;
+      btn.onclick = () => {
+        if (btn.classList.contains('used')) return;
+        userSort.push({ text: w, btn: btn });
+        btn.classList.add('used');
+        renderSortArea();
+      };
+      bank.appendChild(btn);
+    });
+  }
+
+  function renderSortArea() {
+    const area = document.getElementById('answerArea');
+    area.innerHTML = userSort.length === 0 ? `<span style="color:#aaa; font-size:0.9rem;">(下の単語をタップしてね)</span>` : "";
+    
+    userSort.forEach((item, idx) => {
+      const span = document.createElement('span');
+      span.style.cssText = "background:#e1f5fe; padding:4px 10px; border-radius:8px; cursor:pointer; margin:2px; border:1px solid var(--primary-blue);";
+      span.textContent = item.text;
+      span.onclick = () => {
+        item.btn.classList.remove('used');
+        userSort.splice(idx, 1);
+        renderSortArea();
+      };
+      area.appendChild(span);
+    });
+    
+    document.getElementById('checkBtn').style.display = (userSort.length === quizData[currentIdx].words.length) ? "block" : "none";
+  }
+
+  function handleCheck() {
+    const q = quizData[currentIdx];
+    const userSentence = userSort.map(i => i.text).join(" ");
+    const correctSentence = q.words.join(" ");
+
+    if (userSentence === correctSentence) {
+      document.getElementById('explanationArea').innerHTML = q.exp;
+      document.getElementById('explanationArea').style.display = "block";
+      document.getElementById('speakBtn').style.display = "block";
+      document.getElementById('checkBtn').style.display = "none";
+      document.getElementById('nextBtn').style.display = "block";
+    } else {
+      alert("順番が違うみたい。もう一度考えてみよう！");
+    }
+  }
+
+  function playAudio() {
+    window.speechSynthesis.cancel();
+    const uttr = new SpeechSynthesisUtterance(quizData[currentIdx].audio);
+    uttr.lang = 'en-US';
+    uttr.rate = 0.8;
+    window.speechSynthesis.speak(uttr);
+  }
+
+  function nextQuestion() {
+    currentIdx++;
+    if (currentIdx < quizData.length) loadQuestion();
+    else {
+      alert("全問クリア！おめでとう！");
+      currentIdx = 0; loadQuestion();
+    }
+  }
+
+  function setupWorksheet() {
+    const ws = document.getElementById('ws-content');
+    quizData.forEach((q, i) => {
+      const div = document.createElement('div');
+      div.className = "ws-q";
+      div.innerHTML = `<span class="ws-q-num">${i + 1}.</span> ${q.ja}<br>
+      ( ${[...q.words].sort(() => Math.random() - 0.5).join(" / ")} )
+      <div class="ws-ans-line"></div>`;
+      ws.appendChild(div);
+    });
+  }
+
+  window.onload = () => { loadQuestion(); setupWorksheet(); };
+</script>
+</body>
+</html>

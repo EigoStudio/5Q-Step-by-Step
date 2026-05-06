@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Present Simple: Negative and Questions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-color: #f0f7ff;
+    --card-bg: #ffffff;
+    --accent-blue: #007bff;
+    --accent-orange: #fd7e14;
+    --accent-green: #28a745;
+    --accent-red: #dc3545;
+    --text-main: #333;
+    --main-font: "Zen Maru Gothic", sans-serif;
+  }
+
+  * { font-family: var(--main-font); box-sizing: border-box; }
+  body { background-color: var(--bg-color); margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; color: var(--text-main); padding: 10px; }
+
+  .container {
+    background: var(--card-bg); width: 100%; max-width: 650px; padding: 30px;
+    border-radius: 25px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); text-align: left; /* 左寄せに変更 */
+  }
+
+  .progress-info { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font-weight: bold; color: #666; }
+  .progress-bar { background: #e9ecef; height: 10px; border-radius: 5px; overflow: hidden; margin-bottom: 30px; }
+  .progress-fill { background: var(--accent-blue); height: 100%; width: 0%; transition: width 0.4s ease; }
+
+  .intro-box { background: #f8f9fa; padding: 15px; border-radius: 15px; margin-bottom: 20px; font-size: 1.1rem; border-left: 5px solid var(--accent-blue); line-height: 1.6; }
+  
+  .question-text { font-size: 1.6rem; font-weight: bold; line-height: 2.5; margin-bottom: 20px; }
+  .sentence-unit { display: block; margin-bottom: 15px; }
+
+  select {
+    appearance: none; background: #fff; border: 3px solid #dee2e6; border-radius: 10px;
+    padding: 2px 10px; font-size: 1.3rem; font-weight: bold; cursor: pointer; transition: all 0.2s;
+    margin: 0 5px; vertical-align: middle; outline: none;
+  }
+  select.s-box { border-color: var(--accent-blue); color: var(--accent-blue); }
+  select.v-box { border-color: var(--accent-orange); color: var(--accent-orange); }
+  
+  select.correct { background-color: #d4edda; border-color: var(--accent-green); color: var(--accent-green); }
+  select.wrong { background-color: #f8d7da; border-color: var(--accent-red); color: var(--accent-red); }
+
+  .feedback-box { min-height: 160px; margin-bottom: 15px; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; }
+  .explanation { background: #fff3cd; padding: 15px; border-radius: 12px; font-size: 0.95rem; line-height: 1.6; display: none; margin-top: 10px; border: 1px solid #ffeeba; width: 100%; }
+  .speak-btn {
+    background: var(--accent-blue); color: white; border: none; padding: 10px 25px; border-radius: 50px;
+    font-size: 1rem; cursor: pointer; font-weight: bold; display: none; margin-bottom: 5px; box-shadow: 0 4px 0 #0056b3;
+  }
+  .speak-btn:active { transform: translateY(3px); box-shadow: none; }
+
+  .btn-action {
+    width: 100%; padding: 18px; font-size: 1.3rem; border: none; border-radius: 50px;
+    font-weight: bold; cursor: pointer; transition: 0.2s; color: white; margin-top: 10px;
+  }
+  .check-btn { background: var(--accent-green); box-shadow: 0 6px 0 #1e7e34; }
+  .next-btn { background: var(--accent-orange); box-shadow: 0 6px 0 #d35400; display: none; }
+  .btn-action:active { transform: translateY(4px); box-shadow: none; }
+
+  #finish-screen { display: none; text-align: center; } /* 終了画面だけは中央寄せ */
+  #finish-screen h2 { font-size: 2.5rem; color: var(--accent-blue); }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div id="quiz-screen">
+    <div class="progress-info">
+      <span id="q-label">Question 1 / 8</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progress-bar-fill"></div></div>
+
+    <div class="intro-box" id="intro-area"></div>
+    <div class="question-text" id="question-area"></div>
+
+    <div class="feedback-box">
+      <button class="speak-btn" id="speak-btn" onclick="playAudio()">🔊 Listen (お手本を聞く)</button>
+      <div class="explanation" id="explanation-area"></div>
+    </div>
+
+    <button class="btn-action check-btn" id="check-btn" onclick="handleCheck()">Check Answer</button>
+    <button class="btn-action next-btn" id="next-btn" onclick="handleNext()">Next Question ➔</button>
+  </div>
+
+  <div id="finish-screen">
+    <h2>Great Job! 🎉</h2>
+    <p style="font-size: 1.2rem;">全ての練習が完了しました！</p>
+    <button class="btn-action check-btn" onclick="location.reload()">もう一度挑戦する</button>
+  </div>
+</div>
+
+<script>
+  const quizData = [
+    {
+      intro: "Sam is a musician.\nHe's a pianist.",
+      q: "<span class='sentence-unit'>He {s} the piano.</span><span class='sentence-unit'>He {v} play the trumpet.</span>",
+      sOpt: ["play", "plays"], vOpt: ["don't", "doesn't"],
+      sAns: "plays", vAns: "doesn't",
+      audio: "He plays the piano. He doesn't play the trumpet.",
+      exp: "【解説】主語がHe（三人称単数）なので、肯定文はsがついた<b>plays</b>になります。否定文は<b>doesn't</b>を使って動詞は原形のままです。"
+    },
+    {
+      intro: "Ken and Leo are on the soccer team.",
+      q: "<span class='sentence-unit'>They {s} soccer every day.</span><span class='sentence-unit'>They {v} play baseball.</span>",
+      sOpt: ["play", "plays"], vOpt: ["don't", "doesn't"],
+      sAns: "play", vAns: "don't",
+      audio: "They play soccer every day. They don't play baseball.",
+      exp: "【解説】主語がThey（彼ら・複数）のときは、動詞はそのままの<b>play</b>、否定文は<b>don't</b>を使います。"
+    },
+    {
+      intro: "Julian is from Mexico.",
+      q: "<span class='sentence-unit'>He {s} Spanish and English.</span><span class='sentence-unit'>He {v} speak Japanese.</span>",
+      sOpt: ["speak", "speaks"], vOpt: ["don't", "doesn't"],
+      sAns: "speaks", vAns: "doesn't",
+      audio: "He speaks Spanish and English. He doesn't speak Japanese.",
+      exp: "【解説】主語がHeなので肯定文は<b>speaks</b>。否定文はdoesn'tを使います。doesn'tの後はsをつけない(speak)のがルールです。"
+    },
+    {
+      intro: "What languages do you speak?",
+      q: "<span class='sentence-unit'>I {s} English and Japanese.</span><span class='sentence-unit'>But I {v} speak German.</span>",
+      sOpt: ["speak", "speaks"], vOpt: ["don't", "doesn't"],
+      sAns: "speak", vAns: "don't",
+      audio: "I speak French a little. But I don't speak German.",
+      exp: "【解説】主語がI（私）のときは、動詞にsをつけず<b>speak</b>。否定文も<b>don't</b>を使います。"
+    },
+    {
+      intro: "Let's talk about Elsa's pet.",
+      q: "<span class='sentence-unit'>Elsa {s} a dog.</span><span class='sentence-unit'>She {v} have a cat.</span>",
+      sOpt: ["have", "has"], vOpt: ["don't", "doesn't"],
+      sAns: "has", vAns: "doesn't",
+      audio: "Elsa has a dog. She doesn't have a cat.",
+      exp: "【解説】Elsa（彼女）が主語なので、haveが<b>has</b>に変わります。否定文は<b>doesn't</b>を選びましょう。"
+    },
+    {
+      intro: "My brothers love animals.",
+      q: "<span class='sentence-unit'>They {s} two rabbits.</span><span class='sentence-unit'>They {v} have a bird.</span>",
+      sOpt: ["have", "has"], vOpt: ["don't", "doesn't"],
+      sAns: "have", vAns: "don't",
+      audio: "They have two rabbits. They don't have a bird.",
+      exp: "【解説】My brothersは複数なので主語はThey。動詞は<b>have</b>、否定文は<b>don't</b>です。"
+    },
+    {
+      intro: "Dialogue A:",
+      q: "<span class='sentence-unit'>{s} you have a pet?</span><span class='sentence-unit'>Yes, I do. I {v} a rabbit.</span>",
+      sOpt: ["Do", "Does"], vOpt: ["have", "has"],
+      sAns: "Do", vAns: "have",
+      audio: "Do you have a pet? Yes, I do. I have a rabbit.",
+      exp: "【解説】あなた(you)に質問する時は<b>Do</b>。自分のこと(I)を答える時は<b>have</b>を使います。"
+    },
+    {
+      intro: "Dialogue B:",
+      q: "<span class='sentence-unit'>{s} your sister play tennis?</span><span class='sentence-unit'>No, she {v}.</span>",
+      sOpt: ["Do", "Does"], vOpt: ["don't", "doesn't"],
+      sAns: "Does", vAns: "doesn't",
+      audio: "Does your sister play tennis? No, she doesn't.",
+      exp: "【解説】your sisterは「彼女(She)」と同じなので、質問は<b>Does</b>、答えの否定は<b>doesn't</b>になります。"
+    }
+  ];
+
+  let currentIdx = 0;
+
+  function initQuestion() {
+    const data = quizData[currentIdx];
+    document.getElementById('q-label').textContent = `Question ${currentIdx + 1} / ${quizData.length}`;
+    document.getElementById('progress-bar-fill').style.width = `${((currentIdx + 1) / quizData.length) * 100}%`;
+    document.getElementById('intro-area').innerHTML = data.intro.replace(/\n/g, '<br>');
+    
+    const sSelect = `<select id="s-sel" class="s-box"><option value="">--</option>${data.sOpt.map(o => `<option value="${o}">${o}</option>`).join('')}</select>`;
+    const vSelect = `<select id="v-sel" class="v-box"><option value="">--</option>${data.vOpt.map(o => `<option value="${o}">${o}</option>`).join('')}</select>`;
+    
+    document.getElementById('question-area').innerHTML = data.q.replace('{s}', sSelect).replace('{v}', vSelect);
+    
+    document.getElementById('explanation-area').style.display = 'none';
+    document.getElementById('speak-btn').style.display = 'none';
+    document.getElementById('check-btn').style.display = 'block';
+    document.getElementById('next-btn').style.display = 'none';
+  }
+
+  function handleCheck() {
+    const sSel = document.getElementById('s-sel');
+    const vSel = document.getElementById('v-sel');
+    const data = quizData[currentIdx];
+
+    if (!sSel.value || !vSel.value) {
+      alert("空欄を選んでください！");
+      return;
+    }
+
+    const sIsCorrect = sSel.value === data.sAns;
+    const vIsCorrect = vSel.value === data.vAns;
+
+    sSel.className = sIsCorrect ? "s-box correct" : "s-box wrong";
+    vSel.className = vIsCorrect ? "v-box correct" : "v-box wrong";
+
+    document.getElementById('explanation-area').innerHTML = data.exp;
+    document.getElementById('explanation-area').style.display = 'block';
+    document.getElementById('speak-btn').style.display = 'block';
+    document.getElementById('check-btn').style.display = 'none';
+    document.getElementById('next-btn').style.display = 'block';
+  }
+
+  function playAudio() {
+    window.speechSynthesis.cancel();
+    const data = quizData[currentIdx];
+    const uttr = new SpeechSynthesisUtterance(data.audio);
+    uttr.lang = 'en-US';
+    uttr.rate = 0.8;
+    window.speechSynthesis.speak(uttr);
+  }
+
+  function handleNext() {
+    currentIdx++;
+    if (currentIdx < quizData.length) {
+      initQuestion();
+    } else {
+      document.getElementById('quiz-screen').style.display = 'none';
+      document.getElementById('finish-screen').style.display = 'block';
+    }
+  }
+
+  initQuestion();
+</script>
+</body>
+</html>
