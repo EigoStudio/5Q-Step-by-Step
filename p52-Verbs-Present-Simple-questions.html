@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Present Simple: Do or Does? Master Quiz</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-color: #f7f3ff;
+    --card-bg: #ffffff;
+    --accent-purple: #6f42c1;
+    --accent-orange: #fd7e14;
+    --accent-green: #28a745;
+    --accent-red: #dc3545;
+    --text-main: #333;
+    --main-font: "Zen Maru Gothic", sans-serif;
+  }
+
+  * { font-family: var(--main-font); box-sizing: border-box; }
+  body { background-color: var(--bg-color); margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; color: var(--text-main); padding: 10px; }
+
+  .container {
+    background: var(--card-bg); width: 100%; max-width: 650px; padding: 30px;
+    border-radius: 25px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); text-align: left;
+  }
+
+  .progress-info { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font-weight: bold; color: #666; }
+  .progress-bar { background: #e9ecef; height: 10px; border-radius: 5px; overflow: hidden; margin-bottom: 30px; }
+  .progress-fill { background: var(--accent-purple); height: 100%; width: 0%; transition: width 0.4s ease; }
+
+  .intro-box { background: #f8f9fa; padding: 15px; border-radius: 15px; margin-bottom: 20px; font-size: 1.1rem; border-left: 5px solid var(--accent-purple); line-height: 1.6; }
+  
+  .question-text { font-size: 1.5rem; font-weight: bold; line-height: 2.3; margin-bottom: 20px; }
+  .sentence-unit { display: block; margin-bottom: 10px; }
+
+  select {
+    appearance: none; background: #fff; border: 3px solid #dee2e6; border-radius: 10px;
+    padding: 2px 10px; font-size: 1.3rem; font-weight: bold; cursor: pointer; transition: all 0.2s;
+    margin: 0 5px; vertical-align: middle; outline: none;
+  }
+  select.s-box { border-color: var(--accent-purple); color: var(--accent-purple); }
+  select.v-box { border-color: var(--accent-orange); color: var(--accent-orange); }
+  
+  select.correct { background-color: #d4edda; border-color: var(--accent-green); color: var(--accent-green); }
+  select.wrong { background-color: #f8d7da; border-color: var(--accent-red); color: var(--accent-red); }
+
+  .feedback-box { min-height: 160px; margin-bottom: 15px; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; }
+  .explanation { background: #fff3cd; padding: 15px; border-radius: 12px; font-size: 0.95rem; line-height: 1.6; display: none; margin-top: 10px; border: 1px solid #ffeeba; width: 100%; }
+  .speak-btn {
+    background: var(--accent-purple); color: white; border: none; padding: 10px 25px; border-radius: 50px;
+    font-size: 1rem; cursor: pointer; font-weight: bold; display: none; margin-bottom: 5px; box-shadow: 0 4px 0 #4b288a;
+  }
+  .speak-btn:active { transform: translateY(3px); box-shadow: none; }
+
+  .btn-action {
+    width: 100%; padding: 18px; font-size: 1.3rem; border: none; border-radius: 50px;
+    font-weight: bold; cursor: pointer; transition: 0.2s; color: white; margin-top: 10px;
+  }
+  .check-btn { background: var(--accent-green); box-shadow: 0 6px 0 #1e7e34; }
+  .next-btn { background: var(--accent-orange); box-shadow: 0 6px 0 #d35400; display: none; }
+  .btn-action:active { transform: translateY(4px); box-shadow: none; }
+
+  #finish-screen { display: none; text-align: center; }
+  #finish-screen h2 { font-size: 2.5rem; color: var(--accent-purple); }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div id="quiz-screen">
+    <div class="progress-info">
+      <span id="q-label">Question 1 / 8</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progress-bar-fill"></div></div>
+
+    <div class="intro-box" id="intro-area"></div>
+    <div class="question-text" id="question-area"></div>
+
+    <div class="feedback-box">
+      <button class="speak-btn" id="speak-btn" onclick="playAudio()">🔊 Listen (お手本を聞く)</button>
+      <div class="explanation" id="explanation-area"></div>
+    </div>
+
+    <button class="btn-action check-btn" id="check-btn" onclick="handleCheck()">Check Answer</button>
+    <button class="btn-action next-btn" id="next-btn" onclick="handleNext()">Next Question ➔</button>
+  </div>
+
+  <div id="finish-screen">
+    <h2>Great Job! 🎉</h2>
+    <p style="font-size: 1.2rem;">主語に合わせた疑問文と答え方のマスター完了！</p>
+    <button class="btn-action check-btn" onclick="location.reload()">もう一度挑戦する</button>
+  </div>
+</div>
+
+<script>
+  const quizData = [
+    {
+      intro: "Sam is a musician. He plays the piano.",
+      q: "<span class='sentence-unit'>Jane: {s} you play the piano every day?</span><span class='sentence-unit'>Sam: Yes, I {v}.</span>",
+      sOpt: ["Do", "Does"], vOpt: ["do", "does", "don't", "doesn't"],
+      sAns: "Do", vAns: "do",
+      audio: "Sam is a musician. He plays the piano. Do you play the piano every day? Yes, I do.",
+      exp: "【解説】主語が<b>you</b>の質問は<b>Do</b>で始めます。答えるときは、I に合わせて<b>Yes, I do.</b>になります。"
+    },
+    {
+      intro: "Lucy is Amy's sister. She lives in Tokyo.",
+      q: "<span class='sentence-unit'>Ben: {s} your sister live in Tokyo?</span><span class='sentence-unit'>Amy: Yes, she {v}.</span>",
+      sOpt: ["Do", "Does"], vOpt: ["do", "does", "don't", "doesn't"],
+      sAns: "Does", vAns: "does",
+      audio: "Lucy is Amy's sister. She lives in Tokyo. Does your sister live in Tokyo? Yes, she does.",
+      exp: "【解説】「あなたのお姉さん/妹さん（<b>your sister</b>）」は「彼女（she）」という三人称単数なので、<b>Does</b>で質問します。答えも<b>Yes, she does.</b>になります。"
+    },
+    {
+      intro: "Tom and Ken are runners. They run in the park.",
+      q: "<span class='sentence-unit'>Leo: {s} they run in the park?</span><span class='sentence-unit'>Max: Yes, they {v}.</span>",
+      sOpt: ["Do", "Does"], vOpt: ["do", "does", "don't", "doesn't"],
+      sAns: "Do", vAns: "do",
+      audio: "Tom and Ken are runners. They run in the park. Do they run in the park? Yes, they do.",
+      exp: "【解説】主語が<b>they</b>（彼ら・複数）のときは、<b>Do</b>で質問します。はい（Yes）で答えるので、後ろも合わせて<b>Yes, they do.</b>が正解です。"
+    },
+    {
+      intro: "Mr. Tanaka is an English teacher. He is not a Spanish teacher.",
+      q: "<span class='sentence-unit'>Emi: {s} Mr. Tanaka speak Spanish?</span><span class='sentence-unit'>Ken: No, he {v}.</span>",
+      sOpt: ["Do", "Does"], vOpt: ["do", "does", "don't", "doesn't"],
+      sAns: "Does", vAns: "doesn't",
+      audio: "Mr. Tanaka is an English teacher. He is not a Spanish teacher. Does Mr. Tanaka speak Spanish? No, he doesn't.",
+      exp: "【解説】主語の<b>Mr. Tanaka</b>は「彼（he）」という三人称単数なので<b>Does</b>を使います。いいえ（No）の否定なので<b>No, he doesn't.</b>になります。"
+    },
+    {
+      intro: "You and Mary are music fans. You like pop music.",
+      q: "<span class='sentence-unit'>Lisa: {s} you and Mary like music?</span><span class='sentence-unit'>Mika: Yes, we {v}.</span>",
+      sOpt: ["Do", "Does"], vOpt: ["do", "does", "don't", "doesn't"],
+      sAns: "Do", vAns: "do",
+      audio: "You and Mary are music fans. You like pop music. Do you and Mary like music? Yes, we do.",
+      exp: "【解説】<b>you and Mary</b>（あなたとメアリー）は「あなたたち（複数）」のことなので、質問は<b>Do</b>です。「あなたたちは？」と聞かれたので、答えるときは「私たち（<b>we</b>）」になり、<b>Yes, we do.</b>で受けます。"
+    },
+    {
+      intro: "Your dog is very cute. It sleeps on the sofa.",
+      q: "<span class='sentence-unit'>John: {s} your dog sleep on the sofa?</span><span class='sentence-unit'>Yuki: Yes, it {v}.</span>",
+      sOpt: ["Do", "Does"], vOpt: ["do", "does", "don't", "doesn't"],
+      sAns: "Does", vAns: "does",
+      audio: "Your dog is very cute. It sleeps on the sofa. Does your dog sleep on the sofa? Yes, it does.",
+      exp: "【解説】主語の<b>your dog</b>（あなたの犬）は、動物なので「それ（it）」という三人称単数として扱います。そのため質問は<b>Does</b>、答えは<b>Yes, it does.</b>になります。"
+    },
+    {
+      intro: "Amy's mother is busy. She doesn't cook dinner.",
+      q: "<span class='sentence-unit'>Mike: {s} your mother cook dinner every day?</span><span class='sentence-unit'>Amy: No, she {v}. We often eat out.</span>",
+      sOpt: ["Do", "Does"], vOpt: ["do", "does", "don't", "doesn't"],
+      sAns: "Does", vAns: "doesn't",
+      audio: "Amy's mother is busy. She doesn't cook dinner. Does your mother cook dinner every day? No, she doesn't. We often eat out.",
+      exp: "【解説】「あなたのお母さん（<b>your mother</b>）」は「彼女（she）」という三人称単数なので、<b>Does</b>で質問します。いいえ（No）の否定なので<b>No, she doesn't.</b>になります。"
+    },
+    {
+      intro: "Tom and Ken are students. They study Japanese hard.",
+      q: "<span class='sentence-unit'>Koji: {s} Tom and Ken study Japanese?</span><span class='sentence-unit'>Emma: Yes, they {v}.</span>",
+      sOpt: ["Do", "Does"], vOpt: ["do", "does", "don't", "doesn't"],
+      sAns: "Do", vAns: "do",
+      audio: "Tom and Ken are students. They study Japanese hard. Do Tom and Ken study Japanese? Yes, they do.",
+      exp: "【解説】主語が<b>Tom and Ken</b>（2人＝彼ら）なので、複数の扱いです。質問は<b>Do</b>から始め、答えは<b>Yes, they do.</b>になります。"
+    }
+  ];
+
+  let currentIdx = 0;
+
+  function initQuestion() {
+    const data = quizData[currentIdx];
+    document.getElementById('q-label').textContent = `Question ${currentIdx + 1} / ${quizData.length}`;
+    document.getElementById('progress-bar-fill').style.width = `${((currentIdx + 1) / quizData.length) * 100}%`;
+    document.getElementById('intro-area').innerHTML = data.intro.replace(/\n/g, '<br>');
+    
+    const sSelect = `<select id="s-sel" class="s-box"><option value="">--</option>${data.sOpt.map(o => `<option value="${o}">${o}</option>`).join('')}</select>`;
+    const vSelect = `<select id="v-sel" class="v-box"><option value="">--</option>${data.vOpt.map(o => `<option value="${o}">${o}</option>`).join('')}</select>`;
+    
+    document.getElementById('question-area').innerHTML = data.q.replace('{s}', sSelect).replace('{v}', vSelect);
+    
+    document.getElementById('explanation-area').style.display = 'none';
+    document.getElementById('speak-btn').style.display = 'none';
+    document.getElementById('check-btn').style.display = 'block';
+    document.getElementById('next-btn').style.display = 'none';
+  }
+
+  function handleCheck() {
+    const sSel = document.getElementById('s-sel');
+    const vSel = document.getElementById('v-sel');
+    const data = quizData[currentIdx];
+
+    if (!sSel.value || !vSel.value) {
+      alert("空欄を選んでください！");
+      return;
+    }
+
+    const sIsCorrect = sSel.value === data.sAns;
+    const vIsCorrect = vSel.value === data.vAns;
+
+    sSel.className = sIsCorrect ? "s-box correct" : "s-box wrong";
+    vSel.className = vIsCorrect ? "v-box correct" : "v-box wrong";
+
+    document.getElementById('explanation-area').innerHTML = data.exp;
+    document.getElementById('explanation-area').style.display = 'block';
+    document.getElementById('speak-btn').style.display = 'block';
+    document.getElementById('check-btn').style.display = 'none';
+    document.getElementById('next-btn').style.display = 'block';
+  }
+
+  function playAudio() {
+    window.speechSynthesis.cancel();
+    const data = quizData[currentIdx];
+    const uttr = new SpeechSynthesisUtterance(data.audio);
+    uttr.lang = 'en-US';
+    uttr.rate = 0.8;
+    window.speechSynthesis.speak(uttr);
+  }
+
+  function handleNext() {
+    currentIdx++;
+    if (currentIdx < quizData.length) {
+      initQuestion();
+    } else {
+      document.getElementById('quiz-screen').style.display = 'none';
+      document.getElementById('finish-screen').style.display = 'block';
+    }
+  }
+
+  initQuestion();
+</script>
+</body>
+</html>
