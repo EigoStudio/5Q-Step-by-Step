@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>現在形の否定文と疑問文を作ろう！動詞を二つに分裂させるんだ！</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+    <style>
+        :root {
+            --primary-blue: #2196f3;
+            --primary-pink: #ff4757;
+            --success-green: #6ab04c;
+            --bg-color: #e3f2fd;
+            --card-bg: #ffffff;
+            --text-color: #2c3e50;
+            --helper-yellow: #ffeb3b;
+            --verb-pink: #ffc1e3;
+        }
+
+        body {
+            font-family: "Zen Maru Gothic", sans-serif;
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+            color: var(--text-color);
+            margin: 0; padding: 20px;
+            display: flex; flex-direction: column; align-items: center;
+            min-height: 100vh;
+        }
+
+        .container { max-width: 650px; width: 100%; }
+        header { text-align: center; margin-bottom: 20px; }
+        h1 { color: #1565c0; font-size: 1.8rem; margin-bottom: 5px; line-height: 1.4; }
+        
+        .progress-bar {
+            width: 100%; height: 12px; background-color: #cbd5e1;
+            border-radius: 6px; margin-bottom: 25px; overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%; width: 0%; background-color: var(--primary-blue);
+            transition: width 0.3s ease;
+        }
+
+        .card {
+            background: var(--card-bg); border-radius: 25px; padding: 30px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05); border: 2px solid #fff;
+            text-align: center; display: none; animation: fadeIn 0.4s ease forwards;
+        }
+        .card.active { display: block; }
+
+        .hint-box {
+            background: #fff9db; border-left: 5px solid #fcc419;
+            padding: 12px; border-radius: 10px; font-weight: bold;
+            font-size: 1rem; margin-bottom: 20px; text-align: left;
+            line-height: 1.5;
+        }
+
+        .sentence-display {
+            font-size: 1.5rem; font-weight: bold; color: #1565c0;
+            background: #f1f8e9; padding: 10px 15px; border-radius: 15px;
+            margin-bottom: 15px; display: inline-block;
+        }
+
+        .japanese-inst { font-size: 1.2rem; font-weight: bold; margin-bottom: 20px; color: #546e7a; }
+
+        .drop-zone {
+            min-height: 65px; border-bottom: 3px dashed #cbd5e1;
+            margin-bottom: 20px; display: flex; flex-wrap: wrap;
+            gap: 10px; align-items: center; justify-content: center;
+            padding: 10px; background: #fafafa; border-radius: 15px;
+        }
+
+        .pool {
+            display: flex; flex-wrap: wrap; gap: 10px;
+            justify-content: center; margin-bottom: 25px; min-height: 50px;
+        }
+
+        .word-btn {
+            background-color: #f1f5f9; border: 2px solid #cbd5e1;
+            padding: 10px 18px; border-radius: 25px; cursor: pointer;
+            font-weight: bold; font-size: 1.1rem; color: var(--text-color);
+            box-shadow: 0 4px 0 #cbd5e1; transition: all 0.1s;
+        }
+        .word-btn.helper { background-color: var(--helper-yellow); border-color: #ffd43b; }
+        .word-btn.verb { background-color: var(--verb-pink); border-color: #fcc419; }
+        .word-btn.used { opacity: 0.2; pointer-events: none; box-shadow: none; }
+
+        .placed-word {
+            background-color: var(--primary-blue); color: white;
+            padding: 10px 18px; border-radius: 25px; font-weight: bold;
+            font-size: 1.1rem; cursor: pointer; box-shadow: 0 4px 0 #1565c0;
+        }
+        .placed-word.helper { background-color: var(--helper-yellow); color: #000; box-shadow: 0 4px 0 #fcc419; }
+        .placed-word.verb { background-color: var(--verb-pink); color: #000; box-shadow: 0 4px 0 #faa2c1; }
+
+        .action-nav { display: flex; justify-content: center; gap: 15px; }
+        .nav-btn {
+            padding: 12px 30px; font-family: inherit; font-weight: bold;
+            font-size: 1.1rem; border: none; border-radius: 50px; cursor: pointer;
+            color: white; transition: 0.1s;
+        }
+        .check-btn { background: var(--primary-blue); box-shadow: 0 5px 0 #1565c0; }
+        .next-btn { background: var(--success-green); box-shadow: 0 5px 0 #538d3d; display: none; }
+        .nav-btn:active { transform: translateY(3px); box-shadow: none; }
+
+        .result-row {
+            display: flex; align-items: center; background: #f8fafc;
+            padding: 15px 20px; border-radius: 20px; margin-bottom: 12px;
+            border: 1px solid #e2e8f0; text-align: left; gap: 15px;
+        }
+        .speaker-btn {
+            background-color: var(--primary-blue); color: white; border: none;
+            width: 45px; height: 45px; border-radius: 50%; font-size: 1.3rem;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 4px 0 #1976d2; transition: 0.1s; flex-shrink: 0;
+        }
+        .speaker-btn:active { transform: translateY(3px); box-shadow: 0 1px 0 #1976d2; }
+        .speaker-btn.playing { background-color: var(--primary-pink); box-shadow: 0 4px 0 #d63031; }
+        .result-text { font-size: 1.2rem; font-weight: bold; }
+
+        .q-title {
+            font-size: 1.2rem; background-color: #e2e8f0; padding: 4px 15px;
+            border-radius: 10px; display: inline-block; margin-bottom: 15px; font-weight: bold;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>現在形の否定文と疑問文を作ろう！<br>動詞を二つに分裂させるんだ！ 💥</h1>
+    </header>
+
+    <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+    </div>
+
+    <div class="card active" id="card-1">
+        <div class="q-title">Q1 : Sam パターン</div>
+        <div class="hint-box">💡 肯定文の動詞には、お助けキャラの do か does が隠れているよ！主語が Sam (1人) のとき、plays は何と何に分裂するかな？</div>
+        <div class="sentence-display">Sam plays the piano.</div>
+        <div class="japanese-inst">plays を２つのパーツに分けてみよう！</div>
+        <div class="drop-zone" id="drop-1"></div>
+        <div class="pool" id="pool-1">
+            <button class="word-btn helper" onclick="clickWord(1, 'do', true)">do</button>
+            <button class="word-btn helper" onclick="clickWord(1, 'does', true)">does</button>
+            <button class="word-btn verb" onclick="clickWord(1, 'play', false)">play</button>
+            <button class="word-btn verb" onclick="clickWord(1, 'plays', false)">plays</button>
+        </div>
+        <div class="action-nav">
+            <button class="nav-btn check-btn" id="check-1" onclick="checkSplitStep(1, 'does play', 'あたまに s がつく動詞を分けるときは、どっちのお助けキャラかな？')">答えあわせ</button>
+            <button class="nav-btn next-btn" id="next-1" onclick="goNext(1)">Next ➔</button>
+        </div>
+    </div>
+
+    <div class="card" id="card-2">
+        <div class="q-title">Q1 : Sam パターン</div>
+        <div class="hint-box">💡 動詞を 2つにプチッと分けたら、その「あいだ」に not を挟みこむと、否定(〜しない)の形ができるよ！</div>
+        <div class="japanese-inst">「〜を弾きません」のパーツを順番に並べよう！</div>
+        <div class="drop-zone" id="drop-2"></div>
+        <div class="pool" id="pool-2"></div>
+        <div class="action-nav">
+            <button class="nav-btn check-btn" id="check-2" onclick="checkSplitStep(2, 'does not play', 'おしい！２つのパーツの「まんなか」に not をいれるんだよ。')">答えあわせ</button>
+            <button class="nav-btn next-btn" id="next-2" onclick="goNext(2)">Next ➔</button>
+        </div>
+    </div>
+
+    <div class="card" id="card-3">
+        <div class="q-title">Q1 : Sam パターン</div>
+        <div class="hint-box">💡 さあ、文全体を並べかえて否定文を完成させよう！目的語のバブルに注目してね。</div>
+        <div class="japanese-inst">「サムはトランペットを吹きません。」</div>
+        <div class="drop-zone" id="drop-3"></div>
+        <div class="pool" id="pool-3"></div>
+        <div class="action-nav">
+            <button class="nav-btn check-btn" id="check-3" onclick="checkSplitStep(3, 'Sam does not play the trumpet.', 'おしい！「主語 + 否定のパーツ + 目的語」の順番だよ。')">答えあわせ</button>
+            <button class="nav-btn next-btn" id="next-3" onclick="goNext(3)">Next ➔</button>
+        </div>
+    </div>
+
+    <div class="card" id="card-4">
+        <div class="q-title">Q1 : Sam パターン</div>
+        <div class="hint-box">🥪 疑問文(〜しますか？)のときは、分裂した does と play のあいだに、主語を「サンドイッチの具」みたいに挟みこむんだよ！</div>
+        <div class="japanese-inst">「サムはトランペットを吹きますか？」</div>
+        <div class="drop-zone" id="drop-4"></div>
+        <div class="pool" id="pool-4"></div>
+        <div class="action-nav">
+            <button class="nav-btn check-btn" id="check-4" onclick="checkSplitStep(4, 'Does Sam play the trumpet?', 'おしい！ does と play のあいだに、主語(Sam)をサンドイッチしてね！')">答えあわせ</button>
+            <button class="nav-btn next-btn" id="next-4" onclick="goNext(4)">Next ➔</button>
+        </div>
+    </div>
+
+
+    <div class="card" id="card-5">
+        <div class="q-title">Q2 : Ellie パターン</div>
+        <div class="hint-box">💡 超重要ポイント！has も does が隠れているよ。プチッと分裂したとき、後ろの動詞はどんな形（元の形）に戻るかな？</div>
+        <div class="sentence-display">Ellie has a cat.</div>
+        <div class="japanese-inst">has を２つのパーツに分けてみよう！</div>
+        <div class="drop-zone" id="drop-5"></div>
+        <div class="pool" id="pool-5">
+            <button class="word-btn helper" onclick="clickWord(5, 'do', true)">do</button>
+            <button class="word-btn helper" onclick="clickWord(5, 'does', true)">does</button>
+            <button class="word-btn verb" onclick="clickWord(5, 'have', false)">have</button>
+            <button class="word-btn verb" onclick="clickWord(5, 'has', false)">has</button>
+        </div>
+        <div class="action-nav">
+            <button class="nav-btn check-btn" id="check-5" onclick="checkSplitStep(5, 'does have', 'おしい！does が前に出ると、後ろの動詞は元の形（have）に変身するよ！')">答えあわせ</button>
+            <button class="nav-btn next-btn" id="next-5" onclick="goNext(5)">Next ➔</button>
+        </div>
+    </div>
+
+    <div class="card" id="card-6">
+        <div class="q-title">Q2 : Ellie パターン</div>
+        <div class="hint-box">💡 分裂させたパーツの「あいだ」に not を挟みこんで、否定の形を作ろう！</div>
+        <div class="japanese-inst">「〜を飼っていません」のパーツを順番に並べよう！</div>
+        <div class="drop-zone" id="drop-6"></div>
+        <div class="pool" id="pool-6"></div>
+        <div class="action-nav">
+            <button class="nav-btn check-btn" id="check-6" onclick="checkSplitStep(6, 'does not have', 'おしい！does と have のまんなかに not を入れよう。')">答えあわせ</button>
+            <button class="nav-btn next-btn" id="next-6" onclick="goNext(6)">Next ➔</button>
+        </div>
+    </div>
+
+    <div class="card" id="card-7">
+        <div class="q-title">Q2 : Ellie パターン</div>
+        <div class="hint-box">💡 文全体を並べかえて否定文を完成させよう！ウサギ（a rabbit.）の塊に気をつけてね。</div>
+        <div class="japanese-inst">「エリーはウサギを飼っていません。」</div>
+        <div class="drop-zone" id="drop-7"></div>
+        <div class="pool" id="pool-7"></div>
+        <div class="action-nav">
+            <button class="nav-btn check-btn" id="check-7" onclick="checkSplitStep(7, 'Ellie does not have a rabbit.', 'おしい！「主語 + does not have + 目的語」の順だよ。')">答えあわせ</button>
+            <button class="nav-btn next-btn" id="next-7" onclick="goNext(7)">Next ➔</button>
+        </div>
+    </div>
+
+    <div class="card" id="card-8">
+        <div class="q-title">Q2 : Ellie パターン</div>
+        <div class="hint-box">🥪 疑問文のひみつ！分裂した does と have のあいだに、主語の Ellie をサンドイッチしよう！</div>
+        <div class="japanese-inst">「エリーはウサギを飼っていますか？」</div>
+        <div class="drop-zone" id="drop-8"></div>
+        <div class="pool" id="pool-8"></div>
+        <div class="action-nav">
+            <button class="nav-btn check-btn" id="check-8" onclick="checkSplitStep(8, 'Does Ellie have a rabbit?', 'おしい！ Does と have のあいだに Ellie を挟みこんでね。')">答えあわせ</button>
+            <button class="nav-btn next-btn" id="next-8" onclick="goNext(8)">Next ➔</button>
+        </div>
+    </div>
+
+
+    <div class="card" id="card-9">
+        <div class="q-title">Q3 : Multiple Persons パターン</div>
+        <div class="hint-box">💡 主語が Mr. Potato and Julian (2人＝複数) だよ！あたまに s がついていない speak は、何と何に分裂するかな？</div>
+        <div class="sentence-display">Mr. Potato and Julian speak Spanish.</div>
+        <div class="japanese-inst">speak を２つのパーツに分けてみよう！</div>
+        <div class="drop-zone" id="drop-9"></div>
+        <div class="pool" id="pool-9">
+            <button class="word-btn helper" onclick="clickWord(9, 'do', true)">do</button>
+            <button class="word-btn helper" onclick="clickWord(9, 'does', true)">does</button>
+            <button class="word-btn verb" onclick="clickWord(9, 'speak', false)">speak</button>
+            <button class="word-btn verb" onclick="clickWord(9, 'speaks', false)">speaks</button>
+        </div>
+        <div class="action-nav">
+            <button class="nav-btn check-btn" id="check-9" onclick="checkSplitStep(9, 'do speak', '大注目！主語が2人（複数）のときは、does ではなく do が隠れているんだよ！')">答えあわせ</button>
+            <button class="nav-btn next-btn" id="next-9" onclick="goNext(9)">Next ➔</button>
+        </div>
+    </div>
+
+    <div class="card" id="card-10">
+        <div class="q-title">Q3 : Multiple Persons パターン</div>
+        <div class="hint-box">💡 分裂したパーツの「あいだ」に not を挟みこんで、複数形の否定の形を作ろう！</div>
+        <div class="japanese-inst">「〜を話しません」のパーツを順番に並べよう！</div>
+        <div class="drop-zone" id="drop-10"></div>
+        <div class="pool" id="pool-10"></div>
+        <div class="action-nav">
+            <button class="nav-btn check-btn" id="check-10" onclick="checkSplitStep(10, 'do not speak', 'おしい！do と speak のまんなかに not をいれよう。')">答えあわせ</button>
+            <button class="nav-btn next-btn" id="next-10" onclick="goNext(10)">Next ➔</button>
+        </div>
+    </div>
+
+    <div class="card" id="card-11">
+        <div class="q-title">Q3 : Multiple Persons パターン</div>
+        <div class="hint-box">💡 文全体を並べかえよう！主語の塊（Mr. Potato and Julian）が少し長いけど、ルールはいつもと同じだよ！</div>
+        <div class="japanese-inst">「ポテト先生とジュリアンは中国語を話しません。」</div>
+        <div class="drop-zone" id="drop-11"></div>
+        <div class="pool" id="pool-11"></div>
+        <div class="action-nav">
+            <button class="nav-btn check-btn" id="check-11" onclick="checkSplitStep(11, 'Mr. Potato and Julian do not speak Chinese.', 'おしい！主語のあとに do not speak を並べよう。')">答えあわせ</button>
+            <button class="nav-btn next-btn" id="next-11" onclick="goNext(11)">Next ➔</button>
+        </div>
+    </div>
+
+    <div class="card" id="card-12">
+        <div class="q-title">Q3 : Multiple Persons パターン</div>
+        <div class="hint-box">🥪 さあ最後のサンドイッチ！ do と speak のあいだに、長い主語「Mr. Potato and Julian」を贅沢に挟みこもう！</div>
+        <div class="japanese-inst">「ポテト先生とジュリアンは中国語を話しますか？」</div>
+        <div class="drop-zone" id="drop-12"></div>
+        <div class="pool" id="pool-12"></div>
+        <div class="action-nav">
+            <button class="nav-btn check-btn" id="check-12" onclick="showResults()">答えあわせ</button>
+        </div>
+    </div>
+
+
+    <div class="card" id="card-result">
+        <h2 style="color: var(--success-green); margin-bottom: 10px;">すばらしい！全問クリア！ 🎉</h2>
+        <p style="font-weight: bold; color: #546e7a; margin-bottom: 25px;">動詞の分裂・変身・サンドイッチ、ぜんぶ完璧にマスターしたね！</p>
+        
+        <div id="results-list"></div>
+        <button class="nav-btn check-btn" style="margin-top:20px; background-color: var(--primary-blue);" onclick="location.reload()">もういちど 挑戦する 🔄</button>
+    </div>
+</div>
+
+<script>
+    // シャッフル用ワードデータ
+    const poolData = {
+        2: ['play', 'does', 'not'],
+        3: ['Sam', 'does', 'not', 'play', 'the trumpet.'],
+        4: ['Does', 'Sam', 'play', 'the trumpet?'],
+        6: ['have', 'does', 'not'],
+        7: ['Ellie', 'does', 'not', 'have', 'a rabbit.'],
+        8: ['Does', 'Ellie', 'have', 'a rabbit?'],
+        10: ['speak', 'do', 'not'],
+        11: ['Mr. Potato and Julian', 'do', 'not', 'speak', 'Chinese.'],
+        12: ['Do', 'Mr. Potato and Julian', 'speak', 'Chinese?']
+    };
+
+    const totalSteps = 12;
+
+    function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+        // 各ステージのプールを自動シャッフル生成
+        Object.keys(poolData).forEach(stage => {
+            setupPool(stage, poolData[stage]);
+        });
+
+        // 全ドロップゾーンをSortable化
+        for (let i = 1; i <= 12; i++) {
+            new Sortable(document.getElementById(`drop-${i}`), {
+                animation: 150,
+                ghostClass: 'sortable-ghost'
+            });
+        }
+        updateProgressBar(0);
+    });
+
+    function setupPool(stage, wordsArray) {
+        const pool = document.getElementById(`pool-${stage}`);
+        const copied = [...wordsArray];
+        shuffle(copied);
+
+        copied.forEach(word => {
+            const btn = document.createElement('button');
+            btn.className = 'word-btn';
+            if (['does', 'Does', 'do', 'Do'].includes(word)) btn.classList.add('helper');
+            if (['play', 'have', 'speak'].includes(word)) btn.classList.add('verb');
+            btn.textContent = word;
+            btn.onclick = () => handlePoolClick(stage, btn, word);
+            pool.appendChild(btn);
+        });
+    }
+
+    // ステージ1, 5, 9の特殊択一ボタン用
+    function clickWord(stage, word, isHelper) {
+        const target = event.target;
+        if(target.classList.contains('used')) return;
+        
+        target.classList.add('used');
+        const placed = document.createElement('div');
+        placed.className = `placed-word ${isHelper ? 'helper' : 'verb'}`;
+        placed.textContent = word;
+        placed.onclick = () => {
+            target.classList.remove('used');
+            placed.remove();
+        };
+        document.getElementById(`drop-${stage}`).appendChild(placed);
+    }
+
+    // 通常ステージのプールクリック
+    function handlePoolClick(stage, btnElement, word) {
+        if(btnElement.classList.contains('used')) return;
+
+        btnElement.classList.add('used');
+        const placed = document.createElement('div');
+        placed.className = 'placed-word';
+        if (['does', 'Does', 'do', 'Do'].includes(word)) placed.classList.add('helper');
+        if (['play', 'have', 'speak'].includes(word)) placed.classList.add('verb');
+        placed.textContent = word;
+        
+        placed.onclick = () => {
+            btnElement.classList.remove('used');
+            placed.remove();
+        };
+        document.getElementById(`drop-${stage}`).appendChild(placed);
+    }
+
+    function updateProgressBar(step) {
+        const percentage = (step / totalSteps) * 100;
+        document.getElementById('progressFill').style.width = percentage + '%';
+    }
+
+    function goNext(current) {
+        document.getElementById(`card-${current}`).classList.remove('active');
+        document.getElementById(`card-${current + 1}`).classList.add('active');
+        updateProgressBar(current);
+    }
+
+    // 各ステージの判定
+    function checkSplitStep(stage, correctAnswer, alertMessage) {
+        const currentAnswers = Array.from(document.getElementById(`drop-${stage}`).children).map(c => c.textContent);
+        if(currentAnswers.join(' ') === correctAnswer) {
+            alert("正解！ピンポン！素晴らしい！");
+            document.getElementById(`check-${stage}`).style.display = 'none';
+            document.getElementById(`next-${stage}`).style.display = 'inline-block';
+        } else {
+            alert(alertMessage);
+        }
+    }
+
+    // 最終ステージの個別判定＆リザルト表示
+    function showResults() {
+        const currentAnswers = Array.from(document.getElementById('drop-12').children).map(c => c.textContent);
+        if(currentAnswers.join(' ') !== 'Do Mr. Potato and Julian speak Chinese?') {
+            alert("おしい！ Do と speak のあいだに、2人の主語(Mr. Potato and Julian)をきれいにサンドイッチしてね！");
+            return;
+        }
+
+        updateProgressBar(12);
+        document.getElementById('card-12').classList.remove('active');
+        document.getElementById('card-result').classList.add('active');
+
+        // ネイティブ音声で読み上げる、全パターンの完成文リスト
+        const finalSentences = [
+            "Sam plays the piano.",
+            "Sam does not play the trumpet.",
+            "Does Sam play the trumpet?",
+            "Ellie has a cat.",
+            "Ellie does not have a rabbit.",
+            "Does Ellie have a rabbit?",
+            "Mr. Potato and Julian speak Spanish.",
+            "Mr. Potato and Julian do not speak Chinese.",
+            "Do Mr. Potato and Julian speak Chinese?"
+        ];
+
+        const resultsList = document.getElementById('results-list');
+        resultsList.innerHTML = '';
+
+        finalSentences.forEach((sentence, index) => {
+            const row = document.createElement('div');
+            row.className = 'result-row';
+            row.innerHTML = `
+                <button class="speaker-btn" id="btn-s${index}" onclick="speakText('s${index}', \`${sentence}\`)">🔊</button>
+                <div class="result-text">${sentence}</div>
+            `;
+            resultsList.appendChild(row);
+        });
+    }
+
+    // 音声読み上げ（ゆっくり速度 0.6）
+    let preferredVoice = null;
+    function loadVoices() {
+        const voices = window.speechSynthesis.getVoices();
+        if (voices.length === 0) return;
+        preferredVoice = 
+            voices.find(v => (v.lang === 'en-US' || v.lang === 'en_US') && v.name.includes("Google US English")) ||
+            voices.find(v => (v.lang === 'en-US' || v.lang === 'en_US') && v.name.includes("Samantha")) ||
+            voices.find(v => (v.lang === 'en-US' || v.lang === 'en_US') && v.name.includes("Zira")) ||
+            voices.find(v => v.lang.startsWith('en'));
+    }
+    window.speechSynthesis.onvoiceschanged = loadVoices;
+    loadVoices();
+
+    function speakText(id, text) {
+        window.speechSynthesis.cancel();
+        const uttr = new SpeechSynthesisUtterance(text);
+        if (preferredVoice) uttr.voice = preferredVoice;
+        uttr.lang = 'en-US';
+        uttr.rate = 0.6;
+        
+        const btn = document.getElementById('btn-' + id);
+        btn.classList.add('playing');
+        uttr.onend = () => btn.classList.remove('playing');
+        uttr.onerror = () => btn.classList.remove('playing');
+        window.speechSynthesis.speak(uttr);
+    }
+</script>
+</body>
+</html>
