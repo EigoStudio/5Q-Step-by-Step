@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Step by Step Towards EIKEN Grade 5 p56 動名詞</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&family=Zen+Maru+Gothic:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-green: #2e7d32;
+            --accent-brown: #8d6e63;
+            --accent-yellow: #fdd835;
+            --bg-color: #f4f6f4;
+            --card-bg: #ffffff;
+            --text-color: #3e2723;
+            --gray-border: #cfd8dc;
+            --gray-light: #f5f7f8;
+            --error-red: #ff5252;
+            --slot-bg: #eceff1;
+        }
+
+        * { box-sizing: border-box; font-family: "Andika", "Zen Maru Gothic", sans-serif; }
+
+        body {
+            background: linear-gradient(135deg, var(--bg-color), #e8ebe8);
+            color: var(--text-color);
+            margin: 0; padding: 5px 20px;
+            display: flex; flex-direction: column; align-items: center;
+            height: 100vh; overflow: hidden; /* スクロールを完全に禁止 */
+        }
+
+        .container { max-width: 1200px; width: 100%; height: 100%; display: flex; flex-direction: column; }
+        
+        header { text-align: center; margin-bottom: 5px; }
+        h1 { color: var(--primary-green); font-size: 1.8rem; margin: 0; font-weight: 700; }
+        
+        .score-counter {
+            font-size: 1.3rem; font-weight: bold; color: #455a64; text-align: center; margin-bottom: 2px;
+        }
+
+        .progress-bar {
+            width: 100%; height: 10px; background-color: #cbd5e1;
+            border-radius: 5px; margin-bottom: 10px; overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%; width: 0%; background-color: var(--primary-green);
+            transition: width 0.3s ease;
+        }
+
+        .card {
+            background: var(--card-bg); border-radius: 20px; padding: 15px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05); border: 2px solid #fff;
+            text-align: center; display: none; flex: 1;
+        }
+        .card.active { display: flex; flex-direction: column; justify-content: space-between; }
+
+        .q-title {
+            font-size: 1.1rem; background-color: #e2e8f0; padding: 2px 12px;
+            border-radius: 8px; display: inline-block; margin-bottom: 10px; font-weight: bold; color: #455a64; align-self: center;
+        }
+
+        /* 【上段】ピクチャとセンテンスの横並びエリア */
+        .top-section {
+            display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 30px; margin-bottom: 15px;
+        }
+
+        .quiz-image {
+            width: 250px; height: 250px; object-fit: cover;
+            border-radius: 15px; border: 3px solid var(--gray-border);
+            background-color: #eaeaea; flex-shrink: 0;
+        }
+
+        /* 問題文テキストエリア（バランスの良い大きさに調整） */
+        .sentence-builder {
+            font-size: 2.3rem; font-weight: bold; color: #1a1a1a;
+            line-height: 1.4; padding: 20px; flex: 1; text-align: left;
+            background: #f1f8e9; border-radius: 15px; border: 2px dashed var(--primary-green);
+        }
+
+        /* プルダウン */
+        .verb-select {
+            font-size: 2.0rem; font-weight: bold; color: var(--primary-green);
+            padding: 2px 10px; border-radius: 12px; border: 3px solid var(--primary-green);
+            background-color: white; cursor: pointer; vertical-align: middle; margin: 0 8px;
+        }
+
+        /* 空欄スロット */
+        .drop-slot {
+            display: inline-block; min-width: 200px; height: 55px;
+            border-bottom: 4px solid var(--accent-brown); background-color: var(--slot-bg);
+            border-radius: 10px 10px 0 0; vertical-align: middle; margin: 0 8px;
+            text-align: center; line-height: 50px; font-size: 2.0rem; color: #0d47a1;
+            transition: background-color 0.2s; padding: 0 10px;
+        }
+        .drop-slot.hover { background-color: #b0bec5; }
+        .drop-slot.filled { background-color: #e3f2fd; border-bottom-color: #0d47a1; }
+
+        /* 【下段】ワードチョイスを左右に分けるエリア */
+        .bottom-section {
+            display: flex; flex-direction: row; gap: 20px; margin-bottom: 10px;
+        }
+
+        .pool-container {
+            flex: 1; background: var(--gray-light); border-radius: 15px; padding: 10px 15px;
+            display: flex; flex-direction: column;
+        }
+        .pool-container.gerunds { border: 2px solid var(--primary-green); }
+        .pool-container.objects { border: 2px solid var(--accent-brown); }
+
+        .pool-title {
+            font-size: 1.2rem; font-weight: bold; margin-bottom: 8px; text-align: left; display: flex; align-items: center; gap: 5px;
+        }
+        .pool-title.gerunds { color: var(--primary-green); }
+        .pool-title.objects { color: var(--accent-brown); }
+
+        .cards-pool {
+            display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; align-content: center; flex: 1; min-height: 120px;
+        }
+
+        /* 単語カード */
+        .drag-card {
+            display: inline-block; background-color: white; border: 2px solid #b0bec5;
+            padding: 8px 18px; border-radius: 12px; cursor: grab;
+            font-weight: bold; font-size: 1.8rem; color: var(--text-color);
+            box-shadow: 0 4px 0 var(--gray-border); transition: transform 0.1s, box-shadow 0.1s;
+            user-select: none; touch-action: none;
+        }
+        .drag-card:active { cursor: grabbing; }
+        .drag-card.dragging { opacity: 0.4; transform: scale(0.95); }
+        .drag-card.used { opacity: 0.2; pointer-events: none; box-shadow: none; background-color: #e0e0e0; border-color: #e0e0e0; }
+
+        /* ボタンエリア */
+        .button-zone { display: flex; justify-content: center; margin-top: 5px; }
+        .action-btn {
+            padding: 12px 50px; font-weight: bold; font-size: 1.5rem;
+            border: none; border-radius: 50px; cursor: pointer; color: white; transition: 0.1s;
+            display: block; /* 確実に大画面で中央に表示 */
+        }
+        .check-btn { background: #0288d1; box-shadow: 0 5px 0 #01579b; }
+        .check-btn:active { transform: translateY(3px); box-shadow: none; }
+        .next-btn { background: var(--primary-green); box-shadow: 0 5px 0 #1b5e20; }
+        .next-btn:active { transform: translateY(3px); box-shadow: none; }
+
+        /* 結果＆一覧画面 */
+        #card-result { overflow-y: auto; display: none; height: auto; }
+        #card-result.active { display: block; }
+        .summary-title {
+            font-size: 1.6rem; color: var(--primary-green); margin-top: 10px; margin-bottom: 10px;
+            text-align: left; border-bottom: 3px solid var(--primary-green); padding-bottom: 3px;
+        }
+        .sentence-list {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 10px; text-align: left;
+        }
+        .sentence-item {
+            font-size: 1.5rem; padding: 12px 15px; border-bottom: 1px solid #cfd8dc;
+            line-height: 1.4; color: #1a1a1a; font-weight: bold; background: #fafafa; border-radius: 8px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        #excellentPopup {
+            position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-20px);
+            background-color: var(--accent-yellow); color: #3e2723; padding: 12px 40px; border-radius: 50px;
+            font-weight: bold; font-size: 2rem; box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+            opacity: 0; pointer-events: none; transition: all 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28); z-index: 1000;
+        }
+        #excellentPopup.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    </style>
+</head>
+<body>
+
+<div id="excellentPopup">Excellent! 🌟</div>
+
+<div class="container">
+    <header>
+        <h1>Step by Step Towards EIKEN Grade 5 p56 動名詞 💥</h1>
+    </header>
+
+    <div class="score-counter">Score: <span id="currentScore">0</span> / 8</div>
+
+    <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+    </div>
+
+    <!-- クイズカードが動的に生成されます -->
+    <div id="quiz-container" style="flex: 1; display: flex; flex-direction: column;"></div>
+
+    <!-- 結果＆一覧画面 -->
+    <div class="card" id="card-result">
+        <h2 style="color: var(--primary-green); margin: 0 0 5px 0; font-size: 2rem;">All Steps Completed! 🎉</h2>
+        <p style="font-weight: bold; color: #5d4037; font-size: 1.4rem; margin: 0 0 10px 0;">
+            Your Score: <span style="font-size: 2.2rem; color: var(--primary-green);" id="finalScore">0</span> / 8
+        </p>
+        
+        <div class="summary-title">📖 Sentence List</div>
+        <div class="sentence-list" id="final-sentence-list"></div>
+
+        <button class="action-btn next-btn" style="display:block; background-color: var(--accent-brown); box-shadow: 0 5px 0 #4e342e; margin: 15px auto 0 auto; width: auto;" onclick="location.reload()">Try Again 🔄</button>
+    </div>
+</div>
+
+<script>
+    const quizData = [
+        {
+            title: "Question 1", subject: "She", img: "images-p56/reading.jpg",
+            verbs: ["like", "likes"], correctVerb: "likes", slotsCount: 2,
+            correctAnswers: ["reading", "books"]
+        },
+        {
+            title: "Question 2", subject: "She", img: "images-p56/painting.jpg",
+            verbs: ["love", "loves"], correctVerb: "loves", slotsCount: 2,
+            correctAnswers: ["painting", "pictures"]
+        },
+        {
+            title: "Question 3", subject: "I", img: "images-p56/jumping.jpg",
+            verbs: ["enjoy", "enjoys"], correctVerb: "enjoy", slotsCount: 2,
+            correctAnswers: ["jumping", "rope"]
+        },
+        {
+            title: "Question 4", subject: "He", img: "images-p56/playing_baseball.jpg",
+            verbs: ["like", "likes"], correctVerb: "likes", slotsCount: 2,
+            correctAnswers: ["playing", "baseball"]
+        },
+        {
+            title: "Question 5", subject: "He", img: "images-p56/using.jpg",
+            verbs: ["enjoy", "enjoys"], correctVerb: "enjoys", slotsCount: 2,
+            correctAnswers: ["using", "a computer"]
+        },
+        {
+            title: "Question 6", subject: "They", img: "images-p56/playing_tennis.jpg",
+            verbs: ["like", "likes"], correctVerb: "like", slotsCount: 2,
+            correctAnswers: ["playing", "tennis"]
+        },
+        {
+            title: "Question 7", subject: "She", img: "images-p56/shopping.jpg",
+            verbs: ["love", "loves"], correctVerb: "loves", slotsCount: 2,
+            correctAnswers: ["shopping", "at a department store"]
+        },
+        {
+            title: "Question 8", subject: "We", img: "images-p56/talking.jpg",
+            verbs: ["enjoy", "enjoys"], correctVerb: "enjoy", slotsCount: 1,
+            correctAnswers: ["talking"]
+        }
+    ];
+
+    const gerundCards = ["reading", "painting", "jumping", "playing", "using", "shopping", "talking"];
+    const objectCards = ["books", "pictures", "rope", "baseball", "a computer", "tennis", "at a department store"];
+
+    let currentIdx = 0;
+    let score = 0;
+    const container = document.getElementById('quiz-container');
+    let draggedElement = null;
+
+    function shuffleArray(array) {
+        let arr = [...array];
+        for (let i = arr.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
+    }
+
+    function initApp() {
+        quizData.forEach((q, idx) => {
+            const card = document.createElement('div');
+            card.className = `card ${idx === 0 ? 'active' : ''}`;
+            card.id = `card-${idx}`;
+
+            const shuffledGerunds = shuffleArray(gerundCards);
+            const shuffledObjects = shuffleArray(objectCards);
+
+            let gerundPoolHtml = shuffledGerunds.map((w, cIdx) => `<div class="drag-card" draggable="true" id="drag-g-${idx}-${cIdx}" data-word="${w}">${w}</div>`).join('');
+            let objectPoolHtml = shuffledObjects.map((w, cIdx) => `<div class="drag-card" draggable="true" id="drag-o-${idx}-${cIdx}" data-word="${w}">${w}</div>`).join('');
+
+            let slotsHtml = `<div class="drop-slot" data-slot="0" data-expected-type="gerund" id="slot-${idx}-0">?</div>`;
+            if (q.slotsCount === 2) {
+                slotsHtml += `<div class="drop-slot" data-slot="1" data-expected-type="object" id="slot-${idx}-1">?</div>`;
+            }
+
+            let verbOptions = `<option value="">---</option>` + q.verbs.map(v => `<option value="${v}">${v}</option>`).join('');
+            const verbSelectHtml = `<select class="verb-select" id="verb-${idx}">${verbOptions}</select>`;
+
+            let rightPoolStyle = q.slotsCount === 1 ? 'opacity: 0.3; pointer-events: none;' : '';
+
+            card.innerHTML = `
+                <div class="q-title">${q.title}</div>
+                
+                <!-- 【上段】ピクチャ ＆ センテンス -->
+                <div class="top-section">
+                    <img src="${q.img}" class="quiz-image" alt="${q.title} picture" onerror="this.style.backgroundColor='#cfd8dc';">
+                    <div class="sentence-builder">
+                        ${q.subject} ${verbSelectHtml} ${slotsHtml}.
+                    </div>
+                </div>
+                
+                <!-- 【下段】左右に分かれたワードプール -->
+                <div class="bottom-section">
+                    <div class="pool-container gerunds">
+                        <div class="pool-title gerunds">🟢 1つめの空欄にいれる言葉 (-ing)</div>
+                        <div class="cards-pool" id="pool-g-${idx}">
+                            ${gerundPoolHtml}
+                        </div>
+                    </div>
+                    <div class="pool-container objects" style="${rightPoolStyle}">
+                        <div class="pool-title objects">🟤 2つめの空欄にいれる言葉</div>
+                        <div class="cards-pool" id="pool-o-${idx}">
+                            ${q.slotsCount === 1 ? '<div style="font-size:1.4rem; color:#78909c; margin-top:30px;">(この問題ではつかいません)</div>' : objectPoolHtml}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="button-zone">
+                    <!-- ボタンを1つの要素にして、クラスとテキストをJSで切り替える安全設計に変更 -->
+                    <button class="action-btn check-btn" id="action-btn-${idx}" onclick="handleaction(${idx})">Check Answer! ✔</button>
+                </div>
+            `;
+            container.appendChild(card);
+            setupDragAndDrop(idx);
+        });
+        updateProgressBar(0);
+    }
+
+    function setupDragAndDrop(idx) {
+        const card = document.getElementById(`card-${idx}`);
+        const dragCards = card.querySelectorAll('.drag-card');
+        const slots = card.querySelectorAll('.drop-slot');
+
+        let selectedCard = null;
+
+        dragCards.forEach(dc => {
+            dc.addEventListener('dragstart', (e) => {
+                draggedElement = dc;
+                dc.classList.add('dragging');
+            });
+
+            dc.addEventListener('dragend', () => {
+                dc.classList.remove('dragging');
+                draggedElement = null;
+            });
+
+            dc.addEventListener('click', () => {
+                if (dc.classList.contains('used')) return;
+                if (selectedCard === dc) {
+                    dc.style.border = "2px solid #b0bec5";
+                    dc.style.backgroundColor = "white";
+                    selectedCard = null;
+                } else {
+                    if (selectedCard) {
+                        selectedCard.style.border = "2px solid #b0bec5";
+                        selectedCard.style.backgroundColor = "white";
+                    }
+                    selectedCard = dc;
+                    dc.style.border = "3px solid #0d47a1";
+                    dc.style.backgroundColor = "#e3f2fd";
+                }
+            });
+        });
+
+        slots.forEach(slot => {
+            slot.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                slot.classList.add('hover');
+            });
+
+            slot.addEventListener('dragleave', () => {
+                slot.classList.remove('hover');
+            });
+
+            slot.addEventListener('drop', (e) => {
+                e.preventDefault();
+                slot.classList.remove('hover');
+                if (draggedElement) {
+                    placeCardInSlot(slot, draggedElement);
+                }
+            });
+
+            slot.addEventListener('click', () => {
+                if (slot.classList.contains('filled')) {
+                    const originalCardId = slot.getAttribute('data-card-id');
+                    const originalCard = document.getElementById(originalCardId);
+                    if (originalCard) originalCard.classList.remove('used');
+                    
+                    slot.textContent = "?";
+                    slot.classList.remove('filled');
+                    slot.removeAttribute('data-word');
+                    slot.removeAttribute('data-card-id');
+                    return;
+                }
+
+                if (selectedCard) {
+                    placeCardInSlot(slot, selectedCard);
+                    selectedCard.style.border = "2px solid #b0bec5";
+                    selectedCard.style.backgroundColor = "white";
+                    selectedCard = null;
+                }
+            });
+        });
+    }
+
+    function placeCardInSlot(slot, cardEl) {
+        if (slot.classList.contains('filled')) {
+            const oldCardId = slot.getAttribute('data-card-id');
+            const oldCard = document.getElementById(oldCardId);
+            if (oldCard) oldCard.classList.remove('used');
+        }
+
+        const word = cardEl.getAttribute('data-word');
+        slot.textContent = word;
+        slot.classList.add('filled');
+        slot.setAttribute('data-word', word);
+        slot.setAttribute('data-card-id', cardEl.id);
+        cardEl.classList.add('used');
+    }
+
+    // ボタンの動作を一元管理する関数
+    function handleaction(idx) {
+        const btn = document.getElementById(`action-btn-${idx}`);
+        if (btn.classList.contains('check-btn')) {
+            checkAnswer(idx);
+        } else {
+            goNext(idx);
+        }
+    }
+
+    function checkAnswer(idx) {
+        const q = quizData[idx];
+        const verbSelect = document.getElementById(`verb-${idx}`);
+        const selectedVerb = verbSelect.value;
+
+        if (selectedVerb !== q.correctVerb) {
+            alert("Oops! 動詞の形をもう一度たしかめてみよう！ 主語が She, He のときは s がつくよ！");
+            return;
+        }
+
+        let answers = [];
+        for (let i = 0; i < q.slotsCount; i++) {
+            const slot = document.getElementById(`slot-${idx}-${i}`);
+            const word = slot.getAttribute('data-word');
+            if (!word) {
+                alert("空欄にカードをえらんで入れてね！");
+                return;
+            }
+            answers.push(word);
+        }
+
+        let isCorrect = true;
+        for (let i = 0; i < q.slotsCount; i++) {
+            if (answers[i] !== q.correctAnswers[i]) {
+                isCorrect = false;
+            }
+        }
+
+        if (isCorrect) {
+            showExcellent();
+            score++;
+            document.getElementById('currentScore').textContent = score;
+
+            verbSelect.disabled = true;
+            
+            // ボタンの見た目と役割を「Next」に確実に変身させる（ID不具合を完全回避）
+            const btn = document.getElementById(`action-btn-${idx}`);
+            btn.className = "action-btn next-btn";
+            btn.innerHTML = "Next Step ➔";
+            
+            for (let i = 0; i < q.slotsCount; i++) {
+                const slot = document.getElementById(`slot-${idx}-${i}`);
+                slot.style.color = "var(--primary-green)";
+                slot.style.borderBottomColor = "var(--primary-green)";
+                slot.style.backgroundColor = "#e8f5e9";
+            }
+        } else {
+            alert("カードを入れる場所か、えらんだ言葉がちがうみたい。左側は -ing だよ！");
+        }
+    }
+
+    function showExcellent() {
+        const popup = document.getElementById('excellentPopup');
+        popup.classList.add('show');
+        setTimeout(() => popup.classList.remove('show'), 1200);
+    }
+
+    function updateProgressBar(step) {
+        const percentage = (step / quizData.length) * 100;
+        document.getElementById('progressFill').style.width = percentage + '%';
+    }
+
+    function goNext(current) {
+        document.getElementById(`card-${current}`).classList.remove('active');
+        currentIdx++;
+        
+        if (currentIdx < quizData.length) {
+            document.getElementById(`card-${currentIdx}`).classList.add('active');
+            updateProgressBar(currentIdx);
+        } else {
+            document.getElementById(`quiz-container`).style.display = 'none';
+            updateProgressBar(quizData.length);
+            showResultScreen();
+        }
+    }
+
+    function showResultScreen() {
+        document.getElementById('card-result').classList.add('active');
+        document.getElementById('finalScore').textContent = score;
+        
+        const listContainer = document.getElementById('final-sentence-list');
+        listContainer.innerHTML = quizData.map((q, i) => {
+            let fullSentence = "";
+            if(q.slotsCount === 2) {
+                fullSentence = `${q.subject} ${q.correctVerb} ${q.correctAnswers[0]} ${q.correctAnswers[1]}.`;
+            } else {
+                fullSentence = `${q.subject} ${q.correctVerb} ${q.correctAnswers[0]}.`;
+            }
+
+            return `
+                <div class="sentence-item">
+                    ${i + 1}. ${fullSentence}
+                </div>
+            `;
+        }).join('');
+    }
+
+    window.addEventListener('DOMContentLoaded', initApp);
+</script>
+</body>
+</html>
