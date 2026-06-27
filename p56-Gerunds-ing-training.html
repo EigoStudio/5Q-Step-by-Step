@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>つくろう！動詞の -ing かたちトレーニング</title>
     <link href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&display=swap" rel="stylesheet">
     <style>
@@ -17,9 +17,7 @@
             --base-font: 'Andika', "Hiragino Maru Gothic ProN", "Hiragino Maru Gothic Pro", "Yu Gothic", "Meiryo", sans-serif;
         }
 
-        * {
-            box-sizing: border-box;
-        }
+        * { box-sizing: border-box; }
 
         body {
             font-family: var(--base-font);
@@ -27,255 +25,201 @@
             color: var(--text-dark);
             margin: 0;
             padding: 0;
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            overflow: hidden; /* 縦スクロールを防ぐ */
+            /* 電子黒板のタッチパネルで強制的にスクロールを動かすための設定 */
+            overflow-y: scroll !important;
+            -webkit-overflow-scrolling: touch !important; 
+            min-height: 100vh;
         }
 
         header {
             background-color: var(--header-color);
             color: var(--white);
-            padding: 10px 20px;
+            padding: 5px 15px;
             text-align: center;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            font-size: 1.2rem;
+            font-size: 1rem;
             font-weight: bold;
-            flex-shrink: 0;
         }
 
         .main-wrapper {
-            flex: 1;
+            padding: 10px;
             display: flex;
             justify-content: center;
-            align-items: center;
-            padding: 20px;
+            align-items: flex-start;
         }
 
         .container {
-            width: 95%;
-            max-width: 1100px; /* 大画面・横幅広めに対応 */
-            height: 85vh;
-            max-height: 650px;
+            width: 98%;
+            max-width: 1000px; 
+            /* 縦幅の上限を大幅に下げて、超コンパクトにしました */
+            min-height: 320px;
+            max-height: 440px;
             background: var(--white);
-            padding: 25px;
-            border-radius: 30px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-            border: 6px solid var(--accent-color);
+            padding: 15px;
+            border-radius: 20px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+            border: 5px solid var(--accent-color);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            position: relative;
         }
 
         .step-indicator {
-            font-size: 1.3rem;
+            font-size: 1.1rem;
             color: #555;
             font-weight: bold;
-            text-align: left;
             margin-bottom: 5px;
         }
 
+        /* 解説部分をより低重心に */
         .rule-box {
             background-color: #fff9c4;
             border: 2px dashed #fbc02d;
-            border-radius: 15px;
-            padding: 15px 25px;
-            font-size: 1.4rem;
-            line-height: 1.6;
-            margin-bottom: 10px;
+            border-radius: 10px;
+            padding: 10px 15px;
+            font-size: 1.15rem;
+            line-height: 1.4;
+            margin-bottom: 5px;
             text-align: left;
         }
 
         .rule-box h2 {
-            margin: 0 0 10px 0;
+            margin: 0 0 3px 0;
             color: #e65100;
-            font-size: 1.6rem;
+            font-size: 1.3rem;
         }
 
         .example-word {
             font-weight: bold;
             color: var(--header-color);
-            font-size: 1.8rem;
+            font-size: 1.4rem;
             background: #e3f2fd;
-            padding: 2px 10px;
-            border-radius: 8px;
+            padding: 1px 6px;
+            border-radius: 5px;
         }
 
+        /* 問題エリア：縦に並んでいた要素を、横一列（フラット）にして高さを極限まで削減 */
         .question-area {
             flex: 1;
             display: flex;
-            flex-direction: column;
+            flex-direction: row; 
             justify-content: center;
             align-items: center;
-            gap: 15px;
+            gap: 20px;
+            margin: 10px 0;
         }
 
         .word-row {
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 20px;
+            gap: 10px;
         }
 
         .target-word {
-            font-size: 4.5rem;
+            font-size: 3.5rem;
             font-weight: 700;
             color: var(--header-color);
-            letter-spacing: 1px;
         }
 
         .meaning-text {
-            font-size: 1.6rem;
+            font-size: 1.3rem;
             color: #616161;
             background: #f5f5f5;
-            padding: 5px 15px;
-            border-radius: 20px;
-        }
-
-        .input-row {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-top: 5px;
+            padding: 3px 10px;
+            border-radius: 15px;
         }
 
         .typing-input {
             font-family: 'Andika', sans-serif;
-            font-size: 3rem;
-            width: 350px;
-            padding: 10px;
-            border: 4px solid #b0bec5;
-            border-radius: 15px;
+            font-size: 2.2rem;
+            width: 280px;
+            padding: 5px;
+            border: 3px solid #b0bec5;
+            border-radius: 12px;
             text-align: center;
             outline: none;
-            transition: all 0.2s;
         }
 
-        .typing-input:focus {
-            border-color: var(--header-color);
-            box-shadow: 0 0 10px rgba(21, 101, 192, 0.2);
-        }
+        .typing-input.correct { border-color: var(--success-green); background-color: #e8f5e9; }
+        .typing-input.wrong { border-color: var(--error-red); background-color: #ffebee; animation: shake 0.3s; }
 
-        .typing-input.correct {
-            border-color: var(--success-green);
-            background-color: #e8f5e9;
-        }
-
-        .typing-input.wrong {
-            border-color: var(--error-red);
-            background-color: #ffebee;
-            animation: shake 0.3s;
+        .feedback-message {
+            font-size: 1.5rem;
+            font-weight: bold;
+            width: 200px;
+            text-align: left;
         }
 
         .btn {
             font-family: var(--base-font);
-            font-size: 1.4rem;
+            font-size: 1.1rem;
             font-weight: bold;
-            padding: 12px 35px;
+            padding: 8px 25px;
             border: none;
-            border-radius: 30px;
+            border-radius: 20px;
             cursor: pointer;
-            transition: all 0.2s;
-            box-shadow: 0 4px 0 #bbb;
+            box-shadow: 0 3px 0 #bbb;
         }
 
-        .btn:active {
-            transform: translateY(3px);
-            box-shadow: 0 1px 0 #bbb;
-        }
-
-        .btn-primary {
-            background-color: var(--header-color);
-            color: white;
-            box-shadow: 0 4px 0 #0d47a1;
-        }
-        .btn-primary:active {
-            box-shadow: 0 1px 0 #0d47a1;
-        }
-
-        .btn-accent {
-            background-color: var(--accent-color);
-            color: #333;
-            box-shadow: 0 4px 0 #ff8f00;
-        }
-        .btn-accent:active {
-            box-shadow: 0 1px 0 #ff8f00;
-        }
-
-        .feedback-message {
-            font-size: 2rem;
-            font-weight: bold;
-            height: 2.5rem;
-            text-align: center;
-        }
+        .btn:active { transform: translateY(2px); box-shadow: 0 1px 0 #bbb; }
+        .btn-primary { background-color: var(--header-color); color: white; box-shadow: 0 3px 0 #0d47a1; }
+        .btn-accent { background-color: var(--accent-color); color: #333; box-shadow: 0 3px 0 #ff8f00; }
 
         .success-text { color: var(--success-green); }
         .error-text { color: var(--error-red); }
 
-        .score-display {
-            font-size: 2.2rem;
-            font-weight: bold;
-            margin: 10px 0;
-        }
-        .score-num {
-            font-size: 4rem;
-            color: var(--header-color);
-        }
+        /* 結果画面の省スペース化 */
+        .score-display { font-size: 1.6rem; font-weight: bold; margin: 2px 0; }
+        .score-num { font-size: 2.8rem; color: var(--header-color); }
 
         .result-layout {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 20px;
+            gap: 15px;
             flex: 1;
-            margin-bottom: 15px;
-            min-height: 0;
+            margin-bottom: 5px;
+            height: 200px;
         }
 
         .preview-box {
             background: #fafafa;
             border: 2px solid #cfd8dc;
-            border-radius: 15px;
-            padding: 15px;
+            border-radius: 12px;
+            padding: 10px;
             text-align: left;
             display: flex;
             flex-direction: column;
+            overflow-y: auto;
         }
 
         .preview-title {
             font-weight: bold;
             color: var(--header-color);
-            margin: 0 0 10px 0;
-            font-size: 1.2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            margin: 0 0 5px 0;
+            font-size: 1rem;
         }
 
         .email-textarea {
             width: 100%;
             flex: 1;
-            padding: 10px;
+            padding: 5px;
             border: 1px solid #b0bec5;
-            border-radius: 8px;
+            border-radius: 6px;
             font-family: inherit;
-            font-size: 1rem;
+            font-size: 0.85rem;
             resize: none;
-            background-color: #fff;
-            color: #333;
         }
 
         .bottom-nav {
             display: flex;
             justify-content: flex-end;
             gap: 15px;
-            margin-top: 5px;
+            flex-shrink: 0;
         }
 
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-8px); }
-            75% { transform: translateX(8px); }
+            25% { transform: translateX(-6px); }
+            75% { transform: translateX(6px); }
         }
     </style>
 </head>
@@ -291,16 +235,15 @@
 </div>
 
 <script>
-// データの定義
 const timeline = [
     // --- ルール 1 ---
     {
         type: 'rule',
         title: 'ルール①：そのままの形で <span style="color:#1565c0">-ing</span> をつける！',
-        html: 'ほとんどの動詞は、なにも変えずにうしろにそのまま <span class="example-word">ing</span> をつければOK！<br>(例) jump &rarr; <span class="example-word">jumping</span> / walk &rarr; <span class="example-word">walking</span>',
+        html: 'ほとんどの動詞は、なにも変えずにそのまま <span class="example-word">ing</span> をつければOK！ (例) jump &rarr; <span class="example-word">jumping</span>',
         bgWord: 'jump'
     },
-    { type: 'question', word: 'play', meaning: 'あそぶ・スポーツをする', correct: 'playing', ruleId: 1 },
+    { type: 'question', word: 'play', meaning: 'あそぶ', correct: 'playing', ruleId: 1 },
     { type: 'question', word: 'read', meaning: 'よむ', correct: 'reading', ruleId: 1 },
     { type: 'question', word: 'cook', meaning: 'りょうりする', correct: 'cooking', ruleId: 1 },
 
@@ -308,7 +251,7 @@ const timeline = [
     {
         type: 'rule',
         title: 'ルール②：最後が <span style="color:#d32f2f">e</span> で終わる言葉は、<span style="color:#d32f2f">e</span> を消して <span style="color:#1565c0">-ing</span>！',
-        html: 'さいごが <span class="example-word">e</span> でおわっている動詞は、その <span style="color:red; font-weight:bold;">eをバイバイ！して消してから</span> <span class="example-word">ing</span> をつけます。<br>(例) make &rarr; <span class="example-word">making</span> (eがなくなっているよ！)',
+        html: 'さいごが <span class="example-word">e</span> でおわっている動詞は、<span style="color:red; font-weight:bold;">eを消してから</span> <span class="example-word">ing</span> をつけます。 (例) make &rarr; <span class="example-word">making</span>',
         bgWord: 'make'
     },
     { type: 'question', word: 'write', meaning: 'かく', correct: 'writing', ruleId: 2 },
@@ -319,7 +262,7 @@ const timeline = [
     {
         type: 'rule',
         title: 'ルール③：最後が「みじかい母音 ＋ 子音」は、最後の文字をダブルにする！',
-        html: '「ポンッ」と短く発音する母音（a, i, u, e, o）のうしろに子音があるときは、<span style="color:red; font-weight:bold;">さいごの文字をもう1つ書いてから</span> <span class="example-word">ing</span> をつけます！<br>(例) run &rarr; <span class="example-word">running</span> (nが2つあるよ！)',
+        html: '短く発音する母音のうしろに子音があるときは、<span style="color:red; font-weight:bold;">さいごの文字をもう1つ書いてから</span> <span class="example-word">ing</span>！ (例) run &rarr; <span class="example-word">running</span>',
         bgWord: 'run'
     },
     { type: 'question', word: 'swim', meaning: 'およぐ', correct: 'swimming', ruleId: 3 },
@@ -330,18 +273,18 @@ const timeline = [
     {
         type: 'rule',
         title: 'ルール④：さいごが <span style="color:#d32f2f">w, x, y</span> のときは、重ねなくてOK！',
-        html: 'ルール③みたいに短く発音する言葉でも、さいごの文字が <span class="example-word">w</span>, <span class="example-word">x</span>, <span class="example-word">y</span> のときは、<span style="color:red; font-weight:bold;">かさねずにそのまま</span> <span class="example-word">ing</span> をつけて大丈夫！<br>(例) draw &rarr; <span class="example-word">drawing</span> (wはかさねないよ！)', // playからdrawへ変更
+        html: '短く発音する言葉でも、さいごの文字が <span class="example-word">w</span>, <span class="example-word">x</span>, <span class="example-word">y</span> のときは、<span style="color:red; font-weight:bold;">かさねずにそのまま</span> <span class="example-word">ing</span>！ (例) draw &rarr; <span class="example-word">drawing</span>',
         bgWord: 'draw'
     },
     { type: 'question', word: 'snow', meaning: 'ゆきがふる', correct: 'snowing', ruleId: 4 },
-    { type: 'question', word: 'fix', meaning: 'しゅうりする・なおす', correct: 'fixing', ruleId: 4 },
+    { type: 'question', word: 'fix', meaning: 'なおす', correct: 'fixing', ruleId: 4 },
     { type: 'question', word: 'buy', meaning: 'かう', correct: 'buying', ruleId: 4 },
 
-    // --- 最終テスト (ミックス問題) ---
+    // --- 最終テスト ---
     {
         type: 'rule',
         title: 'さいごのしあげ：ミックス総合テスト！',
-        html: 'これまでに習った4つのルールを思い出しながら、まざった問題にチャレンジしよう！<br>たっぷり全12問、一発正解をめざしてがんばろう！',
+        html: 'これまでに習った4つのルールを思い出しながらチャレンジしよう！全12問！',
         bgWord: 'Ready?'
     },
     { type: 'question', word: 'sing', meaning: 'うたう', correct: 'singing', isTest: true },
@@ -351,7 +294,7 @@ const timeline = [
     { type: 'question', word: 'come', meaning: 'くる', correct: 'coming', isTest: true },
     { type: 'question', word: 'run', meaning: 'はしる', correct: 'running', isTest: true },
     { type: 'question', word: 'clean', meaning: 'そうじする', correct: 'cleaning', isTest: true },
-    { type: 'question', word: 'take', meaning: 'とる・（時間が）かかる', correct: 'taking', isTest: true },
+    { type: 'question', word: 'take', meaning: 'とる', correct: 'taking', isTest: true },
     { type: 'question', word: 'stop', meaning: 'とまる', correct: 'stopping', isTest: true },
     { type: 'question', word: 'show', meaning: 'みせる', correct: 'showing', isTest: true },
     { type: 'question', word: 'skate', meaning: 'スケートをする', correct: 'skating', isTest: true },
@@ -388,18 +331,13 @@ function renderStep() {
                     <div>${current.html}</div>
                 </div>
             </div>
-            <div class="question-area">
-                <div class="word-row">
-                    <span class="target-word" style="font-size: 5.5rem;">${current.bgWord}</span>
-                </div>
-            </div>
-            <div class="bottom-nav">
+            <div class="bottom-nav" style="margin-top: 10px;">
                 <button class="btn btn-accent" onclick="nextStep()">ルールがわかった！進む &rarr;</button>
             </div>
         `;
     } else if (current.type === 'question') {
         isFirstTry = true;
-        const modeText = current.isTest ? "<span style='color: #e65100;'>【ファイナルテスト】</span>" : `練習(ルール ${current.ruleId})`;
+        const modeText = current.isTest ? "【テスト】" : `練習(ルール${current.ruleId})`;
         
         container.innerHTML = `
             <div>
@@ -413,8 +351,8 @@ function renderStep() {
                     <span class="target-word" id="q-word">${current.word}</span>
                     <span class="meaning-text">${current.meaning}</span>
                 </div>
-                <div class="input-row">
-                    <input type="text" class="typing-input" id="typing-ans" autocomplete="off" placeholder="-ingのかたちを入力" autofocus>
+                <div>
+                    <input type="text" class="typing-input" id="typing-ans" autocomplete="off" placeholder="入力してね" autofocus>
                 </div>
                 <div class="feedback-message" id="feedback"></div>
             </div>
@@ -424,17 +362,12 @@ function renderStep() {
         `;
         
         document.getElementById('typing-ans').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                checkAnswer();
-            }
+            if (e.key === 'Enter') { checkAnswer(); }
         });
     }
 }
 
-function nextStep() {
-    currentIndex++;
-    renderStep();
-}
+function nextStep() { currentIndex++; renderStep(); }
 
 function checkAnswer() {
     const current = timeline[currentIndex];
@@ -446,45 +379,30 @@ function checkAnswer() {
 
     if (userAnswer === current.correct) {
         inputEl.className = "typing-input correct";
-        feedbackEl.innerHTML = '<span class="success-text">Excellent! ✨ せいかい！</span>';
-
-        if (current.isTest && isFirstTry) {
-            firstTryCorrectCount++;
-        }
-
-        setTimeout(() => {
-            currentIndex++;
-            renderStep();
-        }, 1200);
+        feedbackEl.innerHTML = '<span class="success-text">Excellent! ✨</span>';
+        if (current.isTest && isFirstTry) { firstTryCorrectCount++; }
+        setTimeout(() => { currentIndex++; renderStep(); }, 1000);
     } else {
         inputEl.className = "typing-input wrong";
-        feedbackEl.innerHTML = '<span class="error-text">Try again! もういちど考えてみよう！</span>';
-        
+        feedbackEl.innerHTML = '<span class="error-text">Try again!</span>';
         if (isFirstTry) {
             const modeName = current.isTest ? "テスト" : `ルール${current.ruleId}`;
             mistakes.push({ word: current.word, correct: current.correct, mode: modeName });
             isFirstTry = false;
         }
-
-        setTimeout(() => {
-            inputEl.classList.remove('wrong');
-        }, 300);
+        setTimeout(() => { inputEl.classList.remove('wrong'); }, 300);
     }
 }
 
 function generateEmailData() {
     const teacherEmail = "tamaki@eigostudio-stepforward.com";
     const subject = "【動詞のing形】トレーニング結果報告";
-    
     let cleanMistakes = "";
     if (mistakes.length > 0) {
         cleanMistakes = mistakes.map(m => "・" + m.word + " (ただしい形: " + m.correct + " / " + m.mode + ")").join("\n");
     }
-    
     let mistakeText = mistakes.length > 0 ? "\n\n■にがて・まちがえた単語リスト:\n" + cleanMistakes : "\n\nすべての練習・テストで一度も間違えずにクリアしました！カンペキです！";
-    
     const body = "Tamaki先生へ\n\n「動詞の -ing かたちトレーニング」がおわりました！\n\n【ファイナルテストの結果】\n" + testQuestionCount + "問中 " + firstTryCorrectCount + " 問を一発正解できたよ！" + mistakeText + "\n\nこれからも英語の勉強をがんばります！";
-    
     return { teacherEmail, subject, body };
 }
 
@@ -495,48 +413,35 @@ function showResult() {
     let mistakeHtml = '';
     if (mistakes.length > 0) {
         mistakeHtml = mistakes.map(m => `
-            <div style="background:white; padding:8px 12px; border-radius:8px; border-left:4px solid var(--error-red); font-size:1.05rem; margin-bottom:8px;">
-                <strong>${m.word}</strong> &rarr; <span style="color:var(--success-green); font-weight:bold;">${m.correct}</span> (${m.mode})
+            <div style="background:white; padding:5px 10px; border-radius:6px; border-left:4px solid var(--error-red); font-size:0.95rem; margin-bottom:5px;">
+                <strong>${m.word}</strong> &rarr; <span style="color:var(--success-green); font-weight:bold;">${m.correct}</span>
             </div>
         `).join('');
     } else {
-        mistakeHtml = `
-            <div style="background:#e8f5e9; padding:15px; border-radius:10px; border:1px solid #a5d6a7; color:var(--success-green); text-align:center; font-weight:bold; font-size:1.2rem;">
-                🎉 すばらしい！ぜんぶ一発正解！
-            </div>
-        `;
+        mistakeHtml = `<div style="background:#e8f5e9; padding:10px; border-radius:8px; color:var(--success-green); text-align:center; font-weight:bold;">🎉 ぜんぶ一発正解！</div>`;
     }
 
     container.innerHTML = `
-        <div style="text-align: center; width: 100%; display: flex; flex-direction: column; height: 100%;">
-            <h2 style="font-size: 2rem; margin: 0 0 5px 0; color: var(--header-color);">✨ トレーニング修了！お疲れ様でした ✨</h2>
+        <div style="text-align: center; width: 100%; display: flex; flex-direction: column;">
+            <h2 style="font-size: 1.5rem; margin: 0; color: var(--header-color);">✨ トレーニング修了！お疲れ様でした ✨</h2>
             <div class="score-display">
                 ファイナルテスト結果： <span class="score-num">${firstTryCorrectCount}</span> / ${testQuestionCount} 問 一発正解！
             </div>
             
             <div class="result-layout">
-                <div class="preview-box" style="overflow-y: auto;">
-                    <p class="preview-title" style="color:#c62828;">▼ もういちど 確認（かくにん）しよう！</p>
-                    <div style="flex:1;">
-                        ${mistakeHtml}
-                    </div>
-                </div>
-                
                 <div class="preview-box">
-                    <p class="preview-title">
-                        <span>✉ Tamaki先生へ送る内容</span>
-                        <span style="font-size:0.8rem; color:#666; font-weight:normal;">(下のボタンで自動送信できるよ)</span>
-                    </p>
-                    <div style="font-size:0.9rem; margin-bottom:5px; border-bottom:1px solid #ddd; padding-bottom:5px; text-align:left;">
-                        <strong>件名:</strong> ${emailData.subject}
-                    </div>
+                    <p class="preview-title" style="color:#c62828; margin:0 0 5px 0;">▼ もういちど 確認しよう！</p>
+                    <div>${mistakeHtml}</div>
+                </div>
+                <div class="preview-box">
+                    <p class="preview-title" style="margin:0 0 5px 0;">✉ 報告メールのプレビュー</p>
                     <textarea class="email-textarea" readonly>${emailData.body}</textarea>
                 </div>
             </div>
 
-            <div style="display: flex; gap: 15px; justify-content: center; flex-shrink: 0;">
-                <button class="btn btn-primary" style="padding: 12px 40px;" onclick="sendEmail()">Tamaki先生に報告する ✉</button>
-                <button class="btn" style="background-color: #90a4ae; color: white; padding: 12px 40px;" onclick="resetQuiz()">もう一度挑戦する</button>
+            <div style="display: flex; gap: 15px; justify-content: center; margin-top: 5px;">
+                <button class="btn btn-primary" onclick="sendEmail()">Tamaki先生に報告する ✉</button>
+                <button class="btn" style="background-color: #90a4ae; color: white;" onclick="resetQuiz()">もう一度挑戦</button>
             </div>
         </div>
     `;
@@ -544,16 +449,10 @@ function showResult() {
 
 function sendEmail() {
     const data = generateEmailData();
-    const mailtoUrl = "mailto:" + data.teacherEmail + "?subject=" + encodeURIComponent(data.subject) + "&body=" + encodeURIComponent(data.body);
-    window.location.href = mailtoUrl;
+    window.location.href = "mailto:" + data.teacherEmail + "?subject=" + encodeURIComponent(data.subject) + "&body=" + encodeURIComponent(data.body);
 }
 
-function resetQuiz() {
-    currentIndex = 0;
-    firstTryCorrectCount = 0;
-    mistakes = [];
-    renderStep();
-}
+function resetQuiz() { currentIndex = 0; firstTryCorrectCount = 0; mistakes = []; renderStep(); }
 
 window.onload = renderStep;
 </script>
