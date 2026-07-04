@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Step by Step Towards EIKEN Grade 5 p60 - More Verbs 3</title>
+    <link href="https://fonts.googleapis.com/css2?family=Andika&family=Kosugi+Maru&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f4f6f0; /* 全体の背景（優しい薄いグリーン・ホワイト系） */
+            --main-text: #2b2b2b; /* メインの文字（ダークグレー） */
+            --box-bg: #ffffff; /* 問題カードの白 */
+            --accent-yellow: #fff3cd; /* ヒントなどの薄いイエロー */
+            --btn-green: #e2f0d9; /* 選択肢の薄いグリーン */
+            --btn-hover: #c5e0b4; /* 選択肢ホバー */
+            --brown-text: #7f6000; /* ブラウンの文字 */
+        }
+
+        body {
+            font-family: 'Andika', 'Kosugi Maru', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--main-text);
+            margin: 0;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: var(--box-bg);
+            border-radius: 24px;
+            padding: 35px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.05);
+            border: 4px solid #d9e1f2;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            font-size: 22px;
+            color: var(--brown-text);
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 25px;
+            border-bottom: 2px dashed var(--brown-text);
+            padding-bottom: 12px;
+        }
+
+        /* 日本語と英語のバランス調整 */
+        .ja-text {
+            font-size: 19px;
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        .en-text {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1f4e79;
+            margin: 30px 0;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+
+        .blank {
+            color: #ffc000;
+            border-bottom: 3px solid #ffc000;
+            padding: 0 15px;
+        }
+
+        /* シンプルなアイコン風イラストのエリア */
+        .icon-container {
+            font-size: 60px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        /* 選択肢ボタンエリア：横並び */
+        .choices {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 25px;
+        }
+
+        .btn {
+            background-color: var(--btn-green);
+            border: 2px solid #a8d08d;
+            border-radius: 14px;
+            padding: 14px 30px;
+            font-size: 24px;
+            font-family: 'Andika', sans-serif;
+            font-weight: bold;
+            color: var(--main-text);
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+            flex: 1;
+            min-width: 200px;
+            max-width: 280px;
+        }
+
+        .btn:hover {
+            background-color: var(--btn-hover);
+            transform: translateY(-2px);
+        }
+
+        /* フィードバックエリア */
+        .feedback {
+            margin-top: 25px;
+            padding: 20px;
+            border-radius: 14px;
+            display: none;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .correct {
+            background-color: #d4edda;
+            color: #155724;
+            border: 2px solid #c3e6cb;
+        }
+
+        .incorrect {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 2px solid #f5c6cb;
+        }
+
+        .explanation {
+            font-size: 17px;
+            font-weight: normal;
+            margin-top: 12px;
+            color: var(--main-text);
+            line-height: 1.6;
+        }
+
+        /* 次へボタン */
+        .next-btn {
+            display: none;
+            margin: 25px auto 0 auto;
+            background-color: #fff2cc;
+            border: 2px solid #ffd966;
+            color: var(--brown-text);
+            padding: 12px 40px;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 25px;
+            cursor: pointer;
+        }
+
+        .next-btn:hover {
+            background-color: #ffe599;
+        }
+
+        /* 結果画面 */
+        .result-screen {
+            display: none;
+            text-align: center;
+        }
+
+        .result-title {
+            font-size: 32px;
+            color: var(--brown-text);
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div id="quiz-screen">
+        <h1 id="title">Step by Step Towards EIKEN Grade 5 p60 - More Verbs 3</h1>
+        
+        <div class="icon-container" id="icon">🍔</div>
+
+        <div class="ja-text" id="question-ja">
+            おなかがペコペコ！ハンバーガーが「欲しい」なぁ。<br>
+            何かを「欲しい！」と思ったときに使う言葉を選んで、文を完成させよう！
+        </div>
+
+        <div class="en-text" id="question-en">
+            I <span class="blank" id="blank-word">？</span> a hamburger.
+        </div>
+
+        <div class="choices" id="choices-container">
+            </div>
+
+        <div class="feedback" id="feedback-box">
+            <span id="feedback-title"></span>
+            <div class="explanation" id="explanation-text"></div>
+        </div>
+
+        <button class="next-btn" id="next-button" onclick="nextQuestion()">NEXT ➔</button>
+    </div>
+
+    <div class="result-screen" id="result-screen">
+        <div class="result-title">🎉 Perfect! Excellent job! 🎉</div>
+        <div class="ja-text" style="text-align: center; font-size: 22px;">You did it! You are super awesome!</div>
+        <button class="next-btn" style="display:inline-block; margin-top:25px;" onclick="resetQuiz()">TRY AGAIN</button>
+    </div>
+</div>
+
+<script>
+const quizData = [
+    {
+        icon: "🍔",
+        ja: "おなかがペコペコ！ハンバーガーが「欲しい」なぁ。<br>何かを「欲しい！」と思ったときに使う言葉を選んで、文を完成させよう！",
+        en: "I <span class='blank'>？</span> a hamburger.",
+        choices: ["want", "know", "ask"],
+        answer: "want",
+        info: "「〜が欲しい」は want を使います。I want a hamburger. で「ハンバーガーが欲しいな」になります。"
+    },
+    {
+        icon: "☔",
+        ja: "突然の雨！かさが「必要」になったぞ。なくては困るものがあるときの言葉を選ぼう。",
+        en: "I <span class='blank'>？</span> an umbrella.",
+        choices: ["see", "need", "play"],
+        answer: "need",
+        info: "「〜が必要だ、なくては困る」というときは need を使います。I need an umbrella. で「かさが必要だよ」となります。"
+    },
+    {
+        icon: "💡",
+        ja: "ピコーン！頭の中で「いいアイディア」を思いついたぞ！<br>「いい考えがあるんだ！」というときの決まり文句を完成させよう。",
+        en: "I <span class='blank'>？</span>.",
+        choices: ["have a good idea", "take a shower", "get a present"],
+        answer: "have a good idea",
+        info: "have a good idea で「いい考え（アイディア）があるぞ！」というひらめきのフレーズになります。"
+    },
+    {
+        icon: "🎁",
+        ja: "お誕生日に、ずっと欲しかったプレゼントを「もらった」よ！<br>何かを手に入れたり、もらったりしたときの言葉を選ぼう。",
+        en: "I <span class='blank'>？</span> a present.",
+        choices: ["need", "want", "get"],
+        answer: "get",
+        info: "何かを「もらう、手に入れる」ときは get を使います。I get a present. で「プレゼントをもらう」になります。"
+    },
+    {
+        icon: "🚿",
+        ja: "外でいっぱい遊んで汗をかいたから、サッパリしよう！<br>「シャワーを浴びる」というお決まりのフレーズを選ぼう。",
+        en: "I <span class='blank'>？</span> every night.",
+        choices: ["play a video game", "take a shower", "have a good idea"],
+        answer: "take a shower",
+        info: "take a shower で「シャワーを浴びる」になります。I take a shower every night. で「毎晩シャワーを浴びます」という意味です。"
+    },
+    {
+        icon: "🎮",
+        ja: "友だちと一緒に、お家でピコピコ「テレビゲームをしよう」！<br>空欄に入る楽しいフレーズはどれかな？",
+        en: "Let's <span class='blank'>？</span>!",
+        choices: ["play a video game", "take a shower", "ask a question"],
+        answer: "play a video game",
+        info: "play a video game で「テレビゲームをする」になります。ちなみに play は、ゲームだけでなくて、テニスなどのスポーツや、ピアノなどの楽器をひくときにも大活躍する言葉だよ！"
+    },
+    {
+        icon: "👧",
+        ja: "「あ！あそこにいる女の子、わたしの友だちだよ！」<br>だれかを「知っている、知り合いだ」というときに使う言葉を選ぼう。",
+        en: "I <span class='blank'>？</span> that girl.",
+        choices: ["see", "know", "get"],
+        answer: "know",
+        info: "人や名前を「知っている」というときは know を使います。I know that girl. で「私はあの女の子を知っているよ」になります。最初の「k」は声に出さないよ。"
+    },
+    {
+        icon: "🍜",
+        ja: "いま、まさに目の前でおいしそうにお昼ごはんを「食べている」ところだよ！<br>「〜している最中（しんこうけい）」として、ただしく言えているのはどっち？",
+        en: "おひるごはんを たべているよ！",
+        choices: ["I am having lunch.", "I am having a dog."],
+        answer: "I am having lunch.",
+        info: "haveに「食べる」という意味があるときは、「いま食べている最中だよ！」を表す「〜ing」の形に変えることができます！「持っている（飼っている）」のときは〜ingにできないルールがあります。"
+    },
+    {
+        icon: "👋",
+        ja: "「また明日ね！」と友だちにバイバイするよ。<br>see を使って「（明日）会おうね」という意味になる、おなじみのフレーズを選ぼう！",
+        en: "またあしたね！",
+        choices: ["I see a bird in the tree.", "See you tomorrow!"],
+        answer: "See you tomorrow!",
+        info: "see は「見る」だけでなく、人と「会う」という意味もあります。See you tomorrow! で「また明日ね！」という定番のあいさつになります。"
+    },
+    {
+        icon: "🙋",
+        ja: "先生に「しつもん」があります！<br>「質問をする」という動きを表す言葉を選んで、文を完成させよう。",
+        en: "Can I <span class='blank'>？</span> a question?",
+        choices: ["ask", "know", "have"],
+        answer: "ask",
+        info: "ask a question で「質問をする」というお決まりのセットになります。Can I ask a question? で「質問してもいいですか？」という意味です。"
+    }
+];
+
+let currentIdx = 0;
+
+function loadQuestion() {
+    const data = quizData[currentIdx];
+    document.getElementById("icon").innerHTML = data.icon;
+    document.getElementById("question-ja").innerHTML = data.ja;
+    document.getElementById("question-en").innerHTML = data.en;
+    
+    const choicesContainer = document.getElementById("choices-container");
+    choicesContainer.innerHTML = "";
+    
+    data.choices.forEach(choice => {
+        const button = document.createElement("button");
+        button.className = "btn";
+        button.innerText = choice;
+        button.onclick = () => checkAnswer(choice, button);
+        choicesContainer.appendChild(button);
+    });
+
+    document.getElementById("feedback-box").style.display = "none";
+    document.getElementById("next-button").style.display = "none";
+}
+
+function checkAnswer(selected, clickedButton) {
+    const data = quizData[currentIdx];
+    const feedbackBox = document.getElementById("feedback-box");
+    const feedbackTitle = document.getElementById("feedback-title");
+    const explanationText = document.getElementById("explanation-text");
+    
+    const buttons = document.querySelectorAll(".btn");
+    buttons.forEach(btn => btn.disabled = true);
+
+    if (selected === data.answer) {
+        feedbackBox.className = "feedback correct";
+        // ランダムな正解メッセージ（英語）
+        const goodWords = ["⭕ Good job!", "⭕ Great!", "⭕ Wonderful!", "⭕ You got it!"];
+        feedbackTitle.innerText = goodWords[Math.floor(Math.random() * goodWords.length)];
+        
+        if(data.en.includes("？")) {
+            document.getElementById("question-en").innerHTML = data.en.replace("？", `<span style="color:#2e7d32">${data.answer}</span>`);
+        }
+    } else {
+        feedbackBox.className = "feedback incorrect";
+        feedbackTitle.innerText = "❌ Oops! Try again!";
+    }
+
+    explanationText.innerHTML = data.info;
+    feedbackBox.style.display = "block";
+    document.getElementById("next-button").style.display = "block";
+}
+
+function nextQuestion() {
+    currentIdx++;
+    if (currentIdx < quizData.length) {
+        loadQuestion();
+    } else {
+        document.getElementById("quiz-screen").style.display = "none";
+        document.getElementById("result-screen").style.display = "block";
+    }
+}
+
+function resetQuiz() {
+    currentIdx = 0;
+    document.getElementById("quiz-screen").style.display = "block";
+    document.getElementById("result-screen").style.display = "none";
+    loadQuestion();
+}
+
+loadQuestion();
+</script>
+
+</body>
+</html>
