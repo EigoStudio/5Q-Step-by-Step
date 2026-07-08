@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Step by Step Towards EIKEN Grade 5 p58 - More Verbs 2</title>
+    <title>Step by Step Towards EIKEN Grade 5 p58 - Present Continuous</title>
     <link href="https://fonts.googleapis.com/css2?family=Andika&family=Kosugi+Maru&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -175,21 +175,21 @@
 
 <div class="container">
     <div id="quiz-screen">
-        <h1 id="title">Step by Step Towards EIKEN Grade 5 p58 - More Verbs 2</h1>
+        <h1 id="title">Step by Step Towards EIKEN Grade 5 p58 - いま〜しているところ（現在進行形）</h1>
         
         <div class="icon-container" id="icon">🧹</div>
 
         <div class="ja-text" id="question-ja">
             お部屋がちょっと散らかっちゃった。<br>
-            「部屋をきれいにおそうじする」という言葉を選ぼう！
+            「部屋をきれいにおそうじしているところだよ」という言葉を選ぼう！
         </div>
 
         <div class="en-text" id="question-en">
-            I <span class="blank" id="blank-word">？</span> the room.
+            I am <span class="blank" id="blank-word">？</span> the room.
         </div>
 
         <div class="choices" id="choices-container">
-            </div>
+        </div>
 
         <div class="feedback" id="feedback-box">
             <span id="feedback-title"></span>
@@ -210,75 +210,75 @@
 const quizData = [
     {
         icon: "🧹",
-        ja: "お部屋がちょっと散らかっちゃった。<br>「部屋をきれいにおそうじする」という言葉を選ぼう！",
-        en: "I <span class='blank'>？</span> the room.",
-        choices: ["clean", "make", "buy"],
-        answer: "clean",
-        info: "「そうじする、きれいにする」は clean を使います。I clean the room. で「私は部屋をそうじします」になります。"
+        ja: "お部屋がちょっと散らかっちゃった。<br>「部屋をきれいにおそうじしているところだよ」という言葉を選ぼう！",
+        en: "I am <span class='blank'>？</span> the room.",
+        choices: ["cleaning", "making", "buying"],
+        answer: "cleaning",
+        info: "「そうじしている」は clean に ing をつけた <b>cleaning</b> を使います。am ＋ ing で「いま〜しているところ」という意味になるよ！"
     },
     {
         icon: "🌧️",
-        ja: "窓の外を見たら、あめの音がザーザー！<br>英語で「雨がふっている」っていうとき、さいしょに置く主語（しゅご）はどれかな？",
+        ja: "窓の外を見たら、あめの音がザーザー！<br>英語で「いま雨がふっているよ」っていうとき、さいしょに置く主語（しゅご）はどれかな？",
         en: "<span class='blank'>？</span> is raining.",
         choices: ["He", "It", "She"],
         answer: "It",
-        info: "英語で「雨だよ」「晴れだよ」のように、お天気のハナシをするときは、いつも It を主語にする特別なルールがあります！"
+        info: "英語で「雨がふっている」「晴れている」のようにお天気のハナシをするときは、いつも <b>It</b> を主語にする特別なルールがあります！"
     },
     {
         icon: "🍪",
-        ja: "キッチンからいいにおい！オーブンでサクサクのクッキーを「作っている」ところだよ。<br>「〜を作る」という言葉を選んでね。",
-        en: "I <span class='blank'>？</span> cookies.",
-        choices: ["wear", "help", "make"],
-        answer: "make",
-        info: "「（何かを）作る」というときは make を使います。I make cookies. のように、後ろに「何を作っているのか（クッキー）」をはっきり書くのが英語のコツです。"
+        ja: "キッチンからいいにおい！オーブンでサクサクのクッキーを「作っているところ」だよ。<br>空欄に入る言葉を選んでね。",
+        en: "I am <span class='blank'>？</span> cookies.",
+        choices: ["wearing", "helping", "making"],
+        answer: "making",
+        info: "make（作る）に ing をつけるときは、さいごの e を消して <b>making</b> にするよ。I am making cookies. で「わたしはクッキーを作っているところです」になります。"
     },
    {
         icon: "👒",
-        ja: "今日はお外がまぶしいから、かわいい帽子を「かぶって」お出かけしよう！<br>「身につける」という、とっても便利な言葉はどれ？",
-        en: "I <span class='blank'>？</span> a hat.",
-        choices: ["wear", "do", "water"],
-        answer: "wear",
-        info: "wear はとってもべんり！服を「着る」だけでなく、帽子を「かぶる」、スカートを「はく」、メガネを「かける」、イヤリングを「耳につける」ときも、ぜんぶ wear ひとつで言えちゃいます！"
+        ja: "今日はお外がまぶしいから、かわいい帽子を「かぶっている」よ！<br>「身につけているところ」という言葉はどれ？",
+        en: "I am <span class='blank'>？</span> a hat.",
+        choices: ["wearing", "doing", "watering"],
+        answer: "wearing",
+        info: "wear（身につける）に ing をつけた <b>wearing</b> を使います。服を「着ている」、帽子を「かぶっている」、メガネを「かけている」ときも、ぜんぶこれ一つでOK！"
     },
     {
         icon: "🌸",
-        ja: "お庭のお花たちが、のどがかわいたって言っているよ。<br>お花に「お水をあげる」というときの言葉を選ぼう！",
-        en: "I <span class='blank'>？</span> the flowers.",
-        choices: ["clean", "water", "buy"],
-        answer: "water",
-        info: "water は「水」という意味だけでなく、じつは「水をあげる」という動きの言葉（動詞）にもなるんだよ！"
+        ja: "お庭のお花たちが、のどがかわいたって言っているよ。<br>お花に「お水をあげているところ」という言葉を選ぼう！",
+        en: "I am <span class='blank'>？</span> the flowers.",
+        choices: ["cleaning", "watering", "buying"],
+        answer: "watering",
+        info: "water は「水」だけでなく「お水をあげる」という動きの言葉にもなります。ing をつけて <b>watering</b> にすると「お水をあげているところ」になります！"
     },
     {
         icon: "✏️",
-        ja: "学校から帰ってきたら、夕ごはんの前に「しゅくだい」をやっちゃおう！<br>「（自分の）宿題をやる」というお決まりのセットを選んでね。",
-        en: "I <span class='blank'>？</span>.",
-        choices: ["do my homework", "take a bath", "help an old woman"],
-        answer: "do my homework",
-        info: "「宿題をする」は do my homework と言います。英語では、だれの宿題かをはっきりさせるために「my（わたしの）」を間に入れるのがお約束です。"
+        ja: "学校から帰ってきたら、夕ごはんの前に「しゅくだいをやっているところ」だよ！<br>あてはまるフレーズを選んでね。",
+        en: "I am <span class='blank'>？</span>.",
+        choices: ["doing my homework", "taking a bath", "helping an old woman"],
+        answer: "doing my homework",
+        info: "「宿題をしているところ」は do に ing をつけて <b>doing my homework</b> と言います。am doing で「いまやっている真っ最中！」というニュアンスが出せます。"
     },
     {
         icon: "🛁",
-        ja: "いっぱい遊んで、お風呂で足をのばしてリラックス！<br>「お風呂に入る（湯ぶねにつかる）」というお決まりのフレーズはどれかな？",
-        en: "I <span class='blank'>？</span> every night.",
-        choices: ["make cookies", "take a bath", "clean the room"],
-        answer: "take a bath",
-        info: "take a bath で「お風呂（湯ぶね）に入る」という意味になります。前回の「シャワーを浴びる（take a shower）」のきょうだいだね！"
+        ja: "いっぱい遊んで、お風呂で足をのばしてリラックス！<br>「いまお風呂に入っている（湯ぶねにつかっている）ところだよ」というフレーズはどれかな？",
+        en: "I am <span class='blank'>？</span> now.",
+        choices: ["making cookies", "taking a bath", "cleaning the room"],
+        answer: "taking a bath",
+        info: "take に ing をつけるときは e を消して <b>taking</b> にします。<b>taking a bath</b> now で「いまお風呂に入っているところです」という意味になります。"
     },
     {
-        icon: "👛",
-        ja: "お買い物にやってきたよ！お店で可愛いお財布（さいふ）を「買う」ことにしたよ。<br>「〜を買う」という言葉はどれかな？",
-        en: "I <span class='blank'>？</span> a purse.",
-        choices: ["buy", "wear", "it"],
-        answer: "buy",
-        info: "「買う」は buy を使います。I buy a purse. のように、後ろに「何を買ったのか（お財布）」をバシッと言いましょう。"
+        icon: "👜",
+        ja: "お買い物にやってきたよ！お店で可愛いハンドバッグを「買っているところ」だよ。<br>空欄に入る言葉はどれかな？",
+        en: "I am <span class='blank'>？</span> a purse.",
+        choices: ["buying", "wearing", "helping"],
+        answer: "buying",
+        info: "「買っているところ」は buy に ing をつけた <b>buying</b> を使います。アメリカなどではハンドバッグや肩掛けカバンのことを <b>purse</b> と言うんだよ（お財布は wallet）。I am buying a purse. で「わたしはハンドバッグを買っているところです」となります。"
     },
     {
         icon: "👵",
-        ja: "お荷物がいっぱいで大変そうなおばあちゃんがいるよ。優しく「てつだって（たすけて）」あげよう！<br>空欄に入る言葉はどれ？",
-        en: "I <span class='blank'>？</span> an old woman.",
-        choices: ["make", "help", "water"],
-        answer: "help",
-        info: "「てつだう、助ける」は help を使います。I help an old woman. のように、だれを助けたのかを後ろにくっつけて使います。"
+        ja: "お荷物がいっぱいで大変そうなおばあちゃんがいるよ。優しく「てつだっているところ」だよ！<br>空欄に入る言葉を選ぼう。",
+        en: "I am <span class='blank'>？</span> an old woman.",
+        choices: ["making", "helping", "watering"],
+        answer: "helping",
+        info: "「てつだっている、助けている」は help に ing をつけた <b>helping</b> を使います。だれを助けているのか（an old woman）を後ろにくっつけよう！"
     }
 ];
 
