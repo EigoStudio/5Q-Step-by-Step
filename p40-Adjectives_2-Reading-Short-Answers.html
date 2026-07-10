@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EIKEN Grade 5: Adjectives & Short Answers - p40</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&family=Zen+Maru+Gothic:wght@500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-green: #2e7d32;
+            --accent-brown: #8d6e63;
+            --accent-yellow: #fdd835;
+            --bg-color: #f4f6f4;
+            --card-bg: #ffffff;
+            --text-color: #3e2723;
+            --gray-border: #cfd8dc;
+            --gray-light: #f5f7f8;
+            --error-red: #ff5252;
+        }
+
+        * { 
+            box-sizing: border-box; 
+            font-family: "Andika", "Zen Maru Gothic", sans-serif; 
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--bg-color), #e8ebe8);
+            color: var(--text-color);
+            margin: 0; 
+            padding: 20px;
+            display: flex; 
+            flex-direction: column; 
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container { 
+            max-width: 800px; 
+            width: 100%; 
+        }
+
+        header { 
+            text-align: center; 
+            margin-bottom: 25px; 
+        }
+
+        h1 { 
+            color: var(--primary-green); 
+            font-size: 1.6rem; 
+            margin-bottom: 5px; 
+            line-height: 1.4; 
+            font-weight: 700; 
+        }
+
+        .score-counter {
+            font-size: 1.2rem; 
+            font-weight: bold; 
+            color: #455a64; 
+            text-align: center; 
+            margin-bottom: 10px;
+        }
+
+        .progress-bar {
+            width: 100%; 
+            height: 12px; 
+            background-color: #cbd5e1;
+            border-radius: 6px; 
+            margin-bottom: 25px; 
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%; 
+            width: 0%; 
+            background-color: var(--primary-green);
+            transition: width 0.3s ease;
+        }
+
+        .card {
+            background: var(--card-bg); 
+            border-radius: 25px; 
+            padding: 30px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05); 
+            border: 2px solid #fff;
+            text-align: center; 
+            display: none; 
+            animation: fadeIn 0.4s ease forwards;
+        }
+
+        .card.active { 
+            display: block; 
+        }
+
+        .situation-display {
+            font-size: 1.3rem; 
+            font-weight: bold; 
+            color: var(--accent-brown);
+            background: var(--gray-light); 
+            padding: 20px; 
+            border-radius: 15px;
+            margin-bottom: 25px; 
+            text-align: left; 
+            line-height: 1.6;
+            border-left: 5px solid var(--accent-brown); 
+            border-top: 1px solid var(--gray-border); 
+            border-right: 1px solid var(--gray-border); 
+            border-bottom: 1px solid var(--gray-border);
+            position: relative;
+        }
+
+        .situation-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .q-title {
+            font-size: 1rem; 
+            background-color: #e2e8f0; 
+            padding: 6px 15px;
+            border-radius: 10px; 
+            display: inline-block; 
+            margin-bottom: 15px; 
+            font-weight: bold; 
+            color: #455a64;
+        }
+
+        .question-text {
+            font-size: 1.5rem; 
+            font-weight: bold; 
+            color: var(--primary-green);
+            text-align: center; 
+            line-height: 1.6; 
+            margin-bottom: 25px;
+            background: #f1f8e9; 
+            padding: 15px; 
+            border-radius: 15px;
+            border: 2px dashed var(--primary-green);
+        }
+
+        /* Responsive choices layout */
+        .choices-grid {
+            display: flex; 
+            flex-direction: row; 
+            gap: 12px; 
+            margin-bottom: 25px; 
+            justify-content: center; 
+            flex-wrap: wrap;
+        }
+
+        .choice-btn {
+            background-color: #ffffff; 
+            border: 2px solid var(--gray-border);
+            padding: 14px 10px; 
+            border-radius: 30px; 
+            cursor: pointer;
+            font-weight: bold; 
+            font-size: 1.15rem; 
+            color: var(--text-color);
+            text-align: center; 
+            box-shadow: 0 4px 0 var(--gray-border); 
+            transition: all 0.1s;
+            line-height: 1.4; 
+            flex: 1; 
+            min-width: 150px; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
+        }
+
+        .choice-btn:hover { 
+            background-color: var(--gray-light); 
+            border-color: #b0bec5; 
+        }
+
+        .choice-btn:active { 
+            transform: translateY(2px); 
+            box-shadow: 0 2px 0 var(--gray-border); 
+        }
+        
+        .choice-btn.correct {
+            background-color: #e8f5e9 !important; 
+            border-color: var(--primary-green) !important;
+            color: var(--primary-green) !important; 
+            box-shadow: 0 4px 0 #c8e6c9 !important;
+        }
+
+        .choice-btn.wrong {
+            background-color: #efebe9 !important; 
+            border-color: #a1887f !important;
+            color: #8d6e63 !important; 
+            box-shadow: 0 4px 0 #d7ccc8 !important;
+            opacity: 0.5; 
+            pointer-events: none;
+        }
+
+        .choice-btn.disabled { 
+            pointer-events: none; 
+        }
+
+        .action-btn {
+            padding: 15px 40px; 
+            font-weight: bold; 
+            font-size: 1.2rem;
+            border: none; 
+            border-radius: 50px; 
+            cursor: pointer; 
+            color: white;
+            width: 100%; 
+            margin-top: 15px; 
+            display: none; 
+            transition: 0.1s;
+        }
+
+        .next-btn { 
+            background: var(--primary-green); 
+            box-shadow: 0 5px 0 #1b5e20; 
+        }
+
+        .report-btn { 
+            background: #0288d1; 
+            box-shadow: 0 5px 0 #01579b; 
+            display: inline-block; 
+        }
+
+        .action-btn:active { 
+            transform: translateY(3px); 
+            box-shadow: none; 
+        }
+
+        .mistake-list { 
+            text-align: left; 
+            background: #fafafa; 
+            padding: 15px; 
+            border-radius: 10px; 
+            margin: 20px 0; 
+            border: 1px solid #cfd8dc; 
+        }
+
+        .mistake-item { 
+            padding: 8px 0; 
+            border-bottom: 1px solid #eee; 
+            font-size: 1rem; 
+            line-height: 1.4; 
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Cute popups & speakers */
+        #excellentPopup {
+            position: fixed; 
+            top: 40px; 
+            left: 50%; 
+            transform: translateX(-50%) translateY(-20px);
+            background-color: var(--accent-yellow); 
+            color: #3e2723; 
+            padding: 12px 40px; 
+            border-radius: 50px;
+            font-weight: bold; 
+            font-size: 1.6rem; 
+            box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+            opacity: 0; 
+            pointer-events: none; 
+            transition: all 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28); 
+            z-index: 1000;
+        }
+
+        #excellentPopup.show { 
+            opacity: 1; 
+            transform: translateX(-50%) translateY(0); 
+        }
+
+        /* Speaker Button styling matching user's templates */
+        .speak-btn {
+            background: var(--accent-brown);
+            color: white;
+            font-size: 0.95rem;
+            padding: 8px 16px;
+            border-radius: 20px;
+            box-shadow: 0 3px 0 #5d4037;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.1s, background-color 0.2s;
+        }
+
+        .speak-btn:active {
+            transform: translateY(2px);
+            box-shadow: none;
+        }
+
+        .speak-btn.speaking {
+            background-color: #2e7d32;
+            box-shadow: 0 3px 0 #1b5e20;
+            animation: softPulse 1.5s infinite ease-in-out;
+        }
+
+        @keyframes softPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+
+        /* Custom kid-friendly modal to replace native alert() */
+        #customAlertModal {
+            position: fixed;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(4px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            z-index: 2000;
+        }
+
+        #customAlertModal.show {
+            display: flex;
+            animation: fadeIn 0.2s ease;
+        }
+
+        .alert-box {
+            background: white;
+            border-radius: 25px;
+            padding: 30px;
+            max-width: 450px;
+            width: 100%;
+            text-align: center;
+            border: 4px solid var(--accent-brown);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            animation: popupScale 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes popupScale {
+            from { transform: scale(0.85); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .alert-icon {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        .alert-title {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: var(--accent-brown);
+            margin-bottom: 10px;
+        }
+
+        .alert-message {
+            font-size: 1.1rem;
+            color: var(--text-color);
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .alert-close-btn {
+            background: var(--accent-brown);
+            color: white;
+            font-weight: bold;
+            font-size: 1.1rem;
+            padding: 10px 30px;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 0 #5d4037;
+        }
+
+        .alert-close-btn:active {
+            transform: translateY(2px);
+            box-shadow: none;
+        }
+    </style>
+</head>
+<body>
+
+<div id="excellentPopup">Excellent! 🌟</div>
+
+<!-- Custom Kid Alert Modal -->
+<div id="customAlertModal">
+    <div class="alert-box">
+        <div class="alert-icon">💡</div>
+        <div class="alert-title">Check the Story!</div>
+        <div class="alert-message" id="customAlertMessage">Let's read the story carefully again and check if it is Yes or No!</div>
+        <button class="alert-close-btn" onclick="closeCustomAlert()">Try Again 💪</button>
+    </div>
+</div>
+
+<div class="container">
+    <header>
+        <h1>Step by Step Towards EIKEN Grade 5 p40<br>Adjectives & Short Answers ✨</h1>
+    </header>
+
+    <div class="score-counter">Score: <span id="currentScore">0</span> / 12</div>
+
+    <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+    </div>
+
+    <div id="quiz-container"></div>
+
+    <!-- Final complete card -->
+    <div class="card" id="card-result">
+        <h2 style="color: var(--primary-green); margin-bottom: 10px;">Training Complete! 🎉</h2>
+        <p style="font-weight: bold; color: #5d4037; margin-bottom: 15px;">
+            Your Score: <span style="font-size: 2rem; color: var(--primary-green);" id="finalScore">0</span> / 12
+        </p>
+        <div id="mistake-container" style="display:none;">
+            <p style="color: var(--error-red); font-weight: bold; text-align: left; margin-bottom: 5px;">Review List (First Try Mistakes):</p>
+            <div class="mistake-list" id="mistake-list"></div>
+        </div>
+        
+        <div style="display: flex; flex-direction: column; gap: 10px; align-items: center; width: 100%;">
+            <button class="action-btn report-btn" onclick="sendEmail()">Report to Tamaki-sensei 📨</button>
+            <button class="action-btn next-btn" style="display:inline-block; background-color: var(--accent-brown); box-shadow: 0 5px 0 #4e342e; margin-top: 10px;" onclick="location.reload()">Try Again 🔄</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Sound engine using web audio API
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    
+    function playSound(type) {
+        if (audioCtx.state === 'suspended') {
+            audioCtx.resume();
+        }
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        if (type === 'correct') {
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(587.33, audioCtx.currentTime); // D5
+            gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+            osc.start();
+            osc.frequency.setValueAtTime(880.00, audioCtx.currentTime + 0.1); // A5
+            gain.gain.setValueAtTime(0.1, audioCtx.currentTime + 0.1);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.35);
+            osc.stop(audioCtx.currentTime + 0.35);
+        } else if (type === 'wrong') {
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(220.00, audioCtx.currentTime); // A3
+            osc.frequency.linearRampToValueAtTime(110.00, audioCtx.currentTime + 0.3); // A2
+            gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+            gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.3);
+        }
+    }
+
+    // Story and Question Setup
+    const quizData = [
+        // --- Scene 1: Cinderella's Daily Life ---
+        {
+            title: "Scene 1 (1/3)",
+            situation: "Cinderella is a beautiful girl. She has a very old dress. She is kind to everyone. But she is tired because she cleans many rooms every day.",
+            question: "Is Cinderella beautiful?",
+            hint: "Check the first line: 'Cinderella is a beautiful girl.' Answer with 'is / isn't'.",
+            options: [
+                { text: "Yes, she is.", correct: true },
+                { text: "No, she isn't.", correct: false },
+                { text: "Yes, she does.", correct: false },
+                { text: "No, she doesn't.", correct: false }
+            ]
+        },
+        {
+            title: "Scene 1 (2/3)",
+            situation: "Cinderella is a beautiful girl. She has a very old dress. She is kind to everyone. But she is tired because she cleans many rooms every day.",
+            question: "Is her dress new?",
+            hint: "Look at her clothes description: 'She has a very old dress.'",
+            options: [
+                { text: "No, it isn't.", correct: true },
+                { text: "Yes, it is.", correct: false },
+                { text: "No, it doesn't.", correct: false },
+                { text: "Yes, it does.", correct: false }
+            ]
+        },
+        {
+            title: "Scene 1 (3/3)",
+            situation: "Cinderella is a beautiful girl. She has a very old dress. She is kind to everyone. But she is tired because she cleans many rooms every day.",
+            question: "Is Cinderella tired?",
+            hint: "Check her energy levels: 'But she is tired because she cleans many rooms...'",
+            options: [
+                { text: "Yes, she is.", correct: true },
+                { text: "No, she isn't.", correct: false },
+                { text: "Yes, she does.", correct: false },
+                { text: "No, she doesn't.", correct: false }
+            ]
+        },
+
+        // --- Scene 2: Modern Magic ---
+        {
+            title: "Scene 2 (1/3)",
+            situation: "Look! That is Cinderella's fairy godmother. She uses magic. \"The magic is ready!\" she says. She makes a new pumpkin car! It is very cute. Orange is Cinderella's favorite color.",
+            question: "Who uses magic?",
+            hint: "Check who makes magic: 'That is Cinderella's fairy godmother. She uses magic.'",
+            options: [
+                { text: "The fairy godmother.", correct: true },
+                { text: "The prince.", correct: false },
+                { text: "Cinderella.", correct: false },
+                { text: "The cat.", correct: false }
+            ]
+        },
+        {
+            title: "Scene 2 (2/3)",
+            situation: "Look! That is Cinderella's fairy godmother. She uses magic. \"The magic is ready!\" she says. She makes a new pumpkin car! It is very cute. Orange is Cinderella's favorite color.",
+            question: "Is the pumpkin car cute?",
+            hint: "Look at the description of the pumpkin car: 'It is very cute.'",
+            options: [
+                { text: "Yes, it is.", correct: true },
+                { text: "No, it isn't.", correct: false },
+                { text: "Yes, it does.", correct: false },
+                { text: "No, it doesn't.", correct: false }
+            ]
+        },
+        {
+            title: "Scene 2 (3/3)",
+            situation: "Look! That is Cinderella's fairy godmother. She uses magic. \"The magic is ready!\" she says. She makes a new pumpkin car! It is very cute. Orange is Cinderella's favorite color.",
+            question: "Is pink her favorite color?",
+            hint: "Read carefully: 'Orange is Cinderella's favorite color.'",
+            options: [
+                { text: "No, it isn't.", correct: true },
+                { text: "Yes, it is.", correct: false },
+                { text: "No, it doesn't.", correct: false },
+                { text: "Yes, it does.", correct: false }
+            ]
+        },
+
+        // --- Scene 3: The Dance Party ---
+        {
+            title: "Scene 3 (1/3)",
+            situation: "The dance party at the castle is great and fun! But look! It is almost 12 o'clock! It is the final minute of the magic. Cinderella runs to her car. Oh! She drops her glass shoe.",
+            question: "Is it 11 o'clock?",
+            hint: "Check the clock: 'But look! It is almost 12 o'clock!'",
+            options: [
+                { text: "No, it isn't.", correct: true },
+                { text: "Yes, it is.", correct: false },
+                { text: "No, it doesn't.", correct: false },
+                { text: "Yes, it does.", correct: false }
+            ]
+        },
+        {
+            title: "Scene 3 (2/3)",
+            situation: "The dance party at the castle is great and fun! But look! It is almost 12 o'clock! It is the final minute of the magic. Cinderella runs to her car. Oh! She drops her glass shoe.",
+            question: "What does she drop?",
+            hint: "Read the ending of Scene 3: 'Oh! She drops her glass shoe.'",
+            options: [
+                { text: "Her glass shoe.", correct: true },
+                { text: "Her pumpkin car.", correct: false },
+                { text: "Her old dress.", correct: false },
+                { text: "Her cake.", correct: false }
+            ]
+        },
+        {
+            title: "Scene 3 (3/3)",
+            situation: "The dance party at the castle is great and fun! But look! It is almost 12 o'clock! It is the final minute of the magic. Cinderella runs to her car. Oh! She drops her glass shoe.",
+            question: "Does she run to her car?",
+            hint: "Check where she runs: 'Cinderella runs to her car.' Use 'does' to match the question!",
+            options: [
+                { text: "Yes, she does.", correct: true },
+                { text: "No, she doesn't.", correct: false },
+                { text: "Yes, she is.", correct: false },
+                { text: "No, she isn't.", correct: false }
+            ]
+        },
+
+        // --- Scene 4: The Next Day ---
+        {
+            title: "Scene 4 (1/3)",
+            situation: "The next day, the prince goes to many houses. He has the glass shoe. All the girls can't wear it. But look! Cinderella can wear it! It is an easy fit! She is the right girl. They eat a sweet wedding cake.",
+            question: "Does the prince have the glass shoe?",
+            hint: "Check: 'He has the glass shoe.' Match 'Does' with 'does' in the answer!",
+            options: [
+                { text: "Yes, he does.", correct: true },
+                { text: "No, he doesn't.", correct: false },
+                { text: "Yes, he is.", correct: false },
+                { text: "No, he isn't.", correct: false }
+            ]
+        },
+        {
+            title: "Scene 4 (2/3)",
+            situation: "The next day, the prince goes to many houses. He has the glass shoe. All the girls can't wear it. But look! Cinderella can wear it! It is an easy fit! She is the right girl. They eat a sweet wedding cake.",
+            question: "Can all the girls wear the shoe?",
+            hint: "Look at the word 'can't': 'All the girls can't wear it.'",
+            options: [
+                { text: "No, they can't.", correct: true },
+                { text: "Yes, they can.", correct: false },
+                { text: "No, they don't.", correct: false },
+                { text: "Yes, they do.", correct: false }
+            ]
+        },
+        {
+            title: "Scene 4 (3/3)",
+            situation: "The next day, the prince goes to many houses. He has the glass shoe. All the girls can't wear it. But look! Cinderella can wear it! It is an easy fit! She is the right girl. They eat a sweet wedding cake.",
+            question: "Is the wedding cake sweet?",
+            hint: "Look at the cake's adjective: 'They eat a sweet wedding cake.'",
+            options: [
+                { text: "Yes, it is.", correct: true },
+                { text: "No, it isn't.", correct: false },
+                { text: "Yes, it does.", correct: false },
+                { text: "No, it doesn't.", correct: false }
+            ]
+        }
+    ];
+
+    let currentIdx = 0;
+    let firstTryCorrectCount = 0;
+    let isFirstTry = true;
+    let mistakes = [];
+    const container = document.getElementById('quiz-container');
+
+    // TTS Voice Config
+    let preferredVoice = null;
+
+    function loadVoices() {
+        if (typeof speechSynthesis === 'undefined') return;
+        const voices = speechSynthesis.getVoices();
+        
+        // Find slower, friendly American female voice
+        preferredVoice = 
+            voices.find(v => v.lang === "en-US" && v.name.includes("Google US English")) ||
+            voices.find(v => v.lang === "en-US" && v.name.includes("Samantha")) ||
+            voices.find(v => v.lang.startsWith("en-US") && (v.name.includes("Female") || v.name.includes("Zira"))) ||
+            voices.find(v => v.lang.startsWith("en"));
+    }
+
+    if (typeof speechSynthesis !== 'undefined') {
+        speechSynthesis.onvoiceschanged = loadVoices;
+        loadVoices();
+    }
+
+    // TTS Action using indexes to avoid string escaping glitches
+    function speakText(idx, btnId) {
+        if (typeof speechSynthesis === 'undefined') return;
+
+        if (speechSynthesis.speaking) {
+            speechSynthesis.cancel();
+            resetSpeakButtons();
+            return;
+        }
+
+        const rawText = quizData[idx].situation;
+        // Strip quotation marks cleanly for speech synthesis
+        const speakableText = rawText.replace(/[\"\']/g, "");
+
+        const utterance = new SpeechSynthesisUtterance(speakableText);
+        if (preferredVoice) {
+            utterance.voice = preferredVoice;
+        }
+        
+        // Soft, young-paced slow audio configuration (0.78x speed)
+        utterance.rate = 0.78; 
+        utterance.pitch = 1.15; 
+
+        const button = document.getElementById(btnId);
+        
+        utterance.onstart = () => {
+            button.classList.add('speaking');
+            button.innerHTML = `🔊 Speaking...`;
+        };
+
+        utterance.onend = () => {
+            button.classList.remove('speaking');
+            button.innerHTML = `🔊 Read Story (Slow)`;
+        };
+
+        utterance.onerror = () => {
+            button.classList.remove('speaking');
+            button.innerHTML = `🔊 Read Story (Slow)`;
+        };
+
+        speechSynthesis.speak(utterance);
+    }
+
+    function resetSpeakButtons() {
+        const buttons = document.querySelectorAll('.speak-btn');
+        buttons.forEach(button => {
+            button.classList.remove('speaking');
+            button.innerHTML = `🔊 Read Story (Slow)`;
+        });
+    }
+
+    function stopSpeaking() {
+        if (typeof speechSynthesis !== 'undefined' && speechSynthesis.speaking) {
+            speechSynthesis.cancel();
+        }
+        resetSpeakButtons();
+    }
+
+    function shuffleOptions(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+
+    function initApp() {
+        quizData.forEach((q, idx) => {
+            const card = document.createElement('div');
+            card.className = `card ${idx === 0 ? 'active' : ''}`;
+            card.id = `card-${idx}`;
+
+            let randomizedOptions = [...q.options];
+            shuffleOptions(randomizedOptions);
+
+            let choicesHtml = '';
+            randomizedOptions.forEach(o => {
+                choicesHtml += `<button class="choice-btn" onclick="selectOption(this, ${o.correct}, ${idx})">${o.text}</button>`;
+            });
+
+            card.innerHTML = `
+                <div class="q-title">${q.title}</div>
+                
+                <div class="situation-display">
+                    <div class="situation-header">
+                        <span>📖 Situation:</span>
+                        <button id="speak-btn-${idx}" class="speak-btn" onclick="speakText(${idx}, 'speak-btn-${idx}')">
+                            🔊 Read Story (Slow)
+                        </button>
+                    </div>
+                    ${q.situation}
+                </div>
+
+                <div class="question-text">${q.question}</div>
+                <div class="choices-grid">${choicesHtml}</div>
+                <div class="action-nav">
+                    <button class="action-btn next-btn" id="next-${idx}" onclick="goNext(${idx})">Next Step ➔</button>
+                </div>
+            `;
+            container.appendChild(card);
+        });
+        updateProgressBar(0);
+    }
+
+    function selectOption(btn, isCorrect, idx) {
+        const card = document.getElementById(`card-${idx}`);
+        const buttons = card.querySelectorAll('.choice-btn');
+        const nextBtn = document.getElementById(`next-${idx}`);
+
+        if (isCorrect) {
+            playSound('correct');
+            btn.classList.add('correct');
+            showExcellent();
+            
+            if (isFirstTry) {
+                firstTryCorrectCount++;
+                document.getElementById('currentScore').textContent = firstTryCorrectCount;
+            }
+
+            buttons.forEach(b => {
+                b.disabled = true;
+                b.classList.add('disabled');
+                if(b !== btn) b.style.opacity = "0.4";
+            });
+
+            nextBtn.style.display = 'inline-block';
+        } else {
+            playSound('wrong');
+            btn.classList.add('wrong');
+            
+            if (isFirstTry) {
+                mistakes.push({ q: quizData[idx].question, s: quizData[idx].title });
+                isFirstTry = false;
+            }
+            openCustomAlert(quizData[idx].hint);
+        }
+    }
+
+    // Custom Alert Operations
+    function openCustomAlert(text) {
+        document.getElementById('customAlertMessage').innerHTML = text + "<br><br>Let's check the story again!";
+        document.getElementById('customAlertModal').classList.add('show');
+    }
+
+    function closeCustomAlert() {
+        document.getElementById('customAlertModal').classList.remove('show');
+    }
+
+    function showExcellent() {
+        const popup = document.getElementById('excellentPopup');
+        popup.classList.add('show');
+        setTimeout(() => popup.classList.remove('show'), 1200);
+    }
+
+    function updateProgressBar(step) {
+        const percentage = (step / quizData.length) * 100;
+        document.getElementById('progressFill').style.width = percentage + '%';
+    }
+
+    function goNext(current) {
+        stopSpeaking();
+        document.getElementById(`card-${current}`).classList.remove('active');
+        currentIdx++;
+        isFirstTry = true;
+        
+        if (currentIdx < quizData.length) {
+            document.getElementById(`card-${currentIdx}`).classList.add('active');
+            updateProgressBar(currentIdx);
+        } else {
+            updateProgressBar(quizData.length);
+            showResultScreen();
+        }
+    }
+
+    function showResultScreen() {
+        document.getElementById('card-result').classList.add('active');
+        document.getElementById('finalScore').textContent = firstTryCorrectCount;
+        
+        if (mistakes.length > 0) {
+            document.getElementById('mistake-container').style.display = 'block';
+            const list = document.getElementById('mistake-list');
+            list.innerHTML = mistakes.map(m => `
+                <div class="mistake-item"><strong>[${m.s}]</strong> ${m.q}</div>
+            `).join('');
+        }
+    }
+
+    function sendEmail() {
+        const teacherEmail = "tamaki@eigostudio-stepforward.com";
+        const subject = encodeURIComponent("EIKEN Grade 5 p40 Adjectives Result");
+        
+        const cleanMistakes = mistakes.map(m => `・${m.s}: ${m.q}`).join("\n");
+        let mistakeText = mistakes.length > 0 ? "\n\n■ Review Needed:\n" + cleanMistakes : "\n\nPerfect score on first tries!";
+        
+        const body = encodeURIComponent(`Dear Tamaki-sensei,\n\nI have finished the "Cinderella Adjectives & Short Answers p40" quiz!\n\nScore: ${firstTryCorrectCount} / ${quizData.length} (First-try correct)${mistakeText}\n\nThank you!`);
+        
+        window.location.href = `mailto:${teacherEmail}?subject=${subject}&body=${body}`;
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+        initApp();
+        if (typeof speechSynthesis !== 'undefined' && speechSynthesis.onvoiceschanged !== undefined) {
+            speechSynthesis.onvoiceschanged = loadVoices;
+        }
+    });
+</script>
+</body>
+</html>
