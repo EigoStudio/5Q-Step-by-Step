@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Step by Step Towards EIKEN Grade 5 p20 More Nouns 2 - Question Words</title>
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&family=Nunito:wght@600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #3a86ff;
+            --primary-dark: #1d65d8;
+            --accent-green: #2ecc71;
+            --accent-green-dark: #27ae60;
+            --bg-color: #f4f7fe;
+            --card-bg: #ffffff;
+            --text-color: #2b2d42;
+            --border-color: #d8e2dc;
+            --hover-bg: #eef4ff;
+            --correct-bg: #e8f8f5;
+            --correct-border: #2ecc71;
+            --wrong-bg: #fde8e8;
+            --wrong-border: #e74c3c;
+            --retry-bg: #fff3cd;
+            --retry-border: #f39c12;
+            --retry-text: #d35400;
+        }
+
+        * {
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        body {
+            font-family: 'Nunito', 'Comic Neue', sans-serif, "Hiragino Kaku Gothic ProN", "Meiryo";
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            touch-action: manipulation;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 15px;
+            width: 100%;
+            max-width: 950px;
+        }
+
+        h1 {
+            color: var(--primary-dark);
+            font-size: 2.0rem;
+            margin: 0 0 5px 0;
+            font-weight: 800;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: #555;
+            font-weight: bold;
+        }
+
+        #game-container {
+            background: var(--card-bg);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            padding: 25px;
+            width: 100%;
+            max-width: 950px;
+            border: 4px solid #4a90e2;
+            position: relative;
+            min-height: 600px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        /* Tab Navigation */
+        .tab-nav {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            background: #e2e8f0;
+            color: #4a5568;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 30px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 0 #cbd5e0;
+            font-family: inherit;
+        }
+
+        .tab-btn.active {
+            background: var(--primary-color);
+            color: white;
+            box-shadow: 0 4px 0 var(--primary-dark);
+        }
+
+        .tab-btn:active {
+            transform: translateY(2px);
+            box-shadow: none;
+        }
+
+        .page {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            flex-grow: 1;
+        }
+
+        .page.active {
+            display: flex;
+        }
+
+        .instruction {
+            background: #eef6ff;
+            border-left: 5px solid var(--primary-color);
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            color: #333;
+            margin-bottom: 20px;
+            width: 100%;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        /* Page 1 Matching Game */
+        .matching-area {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            gap: 20px;
+        }
+
+        .word-pool {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            align-items: center;
+            background: #f8fafc;
+            padding: 18px;
+            border-radius: 16px;
+            border: 2px dashed #cbd5e0;
+            min-height: 80px;
+        }
+
+        .drag-card {
+            background: #ffffff;
+            border: 3px solid var(--primary-color);
+            color: var(--primary-dark);
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-size: 1.3rem;
+            font-weight: 800;
+            cursor: grab;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+            touch-action: none;
+            transition: background-color 0.2s, transform 0.1s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .drag-card:active {
+            cursor: grabbing;
+            background-color: #e0edff;
+        }
+
+        .match-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 15px;
+            width: 100%;
+        }
+
+        .match-card {
+            background: #ffffff;
+            border: 2px solid var(--border-color);
+            border-radius: 16px;
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+            transition: all 0.2s;
+        }
+
+        .match-meaning {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #2d3748;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .drop-target {
+            min-height: 52px;
+            border: 2px dashed #cbd5e0;
+            border-radius: 10px;
+            background: #f8fafc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #a0aec0;
+            transition: all 0.2s;
+        }
+
+        .drop-target.hover {
+            background: var(--hover-bg);
+            border-color: var(--primary-color);
+        }
+
+        .drop-target.correct {
+            background: var(--correct-bg);
+            border: 2.5px solid var(--correct-border);
+            color: #27ae60;
+            font-size: 1.3rem;
+        }
+
+        .drop-target.retry-correct {
+            background: var(--retry-bg);
+            border: 2.5px solid var(--retry-border);
+            color: var(--retry-text);
+            font-size: 1.3rem;
+        }
+
+        /* Page 2 Quiz Game */
+        .quiz-list {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            width: 100%;
+        }
+
+        .quiz-item {
+            background: #fff;
+            border: 2px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 16px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.04);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .quiz-qnum {
+            display: inline-block;
+            background: var(--primary-color);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.95rem;
+            font-weight: bold;
+            width: fit-content;
+        }
+
+        .dialogue-box {
+            font-size: 1.3rem;
+            line-height: 1.6;
+            color: #2d3748;
+            font-weight: bold;
+        }
+
+        .blank-space {
+            display: inline-block;
+            min-width: 110px;
+            border-bottom: 3px solid var(--primary-color);
+            padding: 0 10px;
+            text-align: center;
+            color: var(--primary-dark);
+            font-weight: 800;
+        }
+
+        .answer-a { color: #2b6cb0; }
+        .answer-b { color: #4a5568; margin-left: 20px; }
+
+        .options-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .option-btn {
+            background: #f7fafc;
+            border: 2px solid #cbd5e0;
+            border-radius: 12px;
+            padding: 10px 22px;
+            font-size: 1.15rem;
+            font-family: inherit;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.15s;
+            box-shadow: 0 3px 0 #cbd5e0;
+        }
+
+        .option-btn:hover {
+            background: var(--hover-bg);
+            border-color: var(--primary-color);
+        }
+
+        .option-btn:active {
+            transform: translateY(2px);
+            box-shadow: none;
+        }
+
+        .option-btn.selected-correct {
+            background: var(--correct-bg) !important;
+            border-color: var(--correct-border) !important;
+            color: #1e7e34 !important;
+            box-shadow: 0 3px 0 #27ae60 !important;
+        }
+
+        .option-btn.selected-retry-correct {
+            background: var(--retry-bg) !important;
+            border-color: var(--retry-border) !important;
+            color: var(--retry-text) !important;
+            box-shadow: 0 3px 0 var(--retry-border) !important;
+        }
+
+        .option-btn.selected-wrong {
+            background: var(--wrong-bg) !important;
+            border-color: var(--wrong-border) !important;
+            color: #bd2130 !important;
+            box-shadow: 0 3px 0 #e74c3c !important;
+        }
+
+        .audio-btn {
+            background: none;
+            border: none;
+            font-size: 1.3rem;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            vertical-align: middle;
+            transition: transform 0.1s;
+        }
+
+        .audio-btn:hover {
+            transform: scale(1.15);
+        }
+
+        .speaker-main {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 1.0rem;
+            font-weight: bold;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            box-shadow: 0 3px 0 var(--primary-dark);
+            margin-left: 10px;
+        }
+
+        .speaker-main:active {
+            transform: translateY(2px);
+            box-shadow: none;
+        }
+
+        .nav-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 25px;
+            padding-top: 15px;
+            border-top: 2px solid #edf2f7;
+            width: 100%;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .action-btn {
+            background: var(--accent-green);
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            font-size: 1.2rem;
+            font-family: inherit;
+            font-weight: bold;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 4px 0 var(--accent-green-dark);
+            transition: all 0.15s;
+        }
+
+        .action-btn:hover {
+            background: #27ae60;
+        }
+
+        .action-btn:active {
+            transform: translateY(2px);
+            box-shadow: none;
+        }
+
+        .report-btn {
+            background: #9b59b6;
+            box-shadow: 0 4px 0 #8e44ad;
+        }
+        .report-btn:hover {
+            background: #8e44ad;
+        }
+
+        .score-board {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: var(--primary-dark);
+            background: #ebf8ff;
+            padding: 8px 18px;
+            border-radius: 20px;
+            border: 2px solid #bee3f8;
+        }
+
+        @media (max-width: 600px) {
+            h1 { font-size: 1.5rem; }
+            .tab-btn { font-size: 1rem; padding: 10px 18px; }
+            .match-grid { grid-template-columns: 1fr; }
+            .dialogue-box { font-size: 1.1rem; }
+            .option-btn { font-size: 1rem; padding: 8px 14px; }
+            .nav-footer { justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Step by Step Towards EIKEN Grade 5</h1>
+        <div class="subtitle">p20 More Nouns 2 - Question Words (疑問詞)</div>
+    </header>
+
+    <div id="game-container">
+        
+        <!-- Navigation Tabs -->
+        <div class="tab-nav">
+            <button class="tab-btn active" id="tab1-btn" onclick="switchTab(1)">Activity 1: Matching</button>
+            <button class="tab-btn" id="tab2-btn" onclick="switchTab(2)">Activity 2: Dialogue Quiz</button>
+        </div>
+
+        <!-- Activity 1: Matching Game -->
+        <div id="page1" class="page active">
+            <div class="instruction">
+                💡 疑問詞をドラッグ（またはタップ）して、正しい日本語の意味にセットしよう！
+                <button class="speaker-main" onclick="speak('Match the question words with their Japanese meanings.')">🔊 Listen Instructions</button>
+            </div>
+            
+            <div class="matching-area">
+                <div class="word-pool" id="word-pool"></div>
+                <div class="match-grid" id="match-grid"></div>
+            </div>
+
+            <div class="nav-footer">
+                <div class="score-board" id="match-score">Score: 0 / 9</div>
+                <button class="action-btn report-btn" onclick="sendReportEmail()">📧 先生に報告</button>
+                <button class="action-btn" onclick="resetMatching()">Reset 🔄</button>
+                <button class="action-btn" style="background:#3182ce; box-shadow:0 4px 0 #2b6cb0;" onclick="switchTab(2)">Next Activity ➔</button>
+            </div>
+        </div>
+
+        <!-- Activity 2: Dialogue Quiz -->
+        <div id="page2" class="page">
+            <div class="instruction">
+                💡 対話の( &nbsp; )に入る最も適切な疑問詞を3つの選択肢から選ぼう！
+                <button class="speaker-main" onclick="speak('Choose the correct question word for each dialogue.')">🔊 Listen Instructions</button>
+            </div>
+
+            <div class="quiz-list" id="quiz-list"></div>
+
+            <div class="nav-footer">
+                <div class="score-board" id="quiz-score">Score: 0 / 11</div>
+                <button class="action-btn report-btn" onclick="sendReportEmail()">📧 先生に報告</button>
+                <button class="action-btn" onclick="resetQuiz()">Shuffle & Restart 🔄</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // --- Web Speech Synthesis Helper ---
+        let preferredVoice = null;
+        function loadVoices() {
+            if (typeof window === 'undefined' || !window.speechSynthesis) return;
+            const voices = window.speechSynthesis.getVoices();
+            if (voices.length === 0) return;
+            preferredVoice = 
+                voices.find(v => v.lang === "en-US" && v.name.includes("Google US English")) ||
+                voices.find(v => v.lang === "en-US" && v.name.includes("Samantha")) ||
+                voices.find(v => v.lang.startsWith("en-US")) ||
+                voices.find(v => v.lang.startsWith("en"));
+        }
+        if (typeof window !== 'undefined' && window.speechSynthesis) {
+            window.speechSynthesis.onvoiceschanged = loadVoices;
+            loadVoices();
+        }
+
+        function speak(text) {
+            if (!window.speechSynthesis) return;
+            window.speechSynthesis.cancel();
+            
+            let processedText = text.replace(/Noah's/g, "Noah 's").replace(/Noah’s/g, "Noah 's");
+
+            const uttr = new SpeechSynthesisUtterance(processedText);
+            if (preferredVoice) uttr.voice = preferredVoice;
+            uttr.rate = 0.85;
+            uttr.pitch = 1.0;
+            window.speechSynthesis.speak(uttr);
+        }
+
+        function switchTab(tabNum) {
+            if (window.speechSynthesis) window.speechSynthesis.cancel();
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+
+            document.getElementById('tab' + tabNum + '-btn').classList.add('active');
+            document.getElementById('page' + tabNum).classList.add('active');
+        }
+
+        // ==========================================
+        // ACTIVITY 1: MATCHING DATA & LOGIC
+        // ==========================================
+        const matchData = [
+            { id: 'q-howmuch', word: 'How much', jp: 'どのくらいの値段・量' },
+            { id: 'q-howmany', word: 'How many', jp: 'いくつ、何こ' },
+            { id: 'q-what', word: 'What', jp: 'なに' },
+            { id: 'q-where', word: 'Where', jp: 'どこ' },
+            { id: 'q-who', word: 'Who', jp: 'だれ' },
+            { id: 'q-whose', word: 'Whose', jp: 'だれの' },
+            { id: 'q-which', word: 'Which', jp: 'どちら・どれ' },
+            { id: 'q-when', word: 'When', jp: 'いつ' },
+            { id: 'q-whattime', word: 'What time', jp: '何時' }
+        ];
+
+        let selectedCard = null;
+        let cardWrongAttempts = {}; 
+        let matchScore = 0;
+        let totalCompletedMatches = 0;
+
+        function initMatching() {
+            matchScore = 0;
+            totalCompletedMatches = 0;
+            cardWrongAttempts = {};
+            updateMatchScore();
+            const pool = document.getElementById('word-pool');
+            const grid = document.getElementById('match-grid');
+            if (!pool || !grid) return;
+            
+            pool.innerHTML = '';
+            grid.innerHTML = '';
+
+            const shuffledWords = [...matchData].sort(() => Math.random() - 0.5);
+            shuffledWords.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'drag-card';
+                card.id = item.id;
+                card.draggable = true;
+                
+                card.innerHTML = item.word + ' <button class="audio-btn" type="button">🔊</button>';
+                
+                const btn = card.querySelector('.audio-btn');
+                btn.onclick = (e) => {
+                    e.stopPropagation();
+                    speak(item.word);
+                };
+
+                card.addEventListener('dragstart', handleDragStart);
+                card.addEventListener('click', () => handleCardClick(card, item));
+                card.addEventListener('touchstart', handleTouchStart, {passive: false});
+                card.addEventListener('touchmove', handleTouchMove, {passive: false});
+                card.addEventListener('touchend', handleTouchEnd, {passive: false});
+
+                pool.appendChild(card);
+            });
+
+            const shuffledTargets = [...matchData].sort(() => Math.random() - 0.5);
+            shuffledTargets.forEach(item => {
+                const matchBox = document.createElement('div');
+                matchBox.className = 'match-card';
+                matchBox.innerHTML = 
+                    '<div class="match-meaning">' + item.jp + '</div>' +
+                    '<div class="drop-target" id="drop-' + item.id + '" data-target="' + item.id + '">' +
+                        'ドラッグ または タップして配置' +
+                    '</div>';
+
+                const dropZone = matchBox.querySelector('.drop-target');
+                dropZone.addEventListener('dragover', handleDragOver);
+                dropZone.addEventListener('dragleave', handleDragLeave);
+                dropZone.addEventListener('drop', handleDrop);
+                dropZone.addEventListener('click', () => handleTargetClick(dropZone, item));
+
+                grid.appendChild(matchBox);
+            });
+        }
+
+        function handleCardClick(card, item) {
+            speak(item.word);
+            if (card.classList.contains('used')) return;
+
+            document.querySelectorAll('.drag-card').forEach(c => c.style.outline = 'none');
+            
+            if (selectedCard === card) {
+                selectedCard = null;
+            } else {
+                selectedCard = card;
+                card.style.outline = '4px solid #f39c12';
+            }
+        }
+
+        function handleTargetClick(dropZone, item) {
+            if (!selectedCard || dropZone.classList.contains('correct') || dropZone.classList.contains('retry-correct')) return;
+
+            const cardId = selectedCard.id;
+            const targetId = dropZone.dataset.target;
+
+            checkMatch(cardId, targetId, dropZone, selectedCard);
+            selectedCard.style.outline = 'none';
+            selectedCard = null;
+        }
+
+        function handleDragStart(e) {
+            e.dataTransfer.setData('text/plain', e.target.id);
+            speak(e.target.textContent.trim());
+        }
+
+        function handleDragOver(e) {
+            e.preventDefault();
+            e.currentTarget.classList.add('hover');
+        }
+
+        function handleDragLeave(e) {
+            e.currentTarget.classList.remove('hover');
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            const dropZone = e.currentTarget;
+            dropZone.classList.remove('hover');
+            const cardId = e.dataTransfer.getData('text/plain');
+            const cardEl = document.getElementById(cardId);
+            const targetId = dropZone.dataset.target;
+
+            checkMatch(cardId, targetId, dropZone, cardEl);
+        }
+
+        let activeTouchCard = null;
+        let touchOffsetX = 0, touchOffsetY = 0;
+
+        function handleTouchStart(e) {
+            activeTouchCard = e.currentTarget;
+            const touch = e.touches[0];
+            const rect = activeTouchCard.getBoundingClientRect();
+            touchOffsetX = touch.clientX - rect.left;
+            touchOffsetY = touch.clientY - rect.top;
+
+            activeTouchCard.style.position = 'fixed';
+            activeTouchCard.style.zIndex = '1000';
+            moveTouchCard(touch.clientX, touch.clientY);
+
+            const wordObj = matchData.find(w => w.id === activeTouchCard.id);
+            if (wordObj) speak(wordObj.word);
+        }
+
+        function handleTouchMove(e) {
+            if (!activeTouchCard) return;
+            e.preventDefault();
+            const touch = e.touches[0];
+            moveTouchCard(touch.clientX, touch.clientY);
+        }
+
+        function moveTouchCard(x, y) {
+            activeTouchCard.style.left = (x - touchOffsetX) + 'px';
+            activeTouchCard.style.top = (y - touchOffsetY) + 'px';
+        }
+
+        function handleTouchEnd(e) {
+            if (!activeTouchCard) return;
+            const touch = e.changedTouches[0];
+            activeTouchCard.style.position = '';
+            activeTouchCard.style.zIndex = '';
+            activeTouchCard.style.left = '';
+            activeTouchCard.style.top = '';
+
+            const elementUnderTouch = document.elementFromPoint(touch.clientX, touch.clientY);
+            const dropZone = elementUnderTouch ? elementUnderTouch.closest('.drop-target') : null;
+
+            if (dropZone && !dropZone.classList.contains('correct') && !dropZone.classList.contains('retry-correct')) {
+                const targetId = dropZone.dataset.target;
+                checkMatch(activeTouchCard.id, targetId, dropZone, activeTouchCard);
+            }
+            activeTouchCard = null;
+        }
+
+        function checkMatch(cardId, targetId, dropZone, cardEl) {
+            const wordObj = matchData.find(m => m.id === cardId);
+            if (!wordObj) return;
+
+            if (cardId === targetId) {
+                dropZone.textContent = wordObj.word;
+                speak(wordObj.word);
+
+                if (!cardWrongAttempts[cardId]) {
+                    dropZone.classList.add('correct');
+                    matchScore++;
+                } else {
+                    dropZone.classList.add('retry-correct');
+                }
+
+                if (cardEl) {
+                    cardEl.style.visibility = 'hidden';
+                    cardEl.classList.add('used');
+                }
+
+                totalCompletedMatches++;
+                updateMatchScore();
+
+                if (totalCompletedMatches === matchData.length) {
+                    setTimeout(() => speak("Excellent! You completed all matching!"), 400);
+                }
+            } else {
+                cardWrongAttempts[cardId] = true;
+                speak("Try again");
+                dropZone.style.backgroundColor = '#fde8e8';
+                setTimeout(() => {
+                    dropZone.style.backgroundColor = '#f8fafc';
+                }, 500);
+            }
+        }
+
+        function updateMatchScore() {
+            document.getElementById('match-score').textContent = 'Score: ' + matchScore + ' / ' + matchData.length;
+        }
+
+        function resetMatching() {
+            initMatching();
+        }
+
+        // ==========================================
+        // ACTIVITY 2: DIALOGUE QUIZ DATA & LOGIC
+        // ==========================================
+        const quizMasterData = [
+            {
+                answer: 'How much',
+                a: '( ______ ) money do you have?',
+                b: 'I have 2,000 yen.',
+                options: ['How much', 'How many', 'What']
+            },
+            {
+                answer: 'How many',
+                a: '( ______ ) coins do you have?',
+                b: 'I have 20 coins.',
+                options: ['How many', 'How much', 'Which']
+            },
+            {
+                answer: 'What',
+                a: "( ______ )'s that?",
+                b: "It's a radio.",
+                options: ['What', 'Where', 'Who']
+            },
+            {
+                answer: 'How many',
+                a: '( ______ ) watches do you have?',
+                b: 'I have 3 watches.',
+                options: ['How many', 'How much', 'What time']
+            },
+            {
+                answer: 'Where',
+                a: '( ______ ) is my brush?',
+                b: "It's on the table.",
+                options: ['Where', 'When', 'Whose']
+            },
+            {
+                answer: 'Who',
+                a: "( ______ )'s that on the right?",
+                b: "That's Noah.",
+                options: ['Who', 'Whose', 'Which']
+            },
+            {
+                answer: "Who's",
+                a: '( ______ ) that on the left?',
+                b: "That's Ellie.",
+                options: ["Who's", 'Whose', 'Who']
+            },
+            {
+                answer: 'Whose',
+                a: '( ______ ) test is this?',
+                b: "It's Noah's!",
+                options: ['Whose', "Who's", 'Who']
+            },
+            {
+                answer: 'Which',
+                a: '( ______ ) do you want, apple pie or ice cream?',
+                b: 'Apple pie, please.',
+                options: ['Which', 'What', 'Where']
+            },
+            {
+                answer: 'What time',
+                a: '( ______ ) do you get up?',
+                b: 'At seven.',
+                options: ['What time', 'When', 'Where']
+            },
+            {
+                answer: 'When',
+                a: '( ______ ) do you wash the dishes?',
+                b: 'After dinner.',
+                options: ['When', 'What time', 'What']
+            }
+        ];
+
+        let activeQuizList = [];
+        let quizStatus = {}; 
+
+        function initQuiz() {
+            quizStatus = {};
+            activeQuizList = [...quizMasterData].sort(() => Math.random() - 0.5);
+            
+            updateQuizScore();
+            const quizListContainer = document.getElementById('quiz-list');
+            if (!quizListContainer) return;
+            quizListContainer.innerHTML = '';
+
+            activeQuizList.forEach((q, idx) => {
+                quizStatus[idx] = 'first-try';
+
+                const item = document.createElement('div');
+                item.className = 'quiz-item';
+
+                const lineA = q.a.replace('( ______ )', '<span class="blank-space" id="blank-' + idx + '">?</span>');
+
+                const shuffledOptions = [...q.options].sort(() => Math.random() - 0.5);
+
+                let optionsHtml = '';
+                shuffledOptions.forEach(opt => {
+                    const safeOpt = opt.replace(/'/g, "\\'");
+                    optionsHtml += `<button class="option-btn" type="button" onclick="selectOption(${idx}, '${safeOpt}', this)">${opt}</button>`;
+                });
+
+                item.innerHTML = 
+                    '<div style="display:flex; justify-content:space-between; align-items:center;">' +
+                        '<span class="quiz-qnum">Question ' + (idx + 1) + '</span>' +
+                        '<button class="speaker-main" type="button" style="padding: 4px 10px; font-size:0.85rem;" onclick="speakDialogue(' + idx + ')">🔊 Read Dialogue</button>' +
+                    '</div>' +
+                    '<div class="dialogue-box">' +
+                        '<div class="answer-a">A: ' + lineA + '</div>' +
+                        '<div class="answer-b">B: ' + q.b + '</div>' +
+                    '</div>' +
+                    '<div class="options-group" id="options-' + idx + '">' + optionsHtml + '</div>';
+
+                quizListContainer.appendChild(item);
+            });
+        }
+
+        function selectOption(quizIdx, selectedOpt, btn) {
+            const q = activeQuizList[quizIdx];
+            const blank = document.getElementById('blank-' + quizIdx);
+            const optionsGroup = document.getElementById('options-' + quizIdx);
+
+            optionsGroup.querySelectorAll('.option-btn').forEach(b => {
+                b.className = 'option-btn';
+            });
+
+            if (selectedOpt === q.answer) {
+                if (quizStatus[quizIdx] === 'has-wrong' || quizStatus[quizIdx] === 'retry-correct') {
+                    btn.classList.add('selected-retry-correct');
+                    blank.style.color = '#f39c12';
+                    quizStatus[quizIdx] = 'retry-correct';
+                } else {
+                    btn.classList.add('selected-correct');
+                    blank.style.color = '#27ae60';
+                    quizStatus[quizIdx] = 'first-correct';
+                }
+                blank.textContent = selectedOpt;
+            } else {
+                btn.classList.add('selected-wrong');
+                blank.textContent = selectedOpt;
+                blank.style.color = '#e74c3c';
+                quizStatus[quizIdx] = 'has-wrong';
+            }
+
+            updateQuizScore();
+        }
+
+        function speakDialogue(idx) {
+            const q = activeQuizList[idx];
+            const blankText = document.getElementById('blank-' + idx).textContent;
+            let filledA = q.a.replace('( ______ )', blankText !== '?' ? blankText : 'blank');
+            
+            speak(filledA + " ... " + q.b);
+        }
+
+        function updateQuizScore() {
+            let totalCorrect = 0;
+            for (let key in quizStatus) {
+                if (quizStatus[key] === 'first-correct') {
+                    totalCorrect++;
+                }
+            }
+            document.getElementById('quiz-score').textContent = 'Score: ' + totalCorrect + ' / ' + activeQuizList.length;
+        }
+
+        function resetQuiz() {
+            initQuiz();
+        }
+
+        // ==========================================
+        // REPORT EMAIL FUNCTION
+        // ==========================================
+        function sendReportEmail() {
+            const recipient = "tamaki@eigostudio-stepforward.com";
+            const subject = encodeURIComponent("【英検5級 p20】学習結果報告 (疑問詞)");
+
+            // Activity 1 スコア算出
+            const act1Score = matchScore;
+            const act1Total = matchData.length;
+
+            // Activity 2 スコア算出
+            let act2Score = 0;
+            for (let key in quizStatus) {
+                if (quizStatus[key] === 'first-correct') act2Score++;
+            }
+            const act2Total = activeQuizList.length;
+
+            let bodyText = "Step by Step Towards EIKEN Grade 5 p20 (疑問詞)\n";
+            bodyText += "----------------------------------------\n";
+            bodyText += "【Activity 1: Matching】\n";
+            bodyText += "Score: " + act1Score + " / " + act1Total + " (一発正解: " + act1Score + ")\n\n";
+            bodyText += "【Activity 2: Dialogue Quiz】\n";
+            bodyText += "Score: " + act2Score + " / " + act2Total + " (一発正解: " + act2Score + ")\n";
+            bodyText += "----------------------------------------\n";
+
+            const body = encodeURIComponent(bodyText);
+            window.location.href = "mailto:" + recipient + "?subject=" + subject + "&body=" + body;
+        }
+
+        // Initialize Everything on load
+        window.addEventListener('DOMContentLoaded', () => {
+            initMatching();
+            initQuiz();
+        });
+    </script>
+</body>
+</html>
