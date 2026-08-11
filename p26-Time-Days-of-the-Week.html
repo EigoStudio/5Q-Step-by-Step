@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Step by Step Towards EIKEN Grade 5 p26 Time / Days of the Week</title>
+<script src="auth.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&family=Nunito:wght@600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --primary-dark: #2b6cb0;
+            --accent-green: #2ecc71;
+            --accent-green-dark: #27ae60;
+            --bg-color: #f0f7ff;
+            --card-bg: #ffffff;
+            --text-color: #2b2d42;
+            --border-color: #bee3f8;
+            --hover-bg: #ebf8ff;
+            --correct-bg: #e8f8f5;
+            --correct-border: #2ecc71;
+            --wrong-bg: #fde8e8;
+            --wrong-border: #e74c3c;
+            --retry-bg: #fff3cd;
+            --retry-border: #f39c12;
+            --retry-text: #d35400;
+        }
+
+        * {
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        body {
+            font-family: 'Nunito', 'Comic Neue', sans-serif, "Hiragino Kaku Gothic ProN", "Meiryo";
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            touch-action: manipulation;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 10px;
+            width: 100%;
+            max-width: 1050px;
+        }
+
+        h1 {
+            color: var(--primary-dark);
+            font-size: 1.6rem;
+            margin: 0 0 4px 0;
+            font-weight: 800;
+        }
+
+        .subtitle {
+            font-size: 1.0rem;
+            color: #2b6cb0;
+            font-weight: bold;
+        }
+
+        #game-container {
+            background: var(--card-bg);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            padding: 15px;
+            width: 100%;
+            max-width: 1050px;
+            border: 4px solid var(--primary-color);
+            position: relative;
+            min-height: 550px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .tab-nav {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .tab-btn {
+            background: #e2e8f0;
+            color: #4a5568;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 1.0rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 0 #cbd5e0;
+            font-family: inherit;
+        }
+
+        .tab-btn.active {
+            background: var(--primary-color);
+            color: white;
+            box-shadow: 0 4px 0 var(--primary-dark);
+        }
+
+        .page {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            flex-grow: 1;
+        }
+
+        .page.active {
+            display: flex;
+        }
+
+        .instruction {
+            background: #ebf8ff;
+            border-left: 5px solid var(--primary-color);
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            color: #333;
+            margin-bottom: 12px;
+            width: 100%;
+            text-align: left;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* --- Activity 1: Matching --- */
+        .matching-area {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            gap: 12px;
+        }
+
+        .word-pool {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            justify-content: center;
+            align-items: center;
+            background: #f0f7ff;
+            padding: 10px;
+            border-radius: 12px;
+            border: 2px dashed #90cdf4;
+            min-height: 60px;
+        }
+
+        .drag-card {
+            background: #ffffff;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-dark);
+            padding: 6px 10px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .match-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+            width: 100%;
+        }
+
+        .match-card {
+            background: #ffffff;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            padding: 6px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .match-meaning {
+            font-size: 0.9rem;
+            font-weight: bold;
+            color: #2d3748;
+            text-align: center;
+        }
+
+        .drop-target {
+            min-height: 38px;
+            border: 2px dashed #90cdf4;
+            border-radius: 6px;
+            background: #fffefb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            font-weight: bold;
+            color: #a0aec0;
+            text-align: center;
+            padding: 2px;
+        }
+
+        .drop-target.correct { background: var(--correct-bg); border: 2px solid var(--correct-border); color: #27ae60; font-size: 0.95rem; }
+        .drop-target.retry-correct { background: var(--retry-bg); border: 2px solid var(--retry-border); color: var(--retry-text); font-size: 0.95rem; }
+
+        /* --- Activity 2: Listening Quiz --- */
+        .quiz-list { display: flex; flex-direction: column; gap: 14px; width: 100%; }
+        .quiz-item {
+            background: #fff;
+            border: 2px solid #90cdf4;
+            border-radius: 12px;
+            padding: 12px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.04);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .options-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            width: 100%;
+        }
+
+        /* 曜日選択カード */
+        .day-card {
+            background: #ffffff;
+            border: 2px solid #cbd5e0;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            box-shadow: 0 3px 0 #cbd5e0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px 0;
+            transition: transform 0.1s;
+        }
+
+        .day-card .day-title {
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: #718096;
+            margin-bottom: 2px;
+        }
+
+        .day-card .day-jp {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: var(--primary-dark);
+        }
+
+        /* 時計選択カード（拡大＆数字1〜12付き） */
+        .clock-card {
+            background: #ffffff;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            cursor: pointer;
+            box-shadow: 0 3px 0 #cbd5e0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 8px;
+            transition: transform 0.1s;
+        }
+
+        .clock-card canvas {
+            background: #ffffff;
+            border-radius: 50%;
+        }
+
+        .card-selected-correct {
+            border-color: var(--correct-border) !important;
+            background: var(--correct-bg) !important;
+            box-shadow: 0 3px 0 #27ae60 !important;
+        }
+
+        .card-selected-retry-correct {
+            border-color: var(--retry-border) !important;
+            background: var(--retry-bg) !important;
+            box-shadow: 0 3px 0 var(--retry-border) !important;
+        }
+
+        .card-selected-wrong {
+            border-color: var(--wrong-border) !important;
+            background: var(--wrong-bg) !important;
+            box-shadow: 0 3px 0 #e74c3c !important;
+        }
+
+        .audio-btn { background: none; border: none; font-size: 1.0rem; cursor: pointer; padding: 2px; vertical-align: middle; }
+        .speaker-main {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 16px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            box-shadow: 0 3px 0 var(--primary-dark);
+        }
+
+        .nav-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 2px solid #edf2f7;
+            width: 100%;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .action-btn {
+            background: var(--accent-green);
+            color: white;
+            border: none;
+            padding: 8px 18px;
+            font-size: 1.0rem;
+            font-weight: bold;
+            border-radius: 20px;
+            cursor: pointer;
+            box-shadow: 0 3px 0 var(--accent-green-dark);
+        }
+
+        .report-btn { background: #9b59b6; box-shadow: 0 3px 0 #8e44ad; }
+        .score-board { font-size: 1.0rem; font-weight: 800; color: var(--primary-dark); background: #ebf8ff; padding: 4px 12px; border-radius: 16px; border: 2px solid #90cdf4; }
+
+        @media (max-width: 768px) {
+            .match-grid { grid-template-columns: repeat(4, 1fr); }
+        }
+        @media (max-width: 550px) {
+            .match-grid { grid-template-columns: repeat(2, 1fr); }
+            .options-row { grid-template-columns: repeat(2, 1fr); }
+            h1 { font-size: 1.3rem; }
+            .tab-btn { font-size: 0.85rem; padding: 8px 12px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Step by Step Towards EIKEN Grade 5</h1>
+        <div class="subtitle">p26 Time / Days of the Week (時間と曜日)</div>
+    </header>
+
+    <div id="game-container">
+        <div class="tab-nav">
+            <button class="tab-btn active" id="tab1-btn" onclick="switchTab(1)">Activity 1: Matching</button>
+            <button class="tab-btn" id="tab2-btn" onclick="switchTab(2)">Activity 2: Listening</button>
+        </div>
+
+        <!-- Activity 1: Matching -->
+        <div id="page1" class="page active">
+            <div class="instruction">
+                <span>💡 英単語をタップしてから、正しい日本語のマスをタップしよう！</span>
+                <button class="speaker-main" onclick="speak('Match the English words with their Japanese meanings.')">🔊 Listen</button>
+            </div>
+            
+            <div class="matching-area">
+                <div class="word-pool" id="word-pool"></div>
+                <div class="match-grid" id="match-grid"></div>
+            </div>
+
+            <div class="nav-footer">
+                <div class="score-board" id="match-score">Score: 0 / 16</div>
+                <button class="action-btn report-btn" onclick="sendReportEmail()">📧 先生に報告</button>
+                <button class="action-btn" onclick="resetMatching()">Reset 🔄</button>
+            </div>
+        </div>
+
+        <!-- Activity 2: Listening -->
+        <div id="page2" class="page">
+            <div class="instruction">
+                <span>💡 スピーカーを押して音声を聞き、正しい曜日や時計を選ぼう！</span>
+                <button class="speaker-main" onclick="speak('Listen to the audio and choose the correct day or time.')">🔊 Listen</button>
+            </div>
+
+            <div class="quiz-list" id="quiz-list"></div>
+
+            <div class="nav-footer">
+                <div class="score-board" id="quiz-score">Score: 0 / 16</div>
+                <button class="action-btn report-btn" onclick="sendReportEmail()">📧 先生に報告</button>
+                <button class="action-btn" onclick="resetQuiz()">Shuffle 🔄</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- SPEECH SYNTHESIS ---
+        let preferredVoice = null;
+        function loadVoices() {
+            const voices = window.speechSynthesis.getVoices();
+            preferredVoice = voices.find(v => v.lang === "en-US" && v.name.includes("US English")) ||
+                             voices.find(v => v.lang.startsWith("en-US")) ||
+                             voices.find(v => v.lang.startsWith("en"));
+        }
+        window.speechSynthesis.onvoiceschanged = loadVoices;
+        loadVoices();
+
+        function speak(text) {
+            window.speechSynthesis.cancel();
+            const uttr = new SpeechSynthesisUtterance(text);
+            if (preferredVoice) uttr.voice = preferredVoice;
+            uttr.rate = 0.8;
+            window.speechSynthesis.speak(uttr);
+        }
+
+        function switchTab(tabNum) {
+            window.speechSynthesis.cancel();
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById('tab' + tabNum + '-btn').classList.add('active');
+            document.getElementById('page' + tabNum).classList.add('active');
+        }
+
+        // --- VOCAB DATA ---
+        const vocabOrdered = [
+            { en: 'Sunday', jp: '日曜日' }, { en: 'Monday', jp: '月曜日' }, { en: 'Tuesday', jp: '火曜日' },
+            { en: 'Wednesday', jp: '水曜日' }, { en: 'Thursday', jp: '木曜日' }, { en: 'Friday', jp: '金曜日' },
+            { en: 'Saturday', jp: '土曜日' }, { en: 'day', jp: '日、1日' }, { en: 'week', jp: '週' },
+            { en: 'month', jp: '月（1か月）' }, { en: 'year', jp: '年' }, { en: 'season', jp: '季節' },
+            { en: 'birthday', jp: '誕生日' }, { en: 'hour', jp: '時間（1時間）' }, { en: 'minute', jp: '分' },
+            { en: "o'clock", jp: '〜時' }
+        ];
+
+        // --- ACTIVITY 1: MATCHING ---
+        let matchScore = 0;
+        let matchCompleted = 0;
+        let cardWrongAttempts = {};
+        let selectedCard = null;
+
+        function initMatching() {
+            matchScore = 0; matchCompleted = 0; cardWrongAttempts = {}; selectedCard = null;
+            document.getElementById('match-score').textContent = `Score: 0 / ${vocabOrdered.length}`;
+            const pool = document.getElementById('word-pool');
+            const grid = document.getElementById('match-grid');
+            pool.innerHTML = ''; grid.innerHTML = '';
+
+            [...vocabOrdered].sort(() => Math.random() - 0.5).forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'drag-card';
+                card.id = 'card-' + item.en.replace("'", "");
+                card.innerHTML = `${item.en} <button class="audio-btn" type="button">🔊</button>`;
+                
+                card.querySelector('.audio-btn').onclick = (e) => { 
+                    e.stopPropagation(); 
+                    speak(item.en); 
+                };
+                
+                card.onclick = () => {
+                    speak(item.en);
+                    document.querySelectorAll('.drag-card').forEach(c => c.style.outline = 'none');
+                    if (selectedCard === card) { 
+                        selectedCard = null; 
+                    } else { 
+                        selectedCard = card; 
+                        card.style.outline = '3px solid #f39c12'; 
+                    }
+                };
+                pool.appendChild(card);
+            });
+
+            vocabOrdered.forEach(item => {
+                const box = document.createElement('div');
+                box.className = 'match-card';
+                box.innerHTML = `<div class="match-meaning">${item.jp}</div><div class="drop-target" data-ans="${item.en}">タップ</div>`;
+                
+                box.querySelector('.drop-target').onclick = function() {
+                    if (!selectedCard) return;
+                    const ans = this.dataset.ans;
+                    const cardId = selectedCard.id.replace('card-', '');
+                    
+                    if (cardId === ans.replace("'", "")) {
+                        this.textContent = ans;
+                        this.classList.add(cardWrongAttempts[cardId] ? 'retry-correct' : 'correct');
+                        if (!cardWrongAttempts[cardId]) matchScore++;
+                        selectedCard.style.visibility = 'hidden';
+                        selectedCard = null; 
+                        matchCompleted++;
+                        updateMatchScore();
+                    } else {
+                        cardWrongAttempts[cardId] = true;
+                        speak("Try again");
+                        this.style.background = '#fde8e8';
+                        setTimeout(() => this.style.background = '#fffefb', 500);
+                    }
+                };
+                grid.appendChild(box);
+            });
+        }
+
+        function updateMatchScore() {
+            document.getElementById('match-score').textContent = `Score: ${matchScore} / ${vocabOrdered.length}`;
+            if (matchCompleted === vocabOrdered.length) speak("Excellent! You finished!");
+        }
+
+        function resetMatching() { initMatching(); }
+
+        // --- ACTIVITY 2: LISTENING (Days / Time) ---
+        const listenQuestions = [
+            { type: 'day', ans: 'Thursday', audio: "It's Thursday today.", opts: ['Monday', 'Tuesday', 'Thursday', 'Friday'] },
+            { type: 'day', ans: 'Monday', audio: "It's Monday today.", opts: ['Sunday', 'Monday', 'Wednesday', 'Saturday'] },
+            { type: 'day', ans: 'Wednesday', audio: "It's Wednesday today.", opts: ['Tuesday', 'Wednesday', 'Thursday', 'Friday'] },
+            { type: 'day', ans: 'Saturday', audio: "It's Saturday today.", opts: ['Friday', 'Saturday', 'Sunday', 'Monday'] },
+            { type: 'day', ans: 'Sunday', audio: "It's Sunday today.", opts: ['Saturday', 'Sunday', 'Monday', 'Tuesday'] },
+            { type: 'day', ans: 'Friday', audio: "It's Friday today.", opts: ['Wednesday', 'Thursday', 'Friday', 'Saturday'] },
+            { type: 'day', ans: 'Tuesday', audio: "It's Tuesday today.", opts: ['Sunday', 'Monday', 'Tuesday', 'Wednesday'] },
+            { type: 'time', ans: { h: 12, m: 45 }, audio: "It's twelve forty-five.", opts: [{ h: 12, m: 45 }, { h: 12, m: 15 }, { h: 1, m: 45 }, { h: 11, m: 45 }] },
+            { type: 'time', ans: { h: 3, m: 0 }, audio: "It's three o'clock.", opts: [{ h: 3, m: 0 }, { h: 12, m: 15 }, { h: 3, m: 30 }, { h: 4, m: 0 }] },
+            { type: 'time', ans: { h: 7, m: 30 }, audio: "It's seven thirty.", opts: [{ h: 7, m: 30 }, { h: 6, m: 30 }, { h: 7, m: 0 }, { h: 8, m: 30 }] },
+            { type: 'time', ans: { h: 10, m: 15 }, audio: "It's ten fifteen.", opts: [{ h: 10, m: 15 }, { h: 10, m: 45 }, { h: 9, m: 15 }, { h: 11, m: 15 }] },
+            { type: 'time', ans: { h: 5, m: 20 }, audio: "It's five twenty.", opts: [{ h: 5, m: 20 }, { h: 5, m: 40 }, { h: 4, m: 20 }, { h: 6, m: 20 }] },
+            { type: 'time', ans: { h: 8, m: 10 }, audio: "It's eight ten.", opts: [{ h: 8, m: 10 }, { h: 8, m: 50 }, { h: 7, m: 10 }, { h: 9, m: 10 }] },
+            { type: 'time', ans: { h: 1, m: 50 }, audio: "It's one fifty.", opts: [{ h: 1, m: 50 }, { h: 1, m: 10 }, { h: 2, m: 50 }, { h: 12, m: 50 }] },
+            { type: 'time', ans: { h: 6, m: 0 }, audio: "It's six o'clock.", opts: [{ h: 6, m: 0 }, { h: 12, m: 30 }, { h: 6, m: 30 }, { h: 7, m: 0 }] },
+            { type: 'time', ans: { h: 9, m: 40 }, audio: "It's nine forty.", opts: [{ h: 9, m: 40 }, { h: 9, m: 20 }, { h: 8, m: 40 }, { h: 10, m: 40 }] }
+        ];
+
+        const dayJpMap = {
+            'Sunday': '日曜日', 'Monday': '月曜日', 'Tuesday': '火曜日',
+            'Wednesday': '水曜日', 'Thursday': '木曜日', 'Friday': '金曜日', 'Saturday': '土曜日'
+        };
+
+        let quizStatus = {}; 
+        let currentQuizList = [];
+
+        function initQuiz() {
+            quizStatus = {};
+            currentQuizList = [...listenQuestions].sort(() => Math.random() - 0.5);
+            const container = document.getElementById('quiz-list');
+            container.innerHTML = '';
+            document.getElementById('quiz-score').textContent = `Score: 0 / ${currentQuizList.length}`;
+
+            currentQuizList.forEach((q, idx) => {
+                const item = document.createElement('div');
+                item.className = 'quiz-item';
+                const shuffledOpts = [...q.opts].sort(() => Math.random() - 0.5);
+
+                let optionsRowHtml = '<div class="options-row">';
+                if (q.type === 'day') {
+                    shuffledOpts.forEach(o => {
+                        optionsRowHtml += `
+                            <div class="day-card" onclick="checkQuizDay(${idx}, '${o}', this)">
+                                <div class="day-title">${o.substring(0, 3).toUpperCase()}</div>
+                                <div class="day-jp">${dayJpMap[o]}</div>
+                            </div>
+                        `;
+                    });
+                } else {
+                    shuffledOpts.forEach(o => {
+                        optionsRowHtml += `
+                            <div class="clock-card" onclick="checkQuizTime(${idx}, ${o.h}, ${o.m}, this)">
+                                <canvas width="85" height="85" data-h="${o.h}" data-m="${o.m}"></canvas>
+                            </div>
+                        `;
+                    });
+                }
+                optionsRowHtml += '</div>';
+
+                item.innerHTML = `
+                    <div style="display:flex; align-items:center; gap:12px;">
+                        <span style="font-weight:bold; color:var(--primary-dark); font-size:1.1rem;">Q${idx+1}</span>
+                        <button class="speaker-main" type="button" onclick="speak(\`${q.audio}\`)">🔊 音声を聴く</button>
+                    </div>
+                    ${optionsRowHtml}
+                `;
+                container.appendChild(item);
+            });
+
+            // 見やすい1〜12の数字入りアナログ時計の描画処理
+            setTimeout(() => {
+                document.querySelectorAll('.clock-card canvas').forEach(canvas => {
+                    const h = parseInt(canvas.dataset.h);
+                    const m = parseInt(canvas.dataset.m);
+                    drawClock(canvas, h, m);
+                });
+            }, 50);
+        }
+
+        // 見やすい1〜12の文字盤付きアナログ時計描画関数
+        function drawClock(canvas, hour, minute) {
+            const ctx = canvas.getContext('2d');
+            const radius = canvas.width / 2;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // 時計の枠
+            ctx.beginPath();
+            ctx.arc(radius, radius, radius - 3, 0, 2 * Math.PI);
+            ctx.fillStyle = '#ffffff';
+            ctx.fill();
+            ctx.lineWidth = 2.5;
+            ctx.strokeStyle = '#4a90e2';
+            ctx.stroke();
+
+            // 文字盤の数字（1〜12）をきれいに描画
+            ctx.font = 'bold 10px Nunito, sans-serif';
+            ctx.fillStyle = '#2b2d42';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            for (let num = 1; num <= 12; num++) {
+                const angle = num * (Math.PI / 6) - (Math.PI / 2);
+                const x = radius + Math.cos(angle) * (radius - 12);
+                const y = radius + Math.sin(angle) * (radius - 12);
+                ctx.fillText(num.toString(), x, y);
+            }
+
+            // 中心点
+            ctx.beginPath();
+            ctx.arc(radius, radius, 3, 0, 2 * Math.PI);
+            ctx.fillStyle = '#2b2d42';
+            ctx.fill();
+
+            // 短針（青色・太め）
+            const hourAngle = ((hour % 12) + minute / 60) * (Math.PI / 6) - (Math.PI / 2);
+            ctx.beginPath();
+            ctx.moveTo(radius, radius);
+            ctx.lineTo(radius + Math.cos(hourAngle) * (radius * 0.45), radius + Math.sin(hourAngle) * (radius * 0.45));
+            ctx.lineWidth = 3.5;
+            ctx.strokeStyle = '#2b6cb0';
+            ctx.lineCap = 'round';
+            ctx.stroke();
+
+            // 長針（赤色・長め）
+            const minuteAngle = (minute * (Math.PI / 30)) - (Math.PI / 2);
+            ctx.beginPath();
+            ctx.moveTo(radius, radius);
+            ctx.lineTo(radius + Math.cos(minuteAngle) * (radius * 0.68), radius + Math.sin(minuteAngle) * (radius * 0.68));
+            ctx.lineWidth = 2.2;
+            ctx.strokeStyle = '#e74c3c';
+            ctx.lineCap = 'round';
+            ctx.stroke();
+        }
+
+        function checkQuizDay(idx, choice, el) {
+            const q = currentQuizList[idx];
+            const row = el.parentElement;
+            row.querySelectorAll('.day-card').forEach(c => c.className = 'day-card');
+
+            if (choice === q.ans) {
+                if (quizStatus[idx] === 'wrong') {
+                    el.classList.add('card-selected-retry-correct');
+                    quizStatus[idx] = 'retry';
+                } else {
+                    el.classList.add('card-selected-correct');
+                    quizStatus[idx] = 'first';
+                }
+                speak(q.audio);
+            } else {
+                el.classList.add('card-selected-wrong');
+                quizStatus[idx] = 'wrong';
+                speak("Try again");
+            }
+            updateQuizScore();
+        }
+
+        function checkQuizTime(idx, choiceH, choiceM, el) {
+            const q = currentQuizList[idx];
+            const row = el.parentElement;
+            row.querySelectorAll('.clock-card').forEach(c => c.className = 'clock-card');
+
+            if (choiceH === q.ans.h && choiceM === q.ans.m) {
+                if (quizStatus[idx] === 'wrong') {
+                    el.classList.add('card-selected-retry-correct');
+                    quizStatus[idx] = 'retry';
+                } else {
+                    el.classList.add('card-selected-correct');
+                    quizStatus[idx] = 'first';
+                }
+                speak(q.audio);
+            } else {
+                el.classList.add('card-selected-wrong');
+                quizStatus[idx] = 'wrong';
+                speak("Try again");
+            }
+            updateQuizScore();
+        }
+
+        function updateQuizScore() {
+            let score = 0;
+            for(let i in quizStatus) if(quizStatus[i] === 'first') score++;
+            document.getElementById('quiz-score').textContent = `Score: ${score} / ${currentQuizList.length}`;
+        }
+
+        function resetQuiz() { initQuiz(); }
+
+        // --- REPORTING ---
+        function sendReportEmail() {
+            const recipient = "tamaki@eigostudio-stepforward.com";
+            const subject = encodeURIComponent("【英検5級 p26】学習結果報告 (時間と曜日)");
+            
+            let qScore = 0;
+            for(let i in quizStatus) if(quizStatus[i] === 'first') qScore++;
+
+            let body = "Step by Step Towards EIKEN Grade 5 p26\n";
+            body += "----------------------------------------\n";
+            body += `Activity 1 (Matching): ${matchScore} / ${vocabOrdered.length}\n`;
+            body += `Activity 2 (Listening): ${qScore} / ${currentQuizList.length}\n`;
+            body += "----------------------------------------\n";
+
+            window.location.href = `mailto:${recipient}?subject=${subject}&body=${encodeURIComponent(body)}`;
+        }
+
+        window.onload = () => { initMatching(); initQuiz(); };
+    </script>
+</body>
+</html>
