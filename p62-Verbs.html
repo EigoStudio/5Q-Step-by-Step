@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Imperative, Prohibition & Statement Quiz</title>
+<script src="auth.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-color: #f0f7ff;
+      --card-bg: #ffffff;
+      --text-main: #2c3e50;
+      --accent-blue: #3498db;
+      --accent-green: #2ecc71;
+      --accent-red: #e74c3c;
+      --accent-purple: #9b59b6;
+      --font-main: "Zen Maru Gothic", sans-serif;
+    }
+
+    * { box-sizing: border-box; font-family: var(--font-main); }
+    body {
+      background-color: var(--bg-color);
+      margin: 0;
+      padding: 15px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      color: var(--text-main);
+    }
+
+    .container {
+      background: var(--card-bg);
+      width: 100%;
+      max-width: 750px;
+      padding: 25px;
+      border-radius: 24px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+      text-align: center;
+      border: 4px solid #fff;
+    }
+
+    .header-title {
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: var(--text-main);
+      margin-top: 0;
+      margin-bottom: 5px;
+      border-bottom: 3px dashed #cbd5e1;
+      padding-bottom: 10px;
+    }
+
+    .progress-text {
+      font-size: 1.1rem;
+      font-weight: bold;
+      color: var(--accent-blue);
+      margin-bottom: 15px;
+    }
+
+    /* タイプバッジとスピーカーの横並びエリア */
+    .badge-speaker-area {
+      min-height: 50px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .type-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 18px;
+      border-radius: 50px;
+      font-size: 1.1rem;
+      font-weight: 900;
+      letter-spacing: 0.5px;
+      animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .type-badge.prohibition {
+      background-color: #fde8e8;
+      color: var(--accent-red);
+      border: 2px solid var(--accent-red);
+      font-size: 1.25rem;
+      padding: 8px 22px;
+    }
+
+    .type-badge.command {
+      background-color: #e8f5e9;
+      color: var(--accent-green);
+      border: 2px solid var(--accent-green);
+    }
+
+    .type-badge.statement {
+      background-color: #f3e5f5;
+      color: var(--accent-purple);
+      border: 2px solid var(--accent-purple);
+    }
+
+    /* バッジの隣にヒョイっと現れるスピーカーボタン */
+    .speaker-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: #e2e8f0;
+      color: var(--text-main);
+      border: 2px solid #cbd5e1;
+      font-size: 1.1rem;
+      font-weight: bold;
+      cursor: pointer;
+      padding: 6px 16px;
+      border-radius: 50px;
+      transition: all 0.2s;
+      animation: popIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    }
+    .speaker-btn:hover {
+      background: #cbd5e1;
+      transform: scale(1.08);
+    }
+
+    @keyframes popIn {
+      0% { transform: scale(0.5); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    /* 問題枠 */
+    .question-box {
+      font-size: 1.6rem;
+      font-weight: bold;
+      background-color: #f8fafc;
+      border-radius: 16px;
+      padding: 25px 20px;
+      border: 2px solid #e2e8f0;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    .blank-v {
+      color: var(--accent-blue);
+      border-bottom: 3px solid var(--accent-blue);
+      padding: 2px 12px;
+      background: white;
+      border-radius: 6px;
+      display: inline-block;
+      min-width: 120px;
+    }
+
+    /* 選択肢 */
+    .choices-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .choice-btn {
+      background-color: white;
+      border: 2.5px solid #cbd5e1;
+      padding: 14px 10px;
+      border-radius: 14px;
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: var(--text-main);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .choice-btn:hover {
+      border-color: var(--accent-blue);
+      background-color: #f0f9ff;
+    }
+
+    .choice-btn.selected {
+      background-color: var(--accent-blue);
+      color: white;
+      border-color: var(--accent-blue);
+    }
+
+    .choice-btn.correct {
+      background-color: var(--accent-green) !important;
+      color: white !important;
+      border-color: var(--accent-green) !important;
+    }
+
+    .choice-btn.wrong {
+      background-color: var(--accent-red) !important;
+      color: white !important;
+      border-color: var(--accent-red) !important;
+    }
+
+    /* フィードバック＆シンプル和訳 */
+    .feedback-card {
+      display: none;
+      background-color: #f1f5f9;
+      border-radius: 14px;
+      padding: 15px 20px;
+      margin-bottom: 20px;
+      text-align: left;
+    }
+
+    .japanese-translation {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #334155;
+      margin-top: 5px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* ボタン */
+    .action-btn {
+      padding: 12px 45px;
+      font-size: 1.3rem;
+      background-color: var(--accent-green);
+      color: white;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      font-weight: bold;
+      box-shadow: 0 4px 0 #27ae60;
+    }
+
+    .action-btn:hover { background-color: #27ae60; }
+
+    /* コア（文法総まとめ）画面 */
+    .core-card {
+      display: none;
+      text-align: left;
+      background: #ffffff;
+    }
+
+    .core-title {
+      font-size: 1.8rem;
+      color: var(--accent-blue);
+      text-align: center;
+      margin-bottom: 20px;
+      font-weight: 900;
+    }
+
+    .core-box {
+      border: 3px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 18px;
+      margin-bottom: 15px;
+      background-color: #fafafa;
+    }
+
+    .core-box h3 {
+      margin: 0 0 8px 0;
+      font-size: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .core-box p {
+      margin: 0;
+      font-size: 1.05rem;
+      line-height: 1.6;
+      color: #475569;
+    }
+
+    /* 紙吹雪（フェードアウト効果追加） */
+    .confetti-container {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 99;
+      overflow: hidden;
+      display: none;
+      transition: opacity 1s ease;
+    }
+    .confetti-item {
+      position: absolute;
+      top: -10%;
+      font-size: 1.8rem;
+      animation: confetti-fall 2.5s ease-out forwards;
+    }
+    @keyframes confetti-fall {
+      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+    }
+
+    @media (max-width: 600px) {
+      .choices-grid { grid-template-columns: 1fr; }
+      .question-box { font-size: 1.3rem; }
+      .badge-speaker-area { flex-wrap: wrap; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="confetti-container" id="confetti"></div>
+
+<div class="container">
+  <!-- クイズ本体画面 -->
+  <div id="quiz-screen">
+    <h1 class="header-title">Imperative, Prohibition & Statement</h1>
+    <div class="progress-text" id="progressText">Q 1/9</div>
+
+    <!-- 種別バッジ & 正解時にヒョイと出るスピーカー -->
+    <div class="badge-speaker-area">
+      <div id="typeBadge" class="type-badge" style="display: none;"></div>
+      <button id="speakerBtn" class="speaker-btn" onclick="speakCurrentSentence()" style="display: none;">🔊 Listen</button>
+    </div>
+
+    <!-- 問題文 -->
+    <div class="question-box" id="questionDisplay"></div>
+
+    <!-- 選択肢 -->
+    <div class="choices-grid" id="choicesGrid"></div>
+
+    <!-- 正解時のフィードバック & シンプル和訳 -->
+    <div class="feedback-card" id="feedbackCard">
+      <div class="japanese-translation" id="jaTranslation"></div>
+    </div>
+
+    <div style="margin-top: 15px;">
+      <button class="action-btn" id="checkBtn" onclick="checkAnswer()">答え合わせ</button>
+      <button class="action-btn" id="nextBtn" onclick="nextQuestion()" style="display: none; background-color: var(--accent-blue); box-shadow: 0 4px 0 #2980b9;">次へ進む ➔</button>
+    </div>
+  </div>
+
+  <!-- まとめ画面 -->
+  <div class="core-card" id="core-screen">
+    <div class="core-title">🎉 きょうのおさらい</div>
+    
+    <div class="core-box" style="border-color: #2ecc71;">
+      <h3 style="color: #2ecc71;">📢 命令文（Command）のおさらい</h3>
+      <p><b>主語がありません！</b> 相手に指示や依頼をする時は、いきなり<b>【動詞の原形】</b>からスタートします。<br>例: <i><b>Wash</b> your hands. / Please <b>close</b> the window.</i></p>
+    </div>
+
+    <div class="core-box" style="border-color: #e74c3c;">
+      <h3 style="color: #e74c3c;">❌ 禁止の命令文（Prohibition）のおさらい</h3>
+      <p>「〜しないで」と止める時は、主語を置かずに<b>【Don't ＋ 動詞の原形】</b>でスタートします。<br>例: <i>Please <b>don't cry</b>. / <b>Don't sing</b> in the library.</i></p>
+    </div>
+
+    <div class="core-box" style="border-color: #9b59b6;">
+      <h3 style="color: #9b59b6;">ℹ️ 説明の文（Statement / 現在形）のおさらい</h3>
+      <p>命令文と違って<b>「主語」がしっかりあります！</b> 三人称単数の主語なら動詞に <b>-s</b> をつけます。<br>例: <i><b>The test</b> <b>begins</b> at 8:30.</i> （主語 The test があるので命令文ではない）</p>
+    </div>
+
+    <div style="text-align: center; margin-top: 25px;">
+      <button class="action-btn" onclick="restartQuiz()">もう一度挑戦する</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // 問題データ
+  const quizData = [
+    {
+      q: "(  V  ) talking! Everyone is taking a test!",
+      v: "Stop",
+      vOpt: ["Stop", "Stops", "Don't stop", "Doesn't stop"],
+      type: "command",
+      typeLabel: "📢 Command (命令)",
+      ja: "💡 おしゃべりをやめなさい！みんなテスト中ですよ！"
+    },
+    {
+      q: "The test (  V  ) at eight thirty.",
+      v: "begins",
+      vOpt: ["begin", "begins", "don't begin", "doesn't begin"],
+      type: "statement",
+      typeLabel: "ℹ️ Statement (説明・現在形)",
+      ja: "💡 テストは8時30分に始まります。"
+    },
+    {
+      q: "Boy: Ellie, please (  V  ).",
+      v: "don't cry",
+      vOpt: ["cry", "cries", "don't cry", "doesn't cry"],
+      type: "prohibition",
+      typeLabel: "❌ Prohibition (禁止)",
+      ja: "💡 エリー、お願いだから泣かないで。"
+    },
+    {
+      q: "Mother: (  V  ) your hands before dinner.",
+      v: "Wash",
+      vOpt: ["Wash", "Washes", "Don't wash", "Doesn't wash"],
+      type: "command",
+      typeLabel: "📢 Command (命令)",
+      ja: "💡 晩ごはんの前に手を洗いなさい。"
+    },
+    {
+      q: "Please (  V  ) the window.",
+      v: "close",
+      vOpt: ["close", "closes", "don't close", "doesn't close"],
+      type: "command",
+      typeLabel: "📢 Command (依頼・命令)",
+      ja: "💡 窓を閉めてください。"
+    },
+    {
+      q: "Mother: Noah, (  V  ) your homework now.",
+      v: "do",
+      vOpt: ["do", "does", "don't do", "doesn't do"],
+      type: "command",
+      typeLabel: "📢 Command (命令)",
+      ja: "💡 ノア、今すぐ宿題をしなさい。"
+    },
+    {
+      q: "Mother: Noah, (  V  ) your teeth after dinner.",
+      v: "brush",
+      vOpt: ["brush", "brushes", "don't brush", "doesn't brush"],
+      type: "command",
+      typeLabel: "📢 Command (命令)",
+      ja: "💡 ノア、夕食のあとは歯をみがきなさい。"
+    },
+    {
+      q: "Mother: Ellie, (  V  ) up. You have school today.",
+      v: "wake",
+      vOpt: ["wake", "wakes", "don't wake", "doesn't wake"],
+      type: "command",
+      typeLabel: "📢 Command (命令)",
+      ja: "💡 エリー、起きなさい。今日は学校ですよ。"
+    },
+    {
+      q: "Boy: Ellie, (  V  ) in the library.",
+      v: "don't sing",
+      vOpt: ["sing", "sings", "don't sing", "doesn't sing"],
+      type: "prohibition",
+      typeLabel: "❌ Prohibition (禁止)",
+      ja: "💡 エリー、図書館で歌っちゃだめだよ。"
+    }
+  ];
+
+  let currentIdx = 0;
+  let selectedV = null;
+  let shuffledData = [];
+
+  // 音声（女性優先ロジック）
+  let preferredVoice = null;
+  function loadVoices() {
+    if (!('speechSynthesis' in window)) return;
+    const voices = window.speechSynthesis.getVoices();
+    if (voices.length === 0) return;
+    
+    preferredVoice = 
+      voices.find(v => v.lang.startsWith("en") && v.name.includes("Google US English")) ||
+      voices.find(v => v.lang.startsWith("en") && v.name.includes("Samantha")) ||
+      voices.find(v => v.lang.startsWith("en") && v.name.includes("Jenny")) ||
+      voices.find(v => v.lang.startsWith("en") && v.name.includes("Zira")) ||
+      voices.find(v => v.lang.startsWith("en") && v.name.includes("Female")) ||
+      voices.find(v => v.lang.startsWith("en"));
+  }
+
+  if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+    window.speechSynthesis.onvoiceschanged = loadVoices;
+    loadVoices();
+  }
+
+  // 効果音用 (Web Audio API)
+  const AudioContext = window.AudioContext || window.webkitAudioContext;
+  let audioCtx = null;
+
+  function playSuccessSound() {
+    if (!audioCtx) audioCtx = new AudioContext();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    
+    const now = audioCtx.currentTime;
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(523.25, now);
+    osc.frequency.exponentialRampToValueAtTime(659.25, now + 0.15);
+    gain.gain.setValueAtTime(0.2, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.start(now);
+    osc.stop(now + 0.3);
+  }
+
+  function shuffle(array) {
+    let arr = [...array];
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }
+
+  function restartQuiz() {
+    currentIdx = 0;
+    shuffledData = shuffle(quizData);
+    document.getElementById("quiz-screen").style.display = "block";
+    document.getElementById("core-screen").style.display = "none";
+    document.getElementById("confetti").style.display = "none";
+    loadQuestion();
+  }
+
+  function loadQuestion() {
+    const data = shuffledData[currentIdx];
+    selectedV = null;
+
+    document.getElementById('progressText').textContent = `Q ${currentIdx + 1} / ${shuffledData.length}`;
+    document.getElementById('checkBtn').style.display = "inline-block";
+    document.getElementById('nextBtn').style.display = "none";
+    document.getElementById('feedbackCard').style.display = "none";
+    document.getElementById('speakerBtn').style.display = "none";
+
+    // 種別バッジの設定
+    const badge = document.getElementById('typeBadge');
+    badge.className = `type-badge ${data.type}`;
+    badge.textContent = data.typeLabel;
+    badge.style.display = "inline-flex";
+
+    updateQuestionDisplay();
+
+    // 選択肢の生成
+    const grid = document.getElementById('choicesGrid');
+    grid.innerHTML = "";
+    shuffle(data.vOpt).forEach(opt => {
+      const btn = document.createElement('button');
+      btn.className = "choice-btn";
+      btn.textContent = opt;
+      btn.onclick = () => {
+        if (document.getElementById('nextBtn').style.display === "inline-block") return;
+        document.querySelectorAll('.choice-btn').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        selectedV = opt;
+        updateQuestionDisplay();
+      };
+      grid.appendChild(btn);
+    });
+  }
+
+  function updateQuestionDisplay() {
+    const data = shuffledData[currentIdx];
+    const vText = selectedV ? selectedV : " &nbsp;&nbsp;?&nbsp;&nbsp; ";
+    let html = data.q.replace("(  V  )", `<span class="blank-v">${vText}</span>`);
+    
+    document.getElementById('questionDisplay').innerHTML = html;
+  }
+
+  function checkAnswer() {
+    if (!selectedV) {
+      alert("選択肢を選んでね！");
+      return;
+    }
+
+    const data = shuffledData[currentIdx];
+    const isCorrect = (selectedV === data.v);
+    const selectedBtn = Array.from(document.querySelectorAll('.choice-btn')).find(b => b.textContent === selectedV);
+
+    if (isCorrect) {
+      playSuccessSound();
+      if (selectedBtn) selectedBtn.classList.add('correct');
+      document.getElementById('checkBtn').style.display = "none";
+      document.getElementById('nextBtn').style.display = "inline-block";
+
+      // バッジの隣にスピーカーボタンをヒョイと表示
+      document.getElementById('speakerBtn').style.display = "inline-flex";
+
+      // 和訳表示
+      document.getElementById('jaTranslation').textContent = data.ja;
+      document.getElementById('feedbackCard').style.display = "block";
+    } else {
+      if (selectedBtn) selectedBtn.classList.add('wrong');
+    }
+  }
+
+  function speakCurrentSentence() {
+    const data = shuffledData[currentIdx];
+    const fullText = data.q.replace("(  V  )", data.v);
+    if (!('speechSynthesis' in window)) return;
+    
+    window.speechSynthesis.cancel();
+    const uttr = new SpeechSynthesisUtterance(fullText);
+    if (preferredVoice) uttr.voice = preferredVoice;
+    uttr.lang = "en-US";
+    uttr.rate = 0.8;
+    uttr.pitch = 1.1; // 女性らしいトーン
+    window.speechSynthesis.speak(uttr);
+  }
+
+  function nextQuestion() {
+    currentIdx++;
+    if (currentIdx < shuffledData.length) {
+      loadQuestion();
+    } else {
+      showCoreScreen();
+    }
+  }
+
+  function showCoreScreen() {
+    document.getElementById("quiz-screen").style.display = "none";
+    document.getElementById("core-screen").style.display = "block";
+    startConfetti();
+  }
+
+  // 紙吹雪をひとしきり降らせたあとに消去する処理
+  function startConfetti() {
+    const container = document.getElementById("confetti");
+    container.innerHTML = "";
+    container.style.opacity = "1";
+    container.style.display = "block";
+
+    const icons = ["🎉", "✨", "👏", "⭐️", "🎈"];
+    for (let i = 0; i < 20; i++) { // 数も少し抑えめに調整
+      const item = document.createElement("div");
+      item.className = "confetti-item";
+      item.textContent = icons[Math.floor(Math.random() * icons.length)];
+      item.style.left = Math.random() * 100 + "%";
+      item.style.animationDelay = (Math.random() * 1.2) + "s";
+      container.appendChild(item);
+    }
+
+    // 2.5秒後に徐々に消して、3.5秒後に完全非表示
+    setTimeout(() => {
+      container.style.opacity = "0";
+      setTimeout(() => {
+        container.style.display = "none";
+      }, 1000);
+    }, 2500);
+  }
+
+  restartQuiz();
+</script>
+
+</body>
+</html>
