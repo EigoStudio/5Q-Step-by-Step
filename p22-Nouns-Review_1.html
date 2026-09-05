@@ -1,0 +1,1198 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>英検5級 名詞 ボキャブラリー問題 #1</title>
+<script src="auth.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-color: #f0f7ff;
+    --card-bg: #ffffff;
+    --primary-color: #007bff;
+    --secondary-color: #fd7e14;
+    --accent-green: #28a745;
+    --accent-red: #dc3545;
+    --text-main: #2d3748;
+    --border-color: #cbd5e0;
+    --main-font: "Zen Maru Gothic", sans-serif;
+  }
+
+  * { font-family: var(--main-font); box-sizing: border-box; }
+
+  body {
+    background-color: var(--bg-color);
+    margin: 0;
+    padding: 20px;
+    color: var(--text-main);
+    line-height: 1.6;
+  }
+
+  .control-panel {
+    max-width: 800px;
+    margin: 0 auto 15px auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #ffffff;
+    padding: 10px 18px;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  }
+
+  .zoom-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.95rem;
+    font-weight: bold;
+    color: #4a5568;
+  }
+
+  .zoom-btn, .print-btn {
+    background: var(--bg-color);
+    border: 2px solid var(--border-color);
+    padding: 5px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 0.95rem;
+    color: var(--primary-color);
+    transition: all 0.2s;
+  }
+
+  .zoom-btn:hover, .print-btn:hover {
+    background: var(--primary-color);
+    color: white;
+  }
+
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: var(--card-bg);
+    padding: 30px;
+    border-radius: 25px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+    transform-origin: top center;
+    transition: transform 0.2s ease;
+  }
+
+  .tabs {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 25px;
+    border-bottom: 3px solid #e2e8f0;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .tab-btn {
+    flex: 1;
+    min-width: 90px;
+    padding: 12px 8px;
+    background: #e2e8f0;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1rem;
+    color: #4a5568;
+    border-radius: 12px 12px 0 0;
+    transition: all 0.2s ease;
+    text-align: center;
+  }
+
+  .tab-btn:hover { background: #cbd5e0; }
+  .tab-btn.active { background: var(--primary-color); color: white; }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .day-header {
+    border-left: 6px solid var(--primary-color);
+    padding-left: 12px;
+    margin-bottom: 25px;
+  }
+
+  .day-header h2 { margin: 0; color: var(--primary-color); font-size: 1.5rem; }
+  .day-header .subtitle { color: #718096; font-size: 0.9rem; margin-top: 4px; font-weight: bold; }
+
+  .question-card {
+    background: #ffffff;
+    border: 2px solid #e2e8f0;
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+  }
+
+  .question-title {
+    font-weight: bold;
+    font-size: 1.15rem;
+    color: var(--text-main);
+    margin-bottom: 12px;
+    line-height: 1.6;
+  }
+
+  .speaker { color: var(--primary-color); font-weight: bold; }
+
+  .options-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-top: 12px;
+  }
+
+  .option-btn {
+    background: #ffffff;
+    border: 2px solid #dee2e6;
+    border-radius: 10px;
+    padding: 10px 8px;
+    text-align: left;
+    cursor: pointer;
+    font-size: 1.05rem;
+    font-weight: bold;
+    color: var(--text-main);
+    transition: all 0.15s ease;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .option-btn:hover:not(:disabled) {
+    background: #e7f1ff;
+    border-color: var(--primary-color);
+  }
+
+  .option-btn.correct {
+    background-color: #d4edda !important;
+    border-color: var(--accent-green) !important;
+    color: #155724 !important;
+  }
+
+  .option-btn.incorrect {
+    background-color: #f8d7da !important;
+    border-color: var(--accent-red) !important;
+    color: #721c24 !important;
+  }
+
+  .explanation {
+    display: none;
+    margin-top: 15px;
+    padding: 15px;
+    background-color: #fff3cd;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    border: 1px solid #ffeeba;
+  }
+
+  .explanation span.label {
+    font-weight: bold;
+    color: var(--secondary-color);
+    font-size: 1.05rem;
+  }
+
+  .translation { margin-top: 6px; font-weight: bold; color: #495057; }
+
+  .vocab-list {
+    margin-top: 10px;
+    font-size: 0.88rem;
+    color: #2d3748;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 10px 14px;
+    border-radius: 8px;
+    line-height: 1.6;
+    border: 1px solid #ffe8a1;
+  }
+
+  .speak-btn {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 0.88rem;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 10px;
+    display: inline-block;
+    box-shadow: 0 3px 0 #0056b3;
+  }
+
+  .speak-btn:active { transform: translateY(2px); box-shadow: none; }
+
+  @media (max-width: 600px) {
+    .options-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media print {
+    @page { size: A4; margin: 12mm; }
+    body { background-color: #ffffff !important; color: #000000 !important; padding: 0 !important; font-family: "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif; }
+    .control-panel, .tabs, .speak-btn { display: none !important; }
+    .container { box-shadow: none !important; padding: 0 !important; max-width: 100% !important; transform: none !important; background: transparent !important; }
+    
+    .tab-content { display: block !important; page-break-before: always !important; break-before: page !important; }
+    .tab-content:first-of-type { page-break-before: avoid !important; break-before: auto !important; }
+
+    .day-header { border-left: 4px solid #000000 !important; padding-left: 10px !important; margin-bottom: 12px !important; }
+    .day-header h2 { color: #000000 !important; font-size: 1.25rem !important; }
+    .day-header .subtitle { color: #333333 !important; font-size: 0.85rem !important; }
+
+    .question-card {
+      border: none !important; border-bottom: 1px solid #888888 !important; border-radius: 0 !important;
+      padding: 8px 0 !important; margin-bottom: 8px !important; box-shadow: none !important; page-break-inside: avoid;
+    }
+
+    .question-title { font-size: 0.95rem !important; margin-bottom: 4px !important; color: #000000 !important; line-height: 1.4 !important; }
+    .speaker { color: #000000 !important; }
+    
+    .options-grid { display: grid !important; grid-template-columns: repeat(4, 1fr) !important; gap: 0 10px !important; margin-top: 4px !important; }
+    .option-btn { background: none !important; border: none !important; padding: 0 !important; font-size: 0.9rem !important; color: #000000 !important; font-weight: normal !important; }
+    .explanation { display: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="control-panel">
+  <button class="print-btn" onclick="window.print()">🖨 ワークシート印刷</button>
+  <div class="zoom-controls">
+    <span>表示サイズ:</span>
+    <button class="zoom-btn" onclick="changeZoom(-10)">-</button>
+    <span id="zoom-val">100%</span>
+    <button class="zoom-btn" onclick="changeZoom(10)">+</button>
+  </div>
+</div>
+
+<div class="container" id="main-container">
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="openTab(event, 'day1')">Day 1</button>
+    <button class="tab-btn" onclick="openTab(event, 'day2')">Day 2</button>
+    <button class="tab-btn" onclick="openTab(event, 'day3')">Day 3</button>
+    <button class="tab-btn" onclick="openTab(event, 'day4')">Day 4</button>
+    <button class="tab-btn" onclick="openTab(event, 'day5')">Day 5</button>
+  </div>
+
+  <!-- DAY 1 -->
+  <div id="day1" class="tab-content active">
+    <div class="day-header">
+      <h2>英検5級 名詞 ボキャブラリー問題 #1 Day 1</h2>
+      <div class="subtitle">【短文の語句空所補充問題】 (第1問〜第10問)</div>
+    </div>
+
+    <div class="question-card" id="q1-1">
+      <div class="question-title">(1) <span class="speaker">Boy:</span> Do you have a ( &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; )?<br><span class="speaker">Girl:</span> Yes! His name is James.</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkAnswer(this, 'q1-1', 4)">1 soccer</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q1-1', 4)">2 ruler</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q1-1', 4)">3 bakery</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q1-1', 4)">4 brother</button>
+      </div>
+      <div class="explanation">
+        <span class="label">正解: 4 brother</span>
+        <div class="translation">【和訳】男の子：兄弟はいますか？<br>女の子：うん！彼の名前はジェームズです。</div>
+        <button class="speak-btn" onclick="playAudio('Do you have a brother? Yes! His name is James.')">🔊 英文を聞く</button>
+        <div class="vocab-list">・1 soccer: サッカー<br>・2 ruler: 定規<br>・3 bakery: パン屋<br>・4 brother: 兄弟</div>
+      </div>
+    </div>
+
+    <div class="question-card" id="q1-2">
+      <div class="question-title">(2) <span class="speaker">Girl:</span> Look at the red roses in the ( &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ).<br><span class="speaker">Boy:</span> Wow, they are very pretty.</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkAnswer(this, 'q1-2', 2)">1 boots</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q1-2', 2)">2 garden</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q1-2', 2)">3 pool</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q1-2', 2)">4 flute</button>
+      </div>
+      <div class="explanation">
+        <span class="label">正解: 2 garden</span>
+        <div class="translation">【和訳】女の子：庭にある赤いバラを見て。<br>男の子：わぁ、とてもきれいだね。</div>
+        <button class="speak-btn" onclick="playAudio('Look at the red roses in the garden. Wow, they are very pretty.')">🔊 英文を聞く</button>
+        <div class="vocab-list">・1 boots: ブーツ<br>・2 garden: 庭<br>・3 pool: プール<br>・4 flute: フルート</div>
+      </div>
+    </div>
+
+    <div class="question-card" id="q1-3">
+      <div class="question-title">(3) <span class="speaker">Boy:</span> Amy, let's go to the ( &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ).<br><span class="speaker">Girl:</span> OK. We can play badminton there.</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkAnswer(this, 'q1-3', 4)">1 river</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q1-3', 4)">2 carrot</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q1-3', 4)">3 moon</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q1-3', 4)">4 gym</button>
+      </div>
+      <div class="explanation">
+        <span class="label">正解: 4 gym</span>
+        <div class="translation">【和訳】男の子：エイミー、体育館に行こうよ。<br>女の子：いいわね。そこでバドミントンができるわ。</div>
+        <button class="speak-btn" onclick="playAudio('Amy, let\'s go to the gym. OK. We can play badminton there.')">🔊 英文を聞く</button>
+        <div class="vocab-list">・1 river: 川<br>・2 carrot: 人参<br>・3 moon: 月<br>・4 gym: 体育館</div>
+      </div>
+    </div>
+
+    <div class="question-card" id="q1-4">
+      <div class="question-title">(4) Look at those red and yellow ( &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ). They are falling from the big tree.</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkAnswer(this, 'q1-4', 1)">1 leaves</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q1-4', 1)">2 lakes</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q1-4', 1)">3 oceans</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q1-4', 1)">4 shirts</button>
+      </div>
+      <div class="explanation">
+        <span class="label">正解: 1 leaves</span>
+        <div class="translation">【和訳】あの赤や黄色の葉っぱを見て。大きな木から落ちてきているよ。</div>
+        <button class="speak-btn" onclick="playAudio('Look at those red and yellow leaves. They are falling from the big tree.')">🔊 英文を聞く</button>
+        <div class="vocab-list">・1 leaves: 葉<br>・2 lakes: 湖<br>・3 oceans: 大洋<br>・4 shirts: シャツ</div>
+      </div>
+    </div>
+
+    <div class="question-card" id="q1-5">
+      <div class="question-title">(5) My uncle lives in America. He speaks good ( &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ).</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkAnswer(this, 'q1-5', 3)">1 Canada</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q1-5', 3)">2 hospital</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q1-5', 3)">3 English</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q1-5', 3)">4 salad</button>
+      </div>
+      <div class="explanation">
+        <span class="label">正解: 3 English</span>
+        <div class="translation">【和訳】私の叔父はアメリカに住んでいます。彼は上手な英語を話します。</div>
+        <button class="speak-btn" onclick="playAudio('My uncle lives in America. He speaks good English.')">🔊 英文を聞く</button>
+        <div class="vocab-list">・1 Canada: カナダ<br>・2 hospital: 病院<br>・3 English: 英語<br>・4 salad: サラダ</div>
+      </div>
+    </div>
+
+    <div class="question-card" id="q1-6">
+      <div class="question-title">(6) <span class="speaker">Boy:</span> Do you have two ( &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ) for badminton?<br><span class="speaker">Girl:</span> Yes, I do. Let's play together!</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkAnswer(this, 'q1-6', 2)">1 cherries</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q1-6', 2)">2 rackets</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q1-6', 2)">3 gloves</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q1-6', 2)">4 tickets</button>
+      </div>
+      <div class="explanation">
+        <span class="label">正解: 2 rackets</span>
+        <div class="translation">【和訳】男の子：バドミントン用のラケットを2本持っていますか？<br>女の子：うん、持っているよ。一緒にしよう！</div>
+        <button class="speak-btn" onclick="playAudio('Do you have two rackets for badminton? Yes, I do. Let\'s play together!')">🔊 英文を聞く</button>
+        <div class="vocab-list">・1 cherries: さくらんぼ<br>・2 rackets: ラケット<br>・3 gloves: 手袋<br>・4 tickets: 切符、チケット</div>
+      </div>
+    </div>
+
+    <div class="question-card" id="q1-7">
+      <div class="question-title">(7) Mr. Smith is our ( &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ) teacher. We paint pictures in his class.</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkAnswer(this, 'q1-7', 1)">1 art</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q1-7', 1)">2 airport</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q1-7', 1)">3 truck</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q1-7', 1)">4 gorilla</button>
+      </div>
+      <div class="explanation">
+        <span class="label">正解: 1 art</span>
+        <div class="translation">【和訳】スミス先生は私たちの図工（美術）の先生です。彼の授業では絵を描きます。</div>
+        <button class="speak-btn" onclick="playAudio('Mr. Smith is our art teacher. We paint pictures in his class.')">🔊 英文を聞く</button>
+        <div class="vocab-list">・1 art: 図工、美術<br>・2 airport: 空港<br>・3 truck: トラック<br>・4 gorilla: ゴリラ</div>
+      </div>
+    </div>
+
+    <div class="question-card" id="q1-8">
+      <div class="question-title">(8) My brother buys fresh bread at the ( &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ) every morning.</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkAnswer(this, 'q1-8', 4)">1 science</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q1-8', 4)">2 T-shirt</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q1-8', 4)">3 homework</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q1-8', 4)">4 bakery</button>
+      </div>
+      <div class="explanation">
+        <span class="label">正解: 4 bakery</span>
+        <div class="translation">【和訳】私の兄（弟）は毎朝パン屋さんで焼きたてのパンを買います。</div>
+        <button class="speak-btn" onclick="playAudio('My brother buys fresh bread at the bakery every morning.')">🔊 英文を聞く</button>
+        <div class="vocab-list">・1 science: 理科<br>・2 T-shirt: Tシャツ<br>・3 homework: 宿題<br>・4 bakery: パン屋</div>
+      </div>
+    </div>
+
+    <div class="question-card" id="q1-9">
+      <div class="question-title">(9) Look at the ( &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ) in the night sky. It is very bright.</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkAnswer(this, 'q1-9', 2)">1 soup</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q1-9', 2)">2 moon</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q1-9', 2)">3 firefighter</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q1-9', 2)">4 magazine</button>
+      </div>
+      <div class="explanation">
+        <span class="label">正解: 2 moon</span>
+        <div class="translation">【和訳】夜空の月を見て。とても明るいよ。</div>
+        <button class="speak-btn" onclick="playAudio('Look at the moon in the night sky. It is very bright.')">🔊 英文を聞く</button>
+        <div class="vocab-list">・1 soup: スープ<br>・2 moon: 月<br>・3 firefighter: 消防士<br>・4 magazine: 雑誌</div>
+      </div>
+    </div>
+
+    <div class="question-card" id="q1-10">
+      <div class="question-title">(10) <span class="speaker">Girl:</span> What ( &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ) do you like?<br><span class="speaker">Boy:</span> I like history.</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkAnswer(this, 'q1-10', 3)">1 koala</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q1-10', 3)">2 potato chips</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q1-10', 3)">3 subject</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q1-10', 3)">4 stadium</button>
+      </div>
+      <div class="explanation">
+        <span class="label">正解: 3 subject</span>
+        <div class="translation">【和訳】女の子：どの教科が好きですか？<br>男の子：歴史が好きです。</div>
+        <button class="speak-btn" onclick="playAudio('What subject do you like? I like history.')">🔊 英文を聞く</button>
+        <div class="vocab-list">・1 koala: コアラ<br>・2 potato chips: ポテトチップス<br>・3 subject: 教科<br>・4 stadium: スタジアム</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DAY 2 -->
+  <div id="day2" class="tab-content">
+    <div class="day-header">
+      <h2>英検5級 名詞 ボキャブラリー問題 #1 Day 2</h2>
+      <div class="subtitle">【短文の語句空所補充問題】 (第1問〜第10問)</div>
+    </div>
+
+    <div class="question-card" id="q2-1">
+      <div class="question-title">(1) My father goes to his ( &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ) by train every morning. He works hard there.</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkAnswer(this, 'q2-1', 2)">1 French fries</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q2-1', 2)">2 office</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q2-1', 2)">3 pink</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q2-1', 2)">4 textbook</button>
+      </div>
+      <div class="explanation">
+        <span class="label">正解: 2 office</span>
+        <div class="translation">【和訳】父は毎朝電車で会社（オフィス）に行きます。そこで熱心に働いています。</div>
+        <button class="speak-btn" onclick="playAudio('My father goes to his office by train every morning. He works hard there.')">🔊 英文を聞く</button>
+        <div class="vocab-list">・1 French fries: フライドポテト<br>・2 office: 会社、事務所<br>・3 pink: ピンク<br>・4 textbook: 教科書</div>
+      </div>
+    </div>
+
+    <div class="question-card" id="q2-2">
+      <div class="question-title">(2) <span class="speaker">Girl:</span> Excuse me, where is the ( &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; )?<br><span class="speaker">Teacher:</span> It is next to the library.</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkAnswer(this, 'q2-2', 4)">1 broccoli</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q2-2', 4)">2 scarf</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q2-2', 4)">3 harmonica</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q2-2', 4)">4 restroom</button>
+      </div>
+      <div class="explanation">
+        <span class="label">正解: 4 restroom</span>
+        <div class="translation">【和訳】女の子：すみません、お手洗いはどこですか？<br>先生：図書室の隣だよ。</div>
+        <button class="speak-btn" onclick="playAudio('Excuse me, where is the restroom? It is next to the library.')">🔊 英文を聞く</button>
+        <div class="vocab-list">・1 broccoli: ブロッコリー<br>・2 scarf: マフラー、スカーフ<br>・3 harmonica: ハーモニカ<br>・4 restroom: お手洗い</div>
+      </div>
+    </div>
+
+    <div class="question-card" id="q2-3">
+      <div class="question-title">(3) I have paper. Do you have a ( &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; )? Let's write a letter.</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkAnswer(this, 'q2-3', 1)">1 pen</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q2-3', 1)">2 flower shop</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q2-3', 1)">3 pilot</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q2-3', 1)">4 taxi</button>
+      </div>
+      <div class="explanation">
+        <span class="label">正解: 1 pen</span>
+        <div class="translation">【和訳】私は紙を持っています。ペンを持っていますか？手紙を書こう。</div>
+        <button class="speak-btn" onclick="playAudio('I have paper. Do you have a pen? Let\'s write a letter.')">🔊 英文を聞く</button>
+        <div class="vocab-list">・1 pen: ペン<br>・2 flower shop: 花屋<br>・3 pilot: パイロット<br>・4 taxi: タクシー</div>
+      </div>
+    </div>
+
+    <div class="question-card" id="q2-4">
+      <div class="question-title">(4) <span class="speaker">Boy:</span> Let's play ( &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ) on the field.<br><span class="speaker">Girl:</span> OK. I have a ball.</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkAnswer(this, 'q2-4', 4)">1 drums</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q2-4', 4)">2 chocolate</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q2-4', 4)">3 tea</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q2-4', 4)">4 soccer</button>
+      </div>
+      <div class="explanation">
+        <span class="label">正解: 4 soccer</span>
+        <div class="translation">【和訳】男女の子：グラウンドでサッカーをしようよ。<br>女の子：いいわね。ボールを持っているわ。</div>
+        <button class="speak-btn" onclick="playAudio('Let\'s play soccer on the field. OK. I have a ball.')">🔊 英文を聞く</button>
+        <div class="vocab-list">・1 drums: ドラム<br>・2 chocolate: チョコレート<br>・3 tea: お茶<br>・4 soccer: サッカー</div>
+      </div>
+    </div>
+
+    <div class="question-card" id="q2-5">
+      <div class="question-title">(5) Tokyo is a very big ( &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ) in Japan. Many people live there.</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkAnswer(this, 'q2-5', 2)">1 marker</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q2-5', 2)">2 city</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q2-5', 2)">3 cucumber</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q2-5', 2)">4 golf</button>
+      </div>
+      <div class="explanation">
+        <span class="label">正解: 2 city</span>
+        <div class="translation">【和訳】東京は日本のとても大きな都市です。たくさんの人がそこに住んでいます。</div>
+        <button class="speak-btn" onclick="playAudio('Tokyo is a very big city in Japan. Many people live there.')">🔊 英文を聞く</button>
+        <div class="vocab-list">・1 marker: マーカーペン<br>・2 city: 都市、街<br>・3 cucumber: きゅうり<br>・4 golf: ゴルフ</div>
+      </div>
+    </div>
+
+    <div class="question-card" id="q2-6">
+      <div class="question-title">(6) Look at the sky! We can see a beautiful ( &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ) after the rain.</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkAnswer(this, 'q2-6', 1)">1 rainbow</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q2-6', 1)">2 table</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q2-6', 1)">3 coffee</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q2-6', 1)">4 nurse</button>
+      </div>
+      <div class="explanation">
+        <span class="label">正解: 1 rainbow</span>
+        <div class="translation">【和訳】空を見て！雨のあとにきれいな虹が見えるよ。</div>
+        <button class="speak-btn" onclick="playAudio('Look at the sky! We can see a beautiful rainbow after the rain.')">🔊 英文を聞く</button>
+        <div class="vocab-list">・1 rainbow: 虹<br>・2 table: テーブル<br>・3 coffee: コーヒー<br>・4 nurse: 看護師</div>
+      </div>
+    </div>
+
+    <div class="question-card" id="q2-7">
+      <div class="question-title">(7) <span class="speaker">Mother:</span> Please put your toys in the ( &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ).<br><span class="speaker">Son:</span> OK, Mom.</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkAnswer(this, 'q2-7', 3)">1 towel</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q2-7', 3)">2 clock</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q2-7', 3)">3 box</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q2-7', 3)">4 window</button>
+      </div>
+      <div class="explanation">
+        <span class="label">正解: 3 box</span>
+        <div class="translation">【和訳】お母さん：おもちゃを箱の中にしまいなさい。<br>息子：はい、お母さん。</div>
+        <button class="speak-btn" onclick="playAudio('Please put your toys in the box. OK, Mom.')">🔊 英文を聞く</button>
+        <div class="vocab-list">・1 towel: タオル<br>・2 clock: 時計<br>・3 box: 箱<br>・4 window: 窓</div>
+      </div>
+    </div>
+
+    <div class="question-card" id="q2-8">
+      <div class="question-title">(8) We study about old things in our ( &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ) class.</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkAnswer(this, 'q2-8', 3)">1 police station</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q2-8', 3)">2 cook</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q2-8', 3)">3 history</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q2-8', 3)">4 tiger</button>
+      </div>
+      <div class="explanation">
+        <span class="label">正解: 3 history</span>
+        <div class="translation">【和訳】私たちは歴史の授業で昔のことについて勉強します。</div>
+        <button class="speak-btn" onclick="playAudio('We study about old things in our history class.')">🔊 英文を聞く</button>
+        <div class="vocab-list">・1 police station: 警察署<br>・2 cook: 料理人<br>・3 history: 歴史<br>・4 tiger: トラ</div>
+      </div>
+    </div>
+
+    <div class="question-card" id="q2-9">
+      <div class="question-title">(9) My grandmother lives in a small ( &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ) near the mountain.</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkAnswer(this, 'q2-9', 4)">1 calendar</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q2-9', 4)">2 watermelon</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q2-9', 4)">3 chair</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q2-9', 4)">4 town</button>
+      </div>
+      <div class="explanation">
+        <span class="label">正解: 4 town</span>
+        <div class="translation">【和訳】私の祖母は山の近くの小さな町に住んでいます。</div>
+        <button class="speak-btn" onclick="playAudio('My grandmother lives in a small town near the mountain.')">🔊 英文を聞く</button>
+        <div class="vocab-list">・1 calendar: カレンダー<br>・2 watermelon: スイカ<br>・3 chair: 椅子<br>・4 town: 町</div>
+      </div>
+    </div>
+
+    <div class="question-card" id="q2-10">
+      <div class="question-title">(10) <span class="speaker">Boy:</span> Where is the ( &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; )?<br><span class="speaker">Girl:</span> It is over there. Look! A big plane is there.</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkAnswer(this, 'q2-10', 2)">1 eraser</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q2-10', 2)">2 airport</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q2-10', 2)">3 math</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q2-10', 2)">4 lion</button>
+      </div>
+      <div class="explanation">
+        <span class="label">正解: 2 airport</span>
+        <div class="translation">【和訳】男の子：空港はどこですか？<br>女の子：あそこだよ。見て！大きな飛行機がいるよ。</div>
+        <button class="speak-btn" onclick="playAudio('Where is the airport? It is over there. Look! A big plane is there.')">🔊 英文を聞く</button>
+        <div class="vocab-list">・1 eraser: 消しゴム<br>・2 airport: 空港<br>・3 math: 算数<br>・4 lion: ライオン</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DAY 3 -->
+  <div id="day3" class="tab-content">
+    <div class="day-header">
+      <h2>英検5級 名詞 ボキャブラリー問題 #1 Day 3</h2>
+      <div class="subtitle">【短文の語句空所補充問題】 (第1問〜第10問)</div>
+    </div>
+
+    <div class="question-card" id="q3-1">
+      <div class="question-title">(1) My father takes a ( &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ) to his office on rainy days.</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkAnswer(this, 'q3-1', 3)">1 comic book</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q3-1', 3)">2 schoolyard</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q3-1', 3)">3 taxi</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q3-1', 3)">4 science</button>
+      </div>
+      <div class="explanation">
+        <span class="label">正解: 3 taxi</span>
+        <div class="translation">【和訳】父は雨の日にはタクシーに乗って会社に行きます。</div>
+        <button class="speak-btn" onclick="playAudio('My father takes a taxi to his office on rainy days.')">🔊 英文を聞く</button>
+        <div class="vocab-list">・1 comic book: 漫画本<br>・2 schoolyard: 校庭<br>・3 taxi: タクシー<br>・4 science: 理科</div>
+      </div>
+    </div>
+
+    <div class="question-card" id="q3-2">
+      <div class="question-title">(2) <span class="speaker">Girl:</span> What country is Julian from?<br><span class="speaker">Boy:</span> He is from ( &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ). He speaks Spanish.</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkAnswer(this, 'q3-2', 2)">1 soda</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q3-2', 2)">2 Mexico</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q3-2', 2)">3 table tennis</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q3-2', 2)">4 juice</button>
+      </div>
+      <div class="explanation">
+        <span class="label">正解: 2 Mexico</span>
+        <div class="translation">【和訳】女の子：ジュリアンはどこの国の出身ですか？<br>男の子：彼はメキシコ出身です。スペイン語を話します。</div>
+        <button class="speak-btn" onclick="playAudio('What country is Julian from? He is from Mexico. He speaks Spanish.')">🔊 英文を聞く</button>
+        <div class="vocab-list">・1 soda: ソーダ<br>・2 Mexico: メキシコ<br>・3 table tennis: 卓球<br>・4 juice: ジュース</div>
+      </div>
+    </div>
+
+    <div class="question-card" id="q3-3">
+      <div class="question-title">(3) <span class="speaker">Girl:</span> Can I borrow your ( &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; )?<br><span class="speaker">Boy:</span> Sure. I have two in my pencil case.</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkAnswer(this, 'q3-3', 4)">1 chair</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q3-3', 4)">2 department store</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q3-3', 4)">3 dancer</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q3-3', 4)">4 eraser</button>
+      </div>
+      <div class="explanation">
+        <span class="label">正解: 4 eraser</span>
+        <div class="translation">【和訳】女の子：消しゴムを借りてもいい？<br>男の子：いいよ。筆箱に2つ入っているよ。</div>
+        <button class="speak-btn" onclick="playAudio('Can I borrow your eraser? Sure. I have two in my pencil case.')">🔊 英文を聞く</button>
+        <div class="vocab-list">・1 chair: 椅子<br>・2 department store: デパート<br>・3 dancer: ダンサー<br>・4 eraser: 消しゴム</div>
+      </div>
+    </div>
+
+    <div class="question-card" id="q3-4">
+      <div class="question-title">(4) <span class="speaker">Boy:</span> Do you know that girl over there?<br><span class="speaker">Girl:</span> Yes. She is my ( &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ). Her mother and my mother are sisters.</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkAnswer(this, 'q3-4', 2)">1 bridge</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q3-4', 2)">2 cousin</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q3-4', 2)">3 e-mail</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q3-4', 2)">4 computer</button>
+      </div>
+      <div class="explanation">
+        <span class="label">正解: 2 cousin</span>
+        <div class="translation">【和訳】男の子：あそこにいる女の子を知っている？<br>女の子：うん、私のいとこよ。彼女のお母さんと私のお母さんは姉妹なの。</div>
+        <button class="speak-btn" onclick="playAudio('Do you know that girl over there? Yes. She is my cousin.')">🔊 英文を聞く</button>
+        <div class="vocab-list">・1 bridge: 橋<br>・2 cousin: いとこ<br>・3 e-mail: Eメール<br>・4 computer: コンピュータ</div>
+      </div>
+    </div>
+
+    <div class="question-card" id="q3-5">
+      <div class="question-title">(5) <span class="speaker">Girl:</span> What is your favorite sport?<br><span class="speaker">Boy:</span> I like ( &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ). My father has two bats and balls.</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkAnswer(this, 'q3-5', 4)">1 social studies</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q3-5', 4)">2 library</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q3-5', 4)">3 kitchen</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q3-5', 4)">4 baseball</button>
+      </div>
+      <div class="explanation">
+        <span class="label">正解: 4 baseball</span>
+        <div class="translation">【和訳】女の子：一番好きなスポーツは何？<br>男の子：野球が好きだよ。父がバット2本とボールを持っているんだ。</div>
+        <button class="speak-btn" onclick="playAudio('What is your favorite sport? I like baseball. My father has two bats and balls.')">🔊 英文を聞く</button>
+        <div class="vocab-list">・1 social studies: 社会<br>・2 library: 図書館<br>・3 kitchen: 台所<br>・4 baseball: 野球</div>
+      </div>
+    </div>
+
+    <div class="question-card" id="q3-6">
+      <div class="question-title">(6) <span class="speaker">Girl:</span> Where is your dog?<br><span class="speaker">Boy:</span> It is playing in the ( &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ) behind our house.</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkAnswer(this, 'q3-6', 3)">1 glue</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q3-6', 3)">2 Italian</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q3-6', 3)">3 yard</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q3-6', 3)">4 singer</button>
+      </div>
+      <div class="explanation">
+        <span class="label">正解: 3 yard</span>
+        <div class="translation">【和訳】女の子：あなたの犬はどこ？<br>男の子：家のうしろの庭で遊んでいるよ。</div>
+        <button class="speak-btn" onclick="playAudio('Where is your dog? It is playing in the yard behind our house.')">🔊 英文を聞く</button>
+        <div class="vocab-list">・1 glue: のり<br>・2 Italian: イタリア語<br>・3 yard: 庭<br>・4 singer: 歌手</div>
+      </div>
+    </div>
+
+    <div class="question-card" id="q3-7">
+      <div class="question-title">(7) My sister studies ( &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ) because she likes France.</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkAnswer(this, 'q3-7', 2)">1 bus stop</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q3-7', 2)">2 French</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q3-7', 2)">3 cabbage</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q3-7', 2)">4 volleyball</button>
+      </div>
+      <div class="explanation">
+        <span class="label">正解: 2 French</span>
+        <div class="translation">【和訳】私の姉はフランスが好きなので、フランス語を勉強しています。</div>
+        <button class="speak-btn" onclick="playAudio('My sister studies French because she likes France.')">🔊 英文を聞く</button>
+        <div class="vocab-list">・1 bus stop: バス停<br>・2 French: フランス語<br>・3 cabbage: キャベツ<br>・4 volleyball: バレーボール</div>
+      </div>
+    </div>
+
+    <div class="question-card" id="q3-8">
+      <div class="question-title">(8) We run fast and play sports in our ( &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ) class.</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkAnswer(this, 'q3-8', 1)">1 P.E.</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q3-8', 1)">2 strawberry</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q3-8', 1)">3 post office</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q3-8', 1)">4 door</button>
+      </div>
+      <div class="explanation">
+        <span class="label">正解: 1 P.E.</span>
+        <div class="translation">【和訳】私たちは体育の授業で速く走ったりスポーツをしたりします。</div>
+        <button class="speak-btn" onclick="playAudio('We run fast and play sports in our P.E. class.')">🔊 英文を聞く</button>
+        <div class="vocab-list">・1 P.E.: 体育<br>・2 strawberry: いちご<br>・3 post office: 郵便局<br>・4 door: ドア</div>
+      </div>
+    </div>
+
+    <div class="question-card" id="q3-9">
+      <div class="question-title">(9) <span class="speaker">Mother:</span> Wash your hands in the ( &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ) before dinner.<br><span class="speaker">Son:</span> All right, Mom.</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkAnswer(this, 'q3-9', 1)">1 bathroom</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q3-9', 1)">2 basketball</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q3-9', 1)">3 Japanese</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q3-9', 1)">4 guitar</button>
+      </div>
+      <div class="explanation">
+        <span class="label">正解: 1 bathroom</span>
+        <div class="translation">【和訳】お母さん：夕食の前に洗面所で手を洗いなさい。<br>息子：はーい、お母さん。</div>
+        <button class="speak-btn" onclick="playAudio('Wash your hands in the bathroom before dinner. All right, Mom.')">🔊 英文を聞く</button>
+        <div class="vocab-list">・1 bathroom: 洗面所、浴室<br>・2 basketball: バスケットボール<br>・3 Japanese: 日本語<br>・4 guitar: ギター</div>
+      </div>
+    </div>
+
+    <div class="question-card" id="q3-10">
+      <div class="question-title">(10) I send cards to my friends at the ( &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ).</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkAnswer(this, 'q3-10', 3)">1 lemon</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q3-10', 3)">2 notebook</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q3-10', 3)">3 post office</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q3-10', 3)">4 tennis player</button>
+      </div>
+      <div class="explanation">
+        <span class="label">正解: 3 post office</span>
+        <div class="translation">【和訳】私は郵便局で友達にカードを送ります。</div>
+        <button class="speak-btn" onclick="playAudio('I send cards to my friends at the post office.')">🔊 英文を聞く</button>
+        <div class="vocab-list">・1 lemon: レモン<br>・2 notebook: ノート<br>・3 post office: 郵便局<br>・4 tennis player: テニス選手</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DAY 4 -->
+  <div id="day4" class="tab-content">
+    <div class="day-header">
+      <h2>英検5級 名詞 ボキャブラリー問題 #1 Day 4</h2>
+      <div class="subtitle">【短文の語句空所補充問題】 (第1問〜第10問)</div>
+    </div>
+
+    <div class="question-card" id="q4-1">
+      <div class="question-title">(1) I am going to the ( &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ) tomorrow. I want to see a new movie.</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkAnswer(this, 'q4-1', 2)">1 backpack</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q4-1', 2)">2 movie theater</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q4-1', 2)">3 hamburger</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q4-1', 2)">4 peach</button>
+      </div>
+      <div class="explanation">
+        <span class="label">正解: 2 movie theater</span>
+        <div class="translation">【和訳】私は明日映画館に行く予定です。新しい映画が見たいです。</div>
+        <button class="speak-btn" onclick="playAudio('I am going to the movie theater tomorrow. I want to see a new movie.')">🔊 英文を聞く</button>
+        <div class="vocab-list">・1 backpack: リュックサック<br>・2 movie theater: 映画館<br>・3 hamburger: ハンバーガー<br>・4 peach: 桃</div>
+      </div>
+    </div>
+
+    <div class="question-card" id="q4-2">
+      <div class="question-title">(2) Look at those yellow flowers in the ( &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ). They are beautiful.</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkAnswer(this, 'q4-2', 4)">1 chopsticks</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q4-2', 4)">2 scientist</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q4-2', 4)">3 milk</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q4-2', 4)">4 park</button>
+      </div>
+      <div class="explanation">
+        <span class="label">正解: 4 park</span>
+        <div class="translation">【和訳】公園のあの黄色い花を見て。とてもきれいだね。</div>
+        <button class="speak-btn" onclick="playAudio('Look at those yellow flowers in the park. They are beautiful.')">🔊 英文を聞く</button>
+        <div class="vocab-list">・1 chopsticks: 箸<br>・2 scientist: 科学者<br>・3 milk: 牛乳<br>・4 park: 公園</div>
+      </div>
+    </div>
+
+    <div class="question-card" id="q4-3">
+      <div class="question-title">(3) Ken is taking pictures of the high ( &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ) in Tokyo.</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkAnswer(this, 'q4-3', 1)">1 tower</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q4-3', 1)">2 spaghetti</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q4-3', 1)">3 grapes</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q4-3', 1)">4 concert</button>
+      </div>
+      <div class="explanation">
+        <span class="label">正解: 1 tower</span>
+        <div class="translation">【和訳】ケンは東京の高いタワー（塔）の写真を撮っています。</div>
+        <button class="speak-btn" onclick="playAudio('Ken is taking pictures of the high tower in Tokyo.')">🔊 英文を聞く</button>
+        <div class="vocab-list">・1 tower: タワー、塔<br>・2 spaghetti: スパゲッティ<br>・3 grapes: ぶどう<br>・4 concert: コンサート</div>
+      </div>
+    </div>
+
+    <div class="question-card" id="q4-4">
+      <div class="question-title">(4) <span class="speaker">Girl:</span> What sport do you like?<br><span class="speaker">Boy:</span> I like ( &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ). It is fun.</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkAnswer(this, 'q4-4', 3)">1 street</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q4-4', 3)">2 music</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q4-4', 3)">3 volleyball</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q4-4', 3)">4 dictionary</button>
+      </div>
+      <div class="explanation">
+        <span class="label">正解: 3 volleyball</span>
+        <div class="translation">【和訳】女の子：どのスポーツが好きですか？<br>男の子：バレーボールが好きだよ。楽しいよ。</div>
+        <button class="speak-btn" onclick="playAudio('What sport do you like? I like volleyball. It is fun.')">🔊 英文を聞く</button>
+        <div class="vocab-list">・1 street: 通り<br>・2 music: 音楽<br>・3 volleyball: バレーボール<br>・4 dictionary: 辞書</div>
+      </div>
+    </div>
+
+    <div class="question-card" id="q4-5">
+      <div class="question-title">(5) My parents like reading. They buy books at the ( &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ).</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkAnswer(this, 'q4-5', 2)">1 pineapple</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q4-5', 2)">2 bookstore</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q4-5', 2)">3 violin</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q4-5', 2)">4 apartment</button>
+      </div>
+      <div class="explanation">
+        <span class="label">正解: 2 bookstore</span>
+        <div class="translation">【和訳】私の両親は読書が好きです。彼らは本屋で本を買います。</div>
+        <button class="speak-btn" onclick="playAudio('My parents like reading. They buy books at the bookstore.')">🔊 英文を聞く</button>
+        <div class="vocab-list">・1 pineapple: パイナップル<br>・2 bookstore: 本屋<br>・3 violin: バイオリン<br>・4 apartment: アパート</div>
+      </div>
+    </div>
+
+    <div class="question-card" id="q4-6">
+      <div class="question-title">(6) <span class="speaker">Teacher:</span> Please open your ( &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ) to page 20.<br><span class="speaker">Students:</span> All right.</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkAnswer(this, 'q4-6', 4)">1 elephant</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q4-6', 4)">2 supermarket</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q4-6', 4)">3 driver</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q4-6', 4)">4 textbook</button>
+      </div>
+      <div class="explanation">
+        <span class="label">正解: 4 textbook</span>
+        <div class="translation">【和訳】先生：教科書の20ページを開いてください。<br>生徒たち：はい。</div>
+        <button class="speak-btn" onclick="playAudio('Please open your textbook to page 20. All right.')">🔊 英文を聞く</button>
+        <div class="vocab-list">・1 elephant: ゾウ<br>・2 supermarket: スーパーマーケット<br>・3 driver: 運転手<br>・4 textbook: 教科書</div>
+      </div>
+    </div>
+
+    <div class="question-card" id="q4-7">
+      <div class="question-title">(7) Mike is a good soccer player. He can kick the ball into the ( &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ).</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkAnswer(this, 'q4-7', 4)">1 jacket</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q4-7', 4)">2 trumpet</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q4-7', 4)">3 pumpkin</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q4-7', 4)">4 goal</button>
+      </div>
+      <div class="explanation">
+        <span class="label">正解: 4 goal</span>
+        <div class="translation">【和訳】マイクはサッカーが上手です。彼はゴールにボールを蹴り込むことができるよ。</div>
+        <button class="speak-btn" onclick="playAudio('Mike is a good soccer player. He can kick the ball into the goal.')">🔊 英文を聞く</button>
+        <div class="vocab-list">・1 jacket: 上着、ジャケット<br>・2 trumpet: トランペット<br>・3 pumpkin: かぼちゃ<br>・4 goal: ゴール</div>
+      </div>
+    </div>
+
+    <div class="question-card" id="q4-8">
+      <div class="question-title">(8) My grandfather and ( &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ) visit our house every Sunday.</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkAnswer(this, 'q4-8', 3)">1 hot dog</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q4-8', 3)">2 hotel</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q4-8', 3)">3 grandmother</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q4-8', 3)">4 purple</button>
+      </div>
+      <div class="explanation">
+        <span class="label">正解: 3 grandmother</span>
+        <div class="translation">【和訳】祖父と祖母は毎週日曜日、私たちの家に来ます。</div>
+        <button class="speak-btn" onclick="playAudio('My grandfather and grandmother visit our house every Sunday.')">🔊 英文を聞く</button>
+        <div class="vocab-list">・1 hot dog: ホットドッグ<br>・2 hotel: ホテル<br>・3 grandmother: 祖母<br>・4 purple: 紫</div>
+      </div>
+    </div>
+
+    <div class="question-card" id="q4-9">
+      <div class="question-title">(9) We have heavy ( &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ) today. Take an umbrella with you.</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkAnswer(this, 'q4-9', 2)">1 cap</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q4-9', 2)">2 rain</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q4-9', 2)">3 waiter</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q4-9', 2)">4 computer</button>
+      </div>
+      <div class="explanation">
+        <span class="label">正解: 2 rain</span>
+        <div class="translation">【和訳】今日は強い雨が降っています。傘を持っていきなさい。</div>
+        <button class="speak-btn" onclick="playAudio('We have heavy rain today. Take an umbrella with you.')">🔊 英文を聞く</button>
+        <div class="vocab-list">・1 cap: 帽子（キャップ）<br>・2 rain: 雨<br>・3 waiter: 給仕人、ウェイター<br>・4 computer: コンピュータ</div>
+      </div>
+    </div>
+
+    <div class="question-card" id="q4-10">
+      <div class="question-title">(10) <span class="speaker">Boy:</span> How do you go to school?<br><span class="speaker">Girl:</span> I take the ( &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ) at eight o'clock.</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkAnswer(this, 'q4-10', 1)">1 bus</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q4-10', 1)">2 pizza</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q4-10', 1)">3 homework</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q4-10', 1)">4 math</button>
+      </div>
+      <div class="explanation">
+        <span class="label">正解: 1 bus</span>
+        <div class="translation">【和訳】男女の子：どうやって学校に通っていますか？<br>女の子：8時にバスに乗るよ。</div>
+        <button class="speak-btn" onclick="playAudio('How do you go to school? I take the bus at eight o\'clock.')">🔊 英文を聞く</button>
+        <div class="vocab-list">・1 bus: バス<br>・2 pizza: ピザ<br>・3 homework: 宿題<br>・4 math: 算数</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DAY 5 -->
+  <div id="day5" class="tab-content">
+    <div class="day-header">
+      <h2>英検5級 名詞 ボキャブラリー問題 #1 Day 5</h2>
+      <div class="subtitle">【短文の語句空所補充問題】 (第1問〜第10問)</div>
+    </div>
+
+    <div class="question-card" id="q5-1">
+      <div class="question-title">(1) <span class="speaker">Girl:</span> Where are you going?<br><span class="speaker">Boy:</span> To the ( &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ). I want to see pandas.</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkAnswer(this, 'q5-1', 4)">1 jeans</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q5-1', 4)">2 sausage</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q5-1', 4)">3 cell phone</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q5-1', 4)">4 zoo</button>
+      </div>
+      <div class="explanation">
+        <span class="label">正解: 4 zoo</span>
+        <div class="translation">【和訳】女の子：どこに行くの？<br>男の子：動物園だよ。パンダが見たいんだ。</div>
+        <button class="speak-btn" onclick="playAudio('Where are you going? To the zoo. I want to see pandas.')">🔊 英文を聞く</button>
+        <div class="vocab-list">・1 jeans: ジーンズ<br>・2 sausage: ソーセージ<br>・3 cell phone: 携帯電話<br>・4 zoo: 動物園</div>
+      </div>
+    </div>
+
+    <div class="question-card" id="q5-2">
+      <div class="question-title">(2) My sister gets a cute doll at the ( &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ).</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkAnswer(this, 'q5-2', 1)">1 toy store</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q5-2', 1)">2 pianist</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q5-2', 1)">3 toast</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q5-2', 1)">4 German</button>
+      </div>
+      <div class="explanation">
+        <span class="label">正解: 1 toy store</span>
+        <div class="translation">【和訳】私の妹はおもちゃ屋さんでかわいい人形を買います（手に入れます）。</div>
+        <button class="speak-btn" onclick="playAudio('My sister gets a cute doll at the toy store.')">🔊 英文を聞く</button>
+        <div class="vocab-list">・1 toy store: おもちゃ屋<br>・2 pianist: ピアニスト<br>・3 toast: トースト<br>・4 German: ドイツ語</div>
+      </div>
+    </div>
+
+    <div class="question-card" id="q5-3">
+      <div class="question-title">(3) Look at the big ( &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ) near the mountain. The water is clean.</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkAnswer(this, 'q5-3', 3)">1 socks</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q5-3', 3)">2 writer</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q5-3', 3)">3 lake</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q5-3', 3)">4 curry and rice</button>
+      </div>
+      <div class="explanation">
+        <span class="label">正解: 3 lake</span>
+        <div class="translation">【和訳】山の近くの大きな湖を見て。水がきれいだよ。</div>
+        <button class="speak-btn" onclick="playAudio('Look at the big lake near the mountain. The water is clean.')">🔊 英文を聞く</button>
+        <div class="vocab-list">・1 socks: 靴下<br>・2 writer: 作家<br>・3 lake: 湖<br>・4 curry and rice: カレーライス</div>
+      </div>
+    </div>
+
+    <div class="question-card" id="q5-4">
+      <div class="question-title">(4) <span class="speaker">Mother:</span> Clean your ( &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ) before eight o'clock.<br><span class="speaker">Son:</span> OK, Mom.</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkAnswer(this, 'q5-4', 2)">1 cabbage</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q5-4', 2)">2 bedroom</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q5-4', 2)">3 clouds</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q5-4', 2)">4 police officer</button>
+      </div>
+      <div class="explanation">
+        <span class="label">正解: 2 bedroom</span>
+        <div class="translation">【和訳】お母さん：8時前に寝室をそうじしなさい。<br>息子：はーい、お母さん。</div>
+        <button class="speak-btn" onclick="playAudio('Clean your bedroom before eight o\'clock. OK, Mom.')">🔊 英文を聞く</button>
+        <div class="vocab-list">・1 cabbage: キャベツ<br>・2 bedroom: 寝室<br>・3 clouds: 雲<br>・4 police officer: 警察官</div>
+      </div>
+    </div>
+
+    <div class="question-card" id="q5-5">
+      <div class="question-title">(5) My brother likes ( &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ). He plays soccer and basketball well.</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkAnswer(this, 'q5-5', 4)">1 science</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q5-5', 4)">2 history</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q5-5', 4)">3 dress</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q5-5', 4)">4 sports</button>
+      </div>
+      <div class="explanation">
+        <span class="label">正解: 4 sports</span>
+        <div class="translation">【和訳】私の兄（弟）はスポーツが好きです。サッカーやバスケットボールが得意です。</div>
+        <button class="speak-btn" onclick="playAudio('My brother likes sports. He plays soccer and basketball well.')">🔊 英文を聞く</button>
+        <div class="vocab-list">・1 science: 理科<br>・2 history: 歴史<br>・3 dress: ドレス<br>・4 sports: スポーツ</div>
+      </div>
+    </div>
+
+    <div class="question-card" id="q5-6">
+      <div class="question-title">(6) <span class="speaker">Boy:</span> Where are the students?<br><span class="speaker">Girl:</span> They are studying English in the ( &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ).</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkAnswer(this, 'q5-6', 1)">1 classroom</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q5-6', 1)">2 donut</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q5-6', 1)">3 homework</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q5-6', 1)">4 tennis player</button>
+      </div>
+      <div class="explanation">
+        <span class="label">正解: 1 classroom</span>
+        <div class="translation">【和訳】男の子：生徒たちはどこにいるの？<br>女の子：教室で英語を勉強しているよ。</div>
+        <button class="speak-btn" onclick="playAudio('Where are the students? They are studying English in the classroom.')">🔊 英文を聞く</button>
+        <div class="vocab-list">・1 classroom: 教室<br>・2 donut: ドーナツ<br>・3 homework: 宿題<br>・4 tennis player: テニス選手</div>
+      </div>
+    </div>
+
+    <div class="question-card" id="q5-7">
+      <div class="question-title">(7) <span class="speaker">Girl:</span> Let's go swimming in the ( &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; )!<br><span class="speaker">Boy:</span> Great idea!</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkAnswer(this, 'q5-7', 2)">1 skirt</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q5-7', 2)">2 sea</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q5-7', 2)">3 ice cream</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q5-7', 2)">4 CD</button>
+      </div>
+      <div class="explanation">
+        <span class="label">正解: 2 sea</span>
+        <div class="translation">【和訳】女の子：海に泳ぎに行こうよ！<br>男の子：いいね！</div>
+        <button class="speak-btn" onclick="playAudio('Let\'s go swimming in the sea! Great idea!')">🔊 英文を聞く</button>
+        <div class="vocab-list">・1 skirt: スカート<br>・2 sea: 海<br>・3 ice cream: アイスクリーム<br>・4 CD: CD</div>
+      </div>
+    </div>
+
+    <div class="question-card" id="q5-8">
+      <div class="question-title">(8) I cut paper with scissors in my ( &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ) class.</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkAnswer(this, 'q5-8', 2)">1 station</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q5-8', 2)">2 art</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q5-8', 2)">3 popcorn</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q5-8', 2)">4 shoes</button>
+      </div>
+      <div class="explanation">
+        <span class="label">正解: 2 art</span>
+        <div class="translation">【和訳】図工の授業で、ハサミで紙を切ります。</div>
+        <button class="speak-btn" onclick="playAudio('I cut paper with scissors in my art class.')">🔊 英文を聞く</button>
+        <div class="vocab-list">・1 station: 駅<br>・2 art: 図工<br>・3 popcorn: ポップコーン<br>・4 shoes: 靴</div>
+      </div>
+    </div>
+
+    <div class="question-card" id="q5-9">
+      <div class="question-title">(9) Look at that big ( &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ) over the river! Many cars and trucks cross it everyday.</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkAnswer(this, 'q5-9', 3)">1 homework</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q5-9', 3)">2 apple pie</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q5-9', 3)">3 bridge</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q5-9', 3)">4 math</button>
+      </div>
+      <div class="explanation">
+        <span class="label">正解: 3 bridge</span>
+        <div class="translation">【和訳】川にかかるあの大きな橋を見て！毎日、多くの車とトラックが渡ります。</div>
+        <button class="speak-btn" onclick="playAudio('Look at that big bridge over the river! Many cars and trucks cross it everyday.')">🔊 英文を聞く</button>
+        <div class="vocab-list">・1 homework: 宿題<br>・2 apple pie: アップルパイ<br>・3 bridge: 橋<br>・4 math: 算数</div>
+      </div>
+    </div>
+
+    <div class="question-card" id="q5-10">
+      <div class="question-title">(10) My grandmother has many yellow flowers in her ( &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ).</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkAnswer(this, 'q5-10', 4)">1 pants</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q5-10', 4)">2 cake</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q5-10', 4)">3 homework</button>
+        <button class="option-btn" onclick="checkAnswer(this, 'q5-10', 4)">4 garden</button>
+      </div>
+      <div class="explanation">
+        <span class="label">正解: 4 garden</span>
+        <div class="translation">【和訳】私の祖母は庭にたくさんの黄色い花を持っています（咲かせています）。</div>
+        <button class="speak-btn" onclick="playAudio('My grandmother has many yellow flowers in her garden.')">🔊 英文を聞く</button>
+        <div class="vocab-list">・1 pants: ズボン<br>・2 cake: ケーキ<br>・3 homework: 宿題<br>・4 garden: 庭</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  let currentZoom = 100;
+
+  function changeZoom(delta) {
+    currentZoom = Math.min(Math.max(70, currentZoom + delta), 130);
+    document.getElementById('zoom-val').innerText = currentZoom + '%';
+    document.getElementById('main-container').style.transform = `scale(${currentZoom / 100})`;
+  }
+
+  function openTab(evt, tabName) {
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("tab-content");
+    for (i = 0; i < tabcontent.length; i++) {
+      tabcontent[i].style.display = "none";
+      tabcontent[i].classList.remove("active");
+    }
+    tablinks = document.getElementsByClassName("tab-btn");
+    for (i = 0; i < tablinks.length; i++) {
+      tablinks[i].classList.remove("active");
+    }
+    document.getElementById(tabName).style.display = "block";
+    document.getElementById(tabName).classList.add("active");
+    evt.currentTarget.classList.add("active");
+  }
+
+  function checkAnswer(btn, questionId, correctNumber) {
+    const card = document.getElementById(questionId);
+    const buttons = card.querySelectorAll('.option-btn');
+    const explanation = card.querySelector('.explanation');
+
+    let selectedNumber = 0;
+    buttons.forEach((b, index) => {
+      if (b === btn) selectedNumber = index + 1;
+    });
+
+    if (selectedNumber === correctNumber) {
+      btn.classList.remove('incorrect');
+      btn.classList.add('correct');
+
+      buttons.forEach(b => b.disabled = true);
+      explanation.style.display = 'block';
+    } else {
+      btn.classList.add('incorrect');
+      btn.disabled = true;
+    }
+  }
+
+  function playAudio(text) {
+    window.speechSynthesis.cancel();
+    
+    let processedText = text.replace(/Let's/g, "Lets").replace(/let's/g, "lets").replace(/I'm/g, "Im").replace(/It's/g, "Its").replace(/can't/g, "cant");
+
+    const uttr = new SpeechSynthesisUtterance(processedText);
+    uttr.rate = 0.60;
+
+    const voices = window.speechSynthesis.getVoices();
+    let selectedVoice = voices.find(v => v.lang === 'en-US' && (v.name.includes('Female') || v.name.includes('Samantha') || v.name.includes('Zira') || v.name.includes('Victoria') || v.name.includes('Google US English')));
+    
+    if (!selectedVoice) {
+      selectedVoice = voices.find(v => v.lang === 'en-US');
+    }
+
+    if (selectedVoice) {
+      uttr.voice = selectedVoice;
+    }
+    uttr.lang = 'en-US';
+
+    window.speechSynthesis.speak(uttr);
+  }
+
+  window.speechSynthesis.onvoiceschanged = function() {
+    window.speechSynthesis.getVoices();
+  };
+</script>
+
+</body>
+</html>
