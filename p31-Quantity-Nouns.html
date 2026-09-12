@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>p31 Quantity Nouns</title>
+<script src="auth.js"></script>
+<style>
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  :root {
+    --green: #4CAF50;
+    --green-hover: #388E3C;
+    --orange: #ff9800;
+    --grey: #9E9E9E;
+    --dark-grey: #4a4a4a;
+    --border-color: #cbd5e0;
+    --white: #ffffff;
+    --black: #333333;
+    --bg-color: #f4f6f4;
+    --card-bg: #f7faff;
+    --primary-blue: #1e88e5;
+    --primary-brown: #a0522d;
+    --red: #e53e3e;
+  }
+
+  body {
+    font-family: 'Hiragino Kaku Gothic ProN', 'Meiryo', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--black);
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .container {
+    max-width: 750px;
+    width: 100%;
+    background: var(--white);
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  }
+
+  h1 {
+    color: var(--green);
+    text-align: center;
+    border-bottom: 3px solid var(--orange);
+    margin-top: 0;
+    margin-bottom: 25px;
+    font-size: 26px;
+    padding-bottom: 10px;
+  }
+
+  /* Progress Bar */
+  .progress-bar {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 25px;
+  }
+
+  .progress-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background-color: #cbd5e0;
+    transition: all 0.3s;
+  }
+
+  .progress-dot.active {
+    background-color: var(--orange);
+    transform: scale(1.2);
+  }
+
+  .progress-dot.completed {
+    background-color: var(--green);
+  }
+
+  /* Question Card & Image Container */
+  .question-card {
+    background: var(--card-bg);
+    border: 2px dashed #bbdefb;
+    border-radius: 18px;
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+
+  .img-container {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .img-container img {
+    max-width: 200px;
+    max-height: 180px;
+    width: auto;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    object-fit: contain;
+    background-color: #fff;
+  }
+
+  /* Step Badge & Instruction */
+  .step-header {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: var(--primary-blue);
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .step-badge {
+    background-color: var(--primary-blue);
+    color: white;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 0.85rem;
+  }
+
+  .instruction-text {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: var(--dark-grey);
+    margin-bottom: 15px;
+  }
+
+  /* Feedback Message */
+  .error-feedback {
+    color: var(--red);
+    font-weight: bold;
+    font-size: 1.1rem;
+    text-align: center;
+    margin-top: 10px;
+    min-height: 24px;
+  }
+
+  /* Step 1 & 2 Select Inputs */
+  .select-area {
+    font-size: 1.2rem;
+    line-height: 2;
+    margin-bottom: 15px;
+    font-weight: bold;
+  }
+
+  select {
+    font-family: inherit;
+    font-size: 1.1rem;
+    font-weight: bold;
+    padding: 8px 14px;
+    border: 2px solid var(--border-color);
+    border-radius: 10px;
+    color: var(--black);
+    background-color: var(--white);
+    cursor: pointer;
+    margin: 0 5px;
+    transition: all 0.2s;
+    vertical-align: middle;
+  }
+
+  select:hover {
+    border-color: var(--primary-blue);
+  }
+
+  select:focus {
+    outline: none;
+    border-color: var(--orange);
+  }
+
+  /* Step 3 Scramble / Word Bubbles */
+  .drop-zone {
+    min-height: 60px;
+    border: 2px dashed var(--border-color);
+    border-radius: 15px;
+    margin-bottom: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+    padding: 10px;
+    background: var(--white);
+  }
+
+  .word-pool {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 10px;
+    justify-content: center;
+  }
+
+  .word-btn {
+    background-color: var(--white);
+    color: var(--black);
+    border: 2px solid var(--primary-blue);
+    padding: 8px 16px;
+    border-radius: 25px;
+    font-size: 1.05rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s;
+    user-select: none;
+    display: inline-block;
+  }
+
+  .word-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  }
+
+  .word-btn.used {
+    border-color: #eee;
+    color: #ccc;
+    pointer-events: none;
+    opacity: 0.3;
+    transform: none;
+    box-shadow: none;
+  }
+
+  .placed-word {
+    background-color: #e3f2fd;
+    border: 2px solid var(--primary-blue);
+    color: var(--black);
+    padding: 8px 16px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1.05rem;
+    animation: popIn 0.2s ease;
+  }
+
+  /* Celebration / Final Result Display */
+  .celebration-box {
+    text-align: center;
+    padding: 15px 0;
+    animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+
+  .celebration-title {
+    font-size: 1.8rem;
+    color: #2e7d32;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+
+  .phrase-speaker-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 10px;
+  }
+
+  .final-phrase {
+    font-size: 1.6rem;
+    font-weight: bold;
+    color: var(--primary-blue);
+  }
+
+  .speaker-btn {
+    background: var(--primary-brown);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 50px;
+    font-size: 1.1rem;
+    font-family: inherit;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 0 #5c2c0e;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.1s;
+  }
+
+  .speaker-btn:hover {
+    background: #b5651d;
+  }
+
+  .speaker-btn:active {
+    transform: translateY(2px);
+    box-shadow: none;
+  }
+
+  /* Action Buttons */
+  .action-btn {
+    padding: 12px 30px;
+    font-size: 1.05rem;
+    background-color: var(--green);
+    color: white;
+    border: none;
+    border-radius: 35px;
+    cursor: pointer;
+    font-weight: bold;
+    box-shadow: 0 4px 0 #2e7d32;
+    display: block;
+    margin: 15px auto 0 auto;
+    transition: transform 0.1s, background-color 0.2s;
+  }
+
+  .action-btn:hover {
+    background-color: var(--green-hover);
+  }
+
+  .action-btn:active {
+    transform: translateY(4px);
+    box-shadow: none;
+  }
+
+  .next-btn {
+    background-color: var(--orange);
+    box-shadow: 0 4px 0 #b36b00;
+  }
+
+  .next-btn:hover {
+    background-color: #e68a00;
+  }
+
+  /* Result Screen & Report System */
+  .result-screen {
+    display: none;
+    text-align: center;
+    padding: 30px 20px;
+    background: white;
+    border-radius: 18px;
+  }
+
+  .result-screen h2 {
+    color: var(--green);
+    font-size: 28px;
+    margin-bottom: 15px;
+  }
+
+  .mistake-list-box {
+    background: #fff5f5;
+    border: 2px dashed var(--red);
+    border-radius: 12px;
+    padding: 15px;
+    margin: 20px 0;
+    text-align: left;
+  }
+
+  .mistake-list-title {
+    color: var(--red);
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+  }
+
+  .mistake-item {
+    color: #c53030;
+    font-size: 0.95rem;
+    margin-bottom: 4px;
+  }
+
+  .name-input-group {
+    margin: 20px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .name-input-group input {
+    font-size: 1.05rem;
+    padding: 8px 12px;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    width: 200px;
+  }
+
+  .report-btn {
+    background-color: var(--primary-blue);
+    box-shadow: 0 4px 0 #1565c0;
+  }
+
+  .restart-btn {
+    background-color: var(--orange);
+    color: white;
+    padding: 12px 30px;
+    font-size: 16px;
+    border-radius: 25px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 15px;
+  }
+
+  @keyframes popIn {
+    0% { transform: scale(0.6); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+
+  @media (max-width: 600px) {
+    .container { padding: 15px; }
+    .instruction-text { font-size: 0.95rem; }
+    .word-btn, .placed-word { font-size: 0.9rem; padding: 6px 12px; }
+    select { font-size: 0.95rem; padding: 6px; }
+    .celebration-title { font-size: 1.4rem; }
+    .final-phrase { font-size: 1.3rem; }
+    .speaker-btn { font-size: 0.95rem; padding: 6px 12px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>p31 Quantity Nouns</h1>
+
+  <div id="quiz-content">
+    <div class="progress-bar" id="progress-bar"></div>
+
+    <!-- Image Display Section -->
+    <div class="img-container">
+      <img id="item-image" src="" alt="item image">
+    </div>
+
+    <!-- STEP 1 CARD -->
+    <div class="question-card" id="step1-card">
+      <div class="step-header">
+        <span class="step-badge">STEP 1</span>
+        <span>Choose the item</span>
+      </div>
+      <div class="instruction-text">Look at the picture and select the correct noun.</div>
+      <div class="select-area" id="s1-select-area"></div>
+      <div class="error-feedback" id="s1-feedback"></div>
+      <button class="action-btn" id="s1-btn" onclick="checkStep1()">OK</button>
+    </div>
+
+    <!-- STEP 2 CARD -->
+    <div class="question-card" id="step2-card" style="display: none;">
+      <div class="step-header">
+        <span class="step-badge">STEP 2</span>
+        <span>Choose the container / unit</span>
+      </div>
+      <div class="instruction-text">Select the correct unit word.</div>
+      <div class="select-area" id="s2-select-area"></div>
+      <div class="error-feedback" id="s2-feedback"></div>
+      <button class="action-btn" id="s2-btn" onclick="checkStep2()">OK</button>
+    </div>
+
+    <!-- STEP 3 CARD -->
+    <div class="question-card" id="step3-card" style="display: none;">
+      <div class="step-header">
+        <span class="step-badge">STEP 3</span>
+        <span>Unscramble the phrase</span>
+      </div>
+      <div class="instruction-text" id="s3-ja-text"></div>
+      <div class="drop-zone" id="s3-drop-zone">
+        <span id="s3-placeholder" style="color:#aaa;">Tap words below to arrange</span>
+      </div>
+      <div class="word-pool" id="s3-word-pool"></div>
+      <div class="error-feedback" id="s3-feedback"></div>
+      <button class="action-btn" id="s3-btn" onclick="checkStep3()" style="display:none;">Check Answer</button>
+    </div>
+
+    <!-- Celebration Display -->
+    <div id="celebration-area" style="display: none;">
+      <div class="celebration-box">
+        <div class="celebration-title" id="celebration-title">Great!</div>
+        <div class="phrase-speaker-row">
+          <div class="final-phrase" id="celebration-phrase"></div>
+          <button class="speaker-btn" onclick="speakCurrentPhrase()">🔊 Listen</button>
+        </div>
+      </div>
+      <button class="action-btn next-btn" id="next-btn" onclick="nextQuestion()">Next ➔</button>
+    </div>
+  </div>
+
+  <div class="result-screen" id="result-screen">
+    <h2>🎉 Good job! 🎉</h2>
+    <p id="result-desc"></p>
+
+    <!-- ミストリスト表示エリア -->
+    <div id="mistake-container" style="display: none;">
+      <div class="mistake-list-box">
+        <div class="mistake-list-title">⚠️ 間違えた箇所（要復習）：</div>
+        <div id="mistake-list"></div>
+      </div>
+    </div>
+
+    <!-- メール報告エリア (ノーミス時のみ) -->
+    <div id="report-container" style="display: none;">
+      <div class="name-input-group">
+        <label for="student-name"><b>お名前:</b></label>
+        <input type="text" id="student-name" placeholder="名前を入力してください">
+      </div>
+      <button class="action-btn report-btn" onclick="sendEmailReport()">Tamaki先生に報告する 📧</button>
+    </div>
+
+    <button class="restart-btn" onclick="location.reload()">Try Again 🔄</button>
+  </div>
+</div>
+
+<script>
+  // 音声読み上げの設定
+  let preferredVoice = null;
+  function loadVoices() {
+    if (!window.speechSynthesis) return;
+    const voices = window.speechSynthesis.getVoices();
+    if (voices.length === 0) return;
+    preferredVoice = 
+      voices.find(v => v.lang === "en-US" && v.name.includes("Google US English")) ||
+      voices.find(v => v.lang === "en-US" && v.name.includes("Samantha")) ||
+      voices.find(v => v.lang.startsWith("en-US")) ||
+      voices.find(v => v.lang.startsWith("en"));
+  }
+
+  if (typeof window !== 'undefined' && window.speechSynthesis) {
+    window.speechSynthesis.onvoiceschanged = loadVoices;
+    loadVoices();
+  }
+
+  function speak(text, callback) {
+    const synth = window.speechSynthesis;
+    if (!synth) return;
+    synth.cancel();
+    const uttr = new SpeechSynthesisUtterance(text);
+    if (preferredVoice) uttr.voice = preferredVoice;
+    uttr.rate = 0.75;
+    uttr.pitch = 1.1;
+    if (callback) {
+      uttr.onend = callback;
+    }
+    synth.speak(uttr);
+  }
+
+  function speakCurrentPhrase() {
+    const data = quizData[currentIdx];
+    if (data) {
+      speak(data.correctPhrase);
+    }
+  }
+
+  function shuffle(array) {
+    let arr = [...array];
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }
+
+  const rawQuizData = [
+    {
+      img: "images-quantity-nouns/juice.png",
+      targetNoun: "juice",
+      unitWord: "glass",
+      ja: "一杯のジュース",
+      fullWords: ["a", "glass", "of", "juice"],
+      correctPhrase: "a glass of juice",
+      s1Opts: ["juice", "tea", "water", "bread"],
+      s2Opts: ["glass", "bottle", "cup", "piece"]
+    },
+    {
+      img: "images-quantity-nouns/bread.png",
+      targetNoun: "bread",
+      unitWord: "loaf",
+      ja: "パン一斤",
+      fullWords: ["a", "loaf", "of", "bread"],
+      correctPhrase: "a loaf of bread",
+      s1Opts: ["bread", "pie", "pizza", "rice"],
+      s2Opts: ["loaf", "slice", "piece", "bowl"]
+    },
+    {
+      img: "images-quantity-nouns/water.png",
+      targetNoun: "water",
+      unitWord: "bottle",
+      ja: "一本のお水",
+      fullWords: ["a", "bottle", "of", "water"],
+      correctPhrase: "a bottle of water",
+      s1Opts: ["water", "juice", "tea", "socks"],
+      s2Opts: ["bottle", "glass", "cup", "bag"]
+    },
+    {
+      img: "images-quantity-nouns/rice.png",
+      targetNoun: "rice",
+      unitWord: "bowl",
+      ja: "一杯のごはん",
+      fullWords: ["a", "bowl", "of", "rice"],
+      correctPhrase: "a bowl of rice",
+      s1Opts: ["rice", "bread", "potato chips", "pizza"],
+      s2Opts: ["bowl", "piece", "slice", "pair"]
+    },
+    {
+      img: "images-quantity-nouns/tea.png",
+      targetNoun: "tea",
+      unitWord: "cup",
+      ja: "一杯のお茶",
+      fullWords: ["a", "cup", "of", "tea"],
+      correctPhrase: "a cup of tea",
+      s1Opts: ["tea", "juice", "water", "pie"],
+      s2Opts: ["cup", "glass", "bottle", "piece"]
+    },
+    {
+      img: "images-quantity-nouns/socks.png",
+      targetNoun: "socks",
+      unitWord: "pair",
+      ja: "一足の靴下",
+      fullWords: ["a", "pair", "of", "socks"],
+      correctPhrase: "a pair of socks",
+      s1Opts: ["socks", "potato chips", "pizza", "rice"],
+      s2Opts: ["pair", "piece", "slice", "bowl"]
+    },
+    {
+      img: "images-quantity-nouns/pizza.png",
+      targetNoun: "pizza",
+      unitWord: "slice",
+      ja: "一枚のピザ（一切れ）",
+      fullWords: ["a", "slice", "of", "pizza"],
+      correctPhrase: "a slice of pizza",
+      s1Opts: ["pizza", "bread", "pie", "water"],
+      s2Opts: ["slice", "piece", "loaf", "cup"]
+    },
+    {
+      img: "images-quantity-nouns/pie.png",
+      targetNoun: "pie",
+      unitWord: "piece",
+      ja: "ひとつのパイ（一切れ）",
+      fullWords: ["a", "piece", "of", "pie"],
+      correctPhrase: "a piece of pie",
+      s1Opts: ["pie", "pizza", "bread", "potato chips"],
+      s2Opts: ["piece", "slice", "loaf", "glass"]
+    },
+    {
+      img: "images-quantity-nouns/potato-chips.png",
+      targetNoun: "potato chips",
+      unitWord: "bag",
+      ja: "ポテトチップス一袋",
+      fullWords: ["a", "bag", "of", "potato chips"],
+      correctPhrase: "a bag of potato chips",
+      s1Opts: ["potato chips", "socks", "rice", "tea"],
+      s2Opts: ["bag", "bowl", "pair", "slice"]
+    }
+  ];
+
+  const celebrations = ["Great!", "Excellent!", "Perfect!", "Wonderful!", "Awesome!"];
+
+  let quizData = [];
+  let currentIdx = 0;
+  let userSort = [];
+  let mistakes = []; // 間違い履歴保持用
+
+  function initQuiz() {
+    quizData = shuffle(rawQuizData);
+    mistakes = [];
+
+    const progressBar = document.getElementById('progress-bar');
+    progressBar.innerHTML = '';
+    quizData.forEach((_, index) => {
+      const dot = document.createElement('div');
+      dot.className = `progress-dot ${index === 0 ? 'active' : ''}`;
+      dot.id = `dot-${index}`;
+      progressBar.appendChild(dot);
+    });
+
+    loadQuestion();
+  }
+
+  function loadQuestion() {
+    if (window.speechSynthesis) window.speechSynthesis.cancel();
+    const data = quizData[currentIdx];
+
+    // Image
+    document.getElementById('item-image').src = data.img;
+
+    // Reset Cards & Feedbacks
+    document.getElementById('step1-card').style.display = 'block';
+    document.getElementById('step2-card').style.display = 'none';
+    document.getElementById('step3-card').style.display = 'none';
+    document.getElementById('celebration-area').style.display = 'none';
+
+    document.getElementById('s1-feedback').textContent = '';
+    document.getElementById('s2-feedback').textContent = '';
+    document.getElementById('s3-feedback').textContent = '';
+
+    // STEP 1 Setup
+    const s1Area = document.getElementById('s1-select-area');
+    s1Area.innerHTML = '';
+    const sel1 = document.createElement('select');
+    sel1.id = 's1-select';
+    sel1.innerHTML = `<option value="">-- Choose --</option>` +
+      shuffle(data.s1Opts).map(o => `<option value="${o}">${o}</option>`).join('');
+    s1Area.appendChild(sel1);
+    document.getElementById('s1-btn').style.display = 'block';
+
+    // STEP 2 Setup
+    const s2Area = document.getElementById('s2-select-area');
+    s2Area.innerHTML = '';
+    const sel2 = document.createElement('select');
+    sel2.id = 's2-select';
+    sel2.innerHTML = `<option value="">-- Choose --</option>` +
+      shuffle(data.s2Opts).map(o => `<option value="${o}">${o}</option>`).join('');
+    s2Area.appendChild(sel2);
+    document.getElementById('s2-btn').style.display = 'block';
+
+    // STEP 3 Setup
+    document.getElementById('s3-ja-text').textContent = data.ja;
+    setupStep3(data);
+  }
+
+  function checkStep1() {
+    const data = quizData[currentIdx];
+    const val = document.getElementById('s1-select').value;
+    const fb = document.getElementById('s1-feedback');
+
+    if (val === data.targetNoun) {
+      fb.textContent = '';
+      document.getElementById('step1-card').style.display = 'none';
+      document.getElementById('step2-card').style.display = 'block';
+    } else {
+      fb.textContent = "Try again!";
+      mistakes.push(`・${data.correctPhrase} (Step 1: 単語選択)`);
+    }
+  }
+
+  function checkStep2() {
+    const data = quizData[currentIdx];
+    const val = document.getElementById('s2-select').value;
+    const fb = document.getElementById('s2-feedback');
+
+    if (val === data.unitWord) {
+      fb.textContent = '';
+      document.getElementById('step2-card').style.display = 'none';
+      document.getElementById('step3-card').style.display = 'block';
+    } else {
+      fb.textContent = "Try again!";
+      mistakes.push(`・${data.correctPhrase} (Step 2: 単位選択)`);
+    }
+  }
+
+  function setupStep3(data) {
+    userSort = [];
+    const dropZone = document.getElementById('s3-drop-zone');
+    const wordPool = document.getElementById('s3-word-pool');
+    
+    dropZone.innerHTML = '<span id="s3-placeholder" style="color:#aaa;">Tap words below to arrange</span>';
+    wordPool.innerHTML = '';
+    document.getElementById('s3-btn').style.display = 'none';
+
+    const shuffledWords = shuffle([...data.fullWords]);
+    shuffledWords.forEach(w => {
+      const btn = document.createElement('button');
+      btn.className = 'word-btn';
+      btn.textContent = w;
+      btn.onclick = () => {
+        if (btn.classList.contains('used')) return;
+        
+        btn.classList.add('used');
+        userSort.push({ text: w, btn: btn });
+        renderStep3Sort();
+      };
+      wordPool.appendChild(btn);
+    });
+  }
+
+  function renderStep3Sort() {
+    const dropZone = document.getElementById('s3-drop-zone');
+    dropZone.innerHTML = '';
+
+    if (userSort.length === 0) {
+      dropZone.innerHTML = '<span id="s3-placeholder" style="color:#aaa;">Tap words below to arrange</span>';
+    } else {
+      userSort.forEach((item, idx) => {
+        const placed = document.createElement('div');
+        placed.className = 'placed-word';
+        placed.textContent = item.text;
+        placed.onclick = () => {
+          item.btn.classList.remove('used');
+          userSort.splice(idx, 1);
+          renderStep3Sort();
+        };
+        dropZone.appendChild(placed);
+      });
+    }
+
+    const checkBtn = document.getElementById('s3-btn');
+    if (userSort.length === quizData[currentIdx].fullWords.length) {
+      checkBtn.style.display = 'block';
+    } else {
+      checkBtn.style.display = 'none';
+    }
+  }
+
+  function checkStep3() {
+    const data = quizData[currentIdx];
+    const userPhrase = userSort.map(i => i.text).join(' ');
+    const fb = document.getElementById('s3-feedback');
+
+    if (userPhrase === data.correctPhrase) {
+      fb.textContent = '';
+      document.getElementById('step3-card').style.display = 'none';
+      
+      const randomCeleb = celebrations[Math.floor(Math.random() * celebrations.length)];
+      document.getElementById('celebration-title').textContent = randomCeleb;
+      document.getElementById('celebration-phrase').textContent = data.correctPhrase;
+      
+      document.getElementById('celebration-area').style.display = 'block';
+      document.getElementById(`dot-${currentIdx}`).classList.add('completed');
+    } else {
+      fb.textContent = "Try again!";
+      mistakes.push(`・${data.correctPhrase} (Step 3: 並べ替え)`);
+    }
+  }
+
+  function nextQuestion() {
+    if (window.speechSynthesis) window.speechSynthesis.cancel();
+    document.getElementById(`dot-${currentIdx}`).classList.remove('active');
+    
+    currentIdx++;
+    if (currentIdx < quizData.length) {
+      document.getElementById(`dot-${currentIdx}`).classList.add('active');
+      loadQuestion();
+    } else {
+      showFinalResult();
+    }
+  }
+
+  function showFinalResult() {
+    document.getElementById('quiz-content').style.display = 'none';
+    const resScreen = document.getElementById('result-screen');
+    resScreen.style.display = 'block';
+
+    const desc = document.getElementById('result-desc');
+    const mistContainer = document.getElementById('mistake-container');
+    const mistList = document.getElementById('mistake-list');
+    const reportContainer = document.getElementById('report-container');
+
+    if (mistakes.length === 0) {
+      desc.textContent = "全問パーフェクトクリアです！Tamaki先生に完了報告を送ろう！";
+      mistContainer.style.display = 'none';
+      reportContainer.style.display = 'block';
+    } else {
+      // 重複を除外してリスト化
+      const uniqueMistakes = [...new Set(mistakes)];
+      desc.textContent = "惜しい！間違えた箇所があります。全問正解するとTamaki先生に報告できます。";
+      mistList.innerHTML = uniqueMistakes.map(m => `<div class="mistake-item">${m}</div>`).join('');
+      mistContainer.style.display = 'block';
+      reportContainer.style.display = 'none';
+    }
+  }
+
+  function sendEmailReport() {
+    const nameInput = document.getElementById('student-name');
+    const name = nameInput.value.trim();
+
+    if (!name) {
+      alert("お名前を入力してください。");
+      return;
+    }
+
+    const recipient = "tamaki@eigostudio-stepforward.com";
+    const subject = encodeURIComponent(`【課題完了報告】p31 Quantity Nouns (${name})`);
+    const body = encodeURIComponent(`Tamaki先生\n\np31 Quantity Nouns のアクティビティを全問正解で完了しました！\n\n生徒名: ${name}`);
+
+    window.location.href = `mailto:${recipient}?subject=${subject}&body=${body}`;
+  }
+
+  window.onload = initQuiz;
+</script>
+
+</body>
+</html>
