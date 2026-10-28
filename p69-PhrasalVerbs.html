@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Step by Step Towards EIKEN Grade 5 p69</title>
+<script src="auth.js"></script>
+<style>
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  :root {
+    --green: #4CAF50;
+    --green-hover: #388E3C;
+    --orange: #ff9800;
+    --grey: #9E9E9E;
+    --dark-grey: #4a4a4a;
+    --border-color: #cbd5e0;
+    --white: #ffffff;
+    --black: #333333;
+    --bg-color: #eef2f7;
+    --card-bg: #f8fafc;
+    --primary-blue: #1e88e5;
+    --primary-brown: #a0522d;
+    --red: #e53e3e;
+    --purple: #7e57c2;
+  }
+
+  body {
+    font-family: 'Hiragino Kaku Gothic ProN', 'Meiryo', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--black);
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .container {
+    max-width: 750px;
+    width: 100%;
+    background: var(--white);
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  }
+
+  h1 {
+    color: var(--primary-blue);
+    text-align: center;
+    border-bottom: 3px solid var(--orange);
+    margin-top: 0;
+    margin-bottom: 25px;
+    font-size: 24px;
+    padding-bottom: 10px;
+  }
+
+  /* Progress Bar */
+  .progress-bar {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 25px;
+  }
+
+  .progress-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background-color: #cbd5e0;
+    transition: all 0.3s;
+  }
+
+  .progress-dot.active {
+    background-color: var(--orange);
+    transform: scale(1.2);
+  }
+
+  .progress-dot.completed {
+    background-color: var(--green);
+  }
+
+  /* Question Card */
+  .question-card {
+    background: var(--card-bg);
+    border: 2px dashed #bbdefb;
+    border-radius: 18px;
+    padding: 24px;
+    margin-bottom: 20px;
+  }
+
+  /* Step Badge & Instruction */
+  .step-header {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: var(--primary-blue);
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .step-badge {
+    background-color: var(--primary-blue);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 0.85rem;
+  }
+
+  .instruction-text {
+    font-size: 1.15rem;
+    font-weight: bold;
+    color: var(--dark-grey);
+    margin-bottom: 15px;
+    background: #e3f2fd;
+    padding: 12px 16px;
+    border-radius: 10px;
+    border-left: 5px solid var(--primary-blue);
+  }
+
+  .phrase-meaning-box {
+    background: #fff9db;
+    padding: 14px 18px;
+    border-radius: 12px;
+    border: 1px solid #ffe066;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .phrase-target-label {
+    font-size: 0.95rem;
+    color: #b45309;
+    font-weight: bold;
+    margin-bottom: 6px;
+  }
+
+  .phrase-target-meaning {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #1e293b;
+    letter-spacing: 0.5px;
+  }
+
+  /* Feedback Message */
+  .error-feedback {
+    color: var(--red);
+    font-weight: bold;
+    font-size: 1.1rem;
+    text-align: center;
+    margin-top: 12px;
+    min-height: 24px;
+  }
+
+  /* Step Select Area */
+  .select-area {
+    font-size: 1.4rem;
+    line-height: 2.2;
+    margin: 15px 0;
+    font-weight: bold;
+    text-align: center;
+    color: var(--black);
+    background: white;
+    padding: 24px;
+    border-radius: 12px;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+    letter-spacing: 0.5px;
+  }
+
+  .fixed-verb {
+    color: #1e88e5;
+    background: #e3f2fd;
+    padding: 4px 14px;
+    border-radius: 8px;
+    display: inline-block;
+    margin-right: 8px;
+    border: 1px solid #90caf9;
+  }
+
+  .fixed-trailer {
+    color: #64748b;
+    margin-left: 8px;
+    font-weight: normal;
+  }
+
+  select {
+    font-family: inherit;
+    font-size: 1.2rem;
+    font-weight: bold;
+    padding: 8px 18px;
+    border: 2px solid var(--primary-blue);
+    border-radius: 10px;
+    color: var(--black);
+    background-color: var(--white);
+    cursor: pointer;
+    margin: 0 5px;
+    transition: all 0.2s;
+    vertical-align: middle;
+  }
+
+  select:hover {
+    border-color: var(--orange);
+  }
+
+  select:focus {
+    outline: none;
+    border-color: var(--orange);
+    box-shadow: 0 0 0 3px rgba(255, 152, 0, 0.2);
+  }
+
+  /* Word Bubbles for Step Scramble */
+  .drop-zone {
+    min-height: 70px;
+    border: 2px dashed var(--border-color);
+    border-radius: 15px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    padding: 12px;
+    background: var(--white);
+  }
+
+  .word-pool {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 15px;
+    justify-content: center;
+  }
+
+  .word-btn {
+    background-color: var(--white);
+    color: var(--black);
+    border: 2px solid var(--primary-blue);
+    padding: 10px 18px;
+    border-radius: 25px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s;
+    user-select: none;
+    display: inline-block;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  }
+
+  .word-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.12);
+    border-color: var(--orange);
+  }
+
+  .word-btn.used {
+    border-color: #e2e8f0;
+    color: #cbd5e0;
+    background-color: #f7fafc;
+    pointer-events: none;
+    opacity: 0.4;
+    transform: none;
+    box-shadow: none;
+  }
+
+  .placed-word {
+    background-color: #e3f2fd;
+    border: 2px solid var(--primary-blue);
+    color: var(--black);
+    padding: 10px 18px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1.1rem;
+    animation: popIn 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: all 0.2s;
+  }
+
+  .placed-word:hover {
+    background-color: #ffebee;
+    border-color: var(--red);
+  }
+
+  /* Celebration Area */
+  .celebration-box {
+    text-align: center;
+    padding: 25px 15px;
+    background: #f0fdf4;
+    border: 2px solid #bbf7d0;
+    border-radius: 18px;
+    animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    margin-bottom: 20px;
+  }
+
+  .celebration-title {
+    font-size: 2rem;
+    color: #16a34a;
+    font-weight: bold;
+    margin-bottom: 15px;
+  }
+
+  .celebration-phrasal-display {
+    font-size: 1.35rem;
+    color: #047857;
+    font-weight: bold;
+    margin-bottom: 10px;
+    background: #d1fae5;
+    padding: 6px 16px;
+    border-radius: 20px;
+    display: inline-block;
+  }
+
+  .phrase-speaker-row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 10px;
+  }
+
+  .final-sentence {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #1e3a8a;
+    line-height: 1.4;
+    word-break: break-word;
+  }
+
+  .speaker-btn {
+    background: var(--purple);
+    color: white;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 50px;
+    font-size: 1.1rem;
+    font-family: inherit;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 0 #5e35b1;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.1s;
+  }
+
+  .speaker-btn:hover {
+    background: #673ab7;
+  }
+
+  .speaker-btn:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 0 #5e35b1;
+  }
+
+  /* Action Buttons */
+  .action-btn {
+    padding: 12px 35px;
+    font-size: 1.1rem;
+    background-color: var(--green);
+    color: white;
+    border: none;
+    border-radius: 35px;
+    cursor: pointer;
+    font-weight: bold;
+    box-shadow: 0 4px 0 #2e7d32;
+    display: block;
+    margin: 15px auto 0 auto;
+    transition: transform 0.1s, background-color 0.2s;
+  }
+
+  .action-btn:hover {
+    background-color: var(--green-hover);
+  }
+
+  .action-btn:active {
+    transform: translateY(4px);
+    box-shadow: none;
+  }
+
+  .next-btn {
+    background-color: var(--orange);
+    box-shadow: 0 4px 0 #b36b00;
+  }
+
+  .next-btn:hover {
+    background-color: #e68a00;
+  }
+
+  /* Result Screen & Report System */
+  .result-screen {
+    display: none;
+    text-align: center;
+    padding: 20px 10px;
+  }
+
+  .result-screen h2 {
+    color: var(--green);
+    font-size: 28px;
+    margin-bottom: 15px;
+  }
+
+  .mistake-list-box {
+    background: #fff5f5;
+    border: 2px dashed var(--red);
+    border-radius: 12px;
+    padding: 18px;
+    margin: 20px 0;
+    text-align: left;
+  }
+
+  .mistake-list-title {
+    color: var(--red);
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+  }
+
+  .mistake-item {
+    color: #c53030;
+    font-size: 1rem;
+    margin-bottom: 6px;
+    line-height: 1.4;
+  }
+
+  .name-input-group {
+    margin: 25px 0 15px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .name-input-group input {
+    font-size: 1.1rem;
+    padding: 10px 14px;
+    border: 2px solid var(--border-color);
+    border-radius: 10px;
+    width: 220px;
+  }
+
+  .name-input-group input:focus {
+    outline: none;
+    border-color: var(--primary-blue);
+  }
+
+  .report-btn {
+    background-color: var(--primary-blue);
+    box-shadow: 0 4px 0 #1565c0;
+  }
+
+  .restart-btn {
+    background-color: var(--orange);
+    color: white;
+    padding: 12px 30px;
+    font-size: 1.05rem;
+    border-radius: 25px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 20px;
+    box-shadow: 0 4px 0 #b36b00;
+  }
+
+  .restart-btn:active {
+    transform: translateY(2px);
+    box-shadow: none;
+  }
+
+  @keyframes popIn {
+    0% { transform: scale(0.6); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+
+  @media (max-width: 600px) {
+    .container { padding: 15px; }
+    .instruction-text { font-size: 1rem; }
+    .word-btn, .placed-word { font-size: 0.95rem; padding: 8px 14px; }
+    select { font-size: 1rem; padding: 6px 10px; }
+    .celebration-title { font-size: 1.6rem; }
+    .final-sentence { font-size: 1.25rem; }
+    .speaker-btn { font-size: 1rem; padding: 8px 18px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Step by Step Towards EIKEN Grade 5 p69</h1>
+
+  <div id="quiz-content">
+    <div class="progress-bar" id="progress-bar"></div>
+
+    <!-- STEP 1 CARD (動詞単体を選ぶ) -->
+    <div class="question-card" id="step1-card">
+      <div class="step-header">
+        <span class="step-badge" id="s1-badge">STEP 1</span>
+        <span>動詞を選ぼう</span>
+      </div>
+      <div class="instruction-text">日本語の動作に合う「動詞」を選んでください。</div>
+      <div class="phrase-meaning-box">
+        <div class="phrase-target-label">【つくりたいフレーズ】</div>
+        <div class="phrase-target-meaning" id="s1-phrase-meaning"></div>
+      </div>
+      <div class="select-area" id="s1-select-area"></div>
+      <div class="error-feedback" id="s1-feedback"></div>
+      <button class="action-btn" id="s1-btn" onclick="checkStep1()">OK</button>
+    </div>
+
+    <!-- STEP 2 CARD (動詞のあとに続く言葉を選ぶ: 英語単語のみ) -->
+    <div class="question-card" id="step2-card" style="display: none;">
+      <div class="step-header">
+        <span class="step-badge" id="s2-badge">STEP 2</span>
+        <span>組み合わせる言葉（副詞・前置詞）を選ぼう</span>
+      </div>
+      <div class="instruction-text" id="s2-instruction">選んだ動詞の後ろにつける言葉を選んで、フレーズを完成させましょう。</div>
+      <div class="phrase-meaning-box">
+        <div class="phrase-target-label">【つくりたいフレーズ】</div>
+        <div class="phrase-target-meaning" id="s2-phrase-meaning"></div>
+      </div>
+      <div class="select-area" id="s2-select-area"></div>
+      <div class="error-feedback" id="s2-feedback"></div>
+      <button class="action-btn" id="s2-btn" onclick="checkStep2()">OK</button>
+    </div>
+
+    <!-- SCRAMBLE CARD (STEP 3: 実際の文で並べ替え) -->
+    <div class="question-card" id="scramble-card" style="display: none;">
+      <div class="step-header">
+        <span class="step-badge" id="scramble-badge">STEP 3</span>
+        <span>文の中で使ってみよう！（並べ替え）</span>
+      </div>
+      <div class="instruction-text">完成したフレーズを使って、正しい文を組み立てましょう。</div>
+      <div class="phrase-meaning-box">
+        <div class="phrase-target-label">【文全体の日本語】</div>
+        <div class="phrase-target-meaning" id="scramble-sentence-meaning"></div>
+      </div>
+      <div class="drop-zone" id="scramble-drop-zone">
+        <span id="scramble-placeholder" style="color:#aaa;">下の単語バブルをタップして並べ替えてください</span>
+      </div>
+      <div class="word-pool" id="scramble-word-pool"></div>
+      <div class="error-feedback" id="scramble-feedback"></div>
+      <button class="action-btn" id="scramble-btn" onclick="checkScramble()" style="display:none;">Check Sentence</button>
+    </div>
+
+    <!-- Celebration Display -->
+    <div id="celebration-area" style="display: none;">
+      <div class="celebration-box">
+        <div class="celebration-title" id="celebration-title">Great!</div>
+        <div class="celebration-phrasal-display" id="celebration-phrasal"></div>
+        <div class="phrase-speaker-row">
+          <div class="final-sentence" id="celebration-phrase"></div>
+          <button class="speaker-btn" onclick="speakCurrentPhrase()">🔊 Listen</button>
+        </div>
+      </div>
+      <button class="action-btn next-btn" id="next-btn" onclick="nextQuestion()">Next ➔</button>
+    </div>
+  </div>
+
+  <div class="result-screen" id="result-screen">
+    <h2>🎉 Good job! 🎉</h2>
+    <p id="result-desc"></p>
+
+    <!-- ミスリスト表示エリア -->
+    <div id="mistake-container" style="display: none;">
+      <div class="mistake-list-box">
+        <div class="mistake-list-title">⚠️ 間違えた箇所（要復習）：</div>
+        <div id="mistake-list"></div>
+      </div>
+    </div>
+
+    <!-- メール報告エリア (ノーミス時のみ) -->
+    <div id="report-container" style="display: none;">
+      <div class="name-input-group">
+        <label for="student-name"><b>お名前:</b></label>
+        <input type="text" id="student-name" placeholder="名前を入力してください">
+      </div>
+      <button class="action-btn report-btn" onclick="sendEmailReport()">Tamaki先生に報告する 📧</button>
+    </div>
+
+    <button class="restart-btn" onclick="location.reload()">Try Again 🔄</button>
+  </div>
+</div>
+
+<script>
+  let preferredVoice = null;
+  function loadVoices() {
+    if (!window.speechSynthesis) return;
+    const voices = window.speechSynthesis.getVoices();
+    if (voices.length === 0) return;
+    preferredVoice = 
+      voices.find(v => v.lang === "en-US" && v.name.includes("Google US English")) ||
+      voices.find(v => v.lang === "en-US" && v.name.includes("Samantha")) ||
+      voices.find(v => v.lang.startsWith("en-US")) ||
+      voices.find(v => v.lang.startsWith("en"));
+  }
+
+  if (typeof window !== 'undefined' && window.speechSynthesis) {
+    window.speechSynthesis.onvoiceschanged = loadVoices;
+    loadVoices();
+  }
+
+  function speak(text, callback) {
+    const synth = window.speechSynthesis;
+    if (!synth) return;
+    synth.cancel();
+    const uttr = new SpeechSynthesisUtterance(text);
+    if (preferredVoice) uttr.voice = preferredVoice;
+    uttr.rate = 0.8;
+    uttr.pitch = 1.0;
+    if (callback) {
+      uttr.onend = callback;
+    }
+    synth.speak(uttr);
+  }
+
+  function speakCurrentPhrase() {
+    const data = quizData[currentIdx];
+    if (data) {
+      speak(data.fullSentence);
+    }
+  }
+
+  function shuffle(array) {
+    let arr = [...array];
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }
+
+  // クイズデータ (p69 Phrasal Verbs - 全10問)
+  // 1. eat out
+  // 2. clean up
+  // 3. get on (the bus)
+  // 4. get off (the bus)
+  // 5. stand up
+  // 6. sit down
+  // 7. get up
+  // 8. go to (bed) - STEP 2で後ろに bed を配置
+  // 9. listen to
+  // 10. look at
+  const rawQuizData = [
+    {
+      id: "eat_out",
+      phrase: "eat out",
+      phraseMeaning: "外食する（外で食べる）",
+      s1Target: "eat",
+      s1Options: ["eat", "cook", "make", "play"],
+      s2Target: "out",
+      s2Options: ["out", "in", "up", "on"],
+      sentenceMeaning: "今夜は外食しよう。",
+      fullWords: ["Let's", "eat", "out", "tonight."],
+      fullSentence: "Let's eat out tonight."
+    },
+    {
+      id: "clean_up",
+      phrase: "clean up",
+      phraseMeaning: "片づける・そうじする",
+      s1Target: "clean",
+      s1Options: ["clean", "wash", "help", "open"],
+      s2Target: "up",
+      s2Options: ["up", "down", "out", "off"],
+      sentenceMeaning: "部屋を片づけなさい。",
+      fullWords: ["Clean", "up", "your", "room."],
+      fullSentence: "Clean up your room."
+    },
+    {
+      id: "get_on",
+      phrase: "get on (the bus)",
+      phraseMeaning: "（バスに）乗る",
+      s1Target: "get",
+      // ride や take との混同を避ける
+      s1Options: ["get", "come", "wait", "stand"],
+      s2Target: "on",
+      s2Options: ["on", "off", "up", "in"],
+      trailer: "the bus",
+      sentenceMeaning: "そのバスに乗りなさい。",
+      fullWords: ["Get", "on", "the", "bus."],
+      fullSentence: "Get on the bus."
+    },
+    {
+      id: "get_off",
+      phrase: "get off (the bus)",
+      phraseMeaning: "（バスから）降りる",
+      s1Target: "get",
+      s1Options: ["get", "go", "stop", "walk"],
+      s2Target: "off",
+      s2Options: ["off", "on", "down", "out"],
+      trailer: "the bus",
+      sentenceMeaning: "次のバス停で降りよう。",
+      fullWords: ["Let's", "get", "off", "here."],
+      fullSentence: "Let's get off here."
+    },
+    {
+      id: "stand_up",
+      phrase: "stand up",
+      phraseMeaning: "立ち上がる",
+      s1Target: "stand",
+      s1Options: ["stand", "sit", "look", "walk"],
+      s2Target: "up",
+      s2Options: ["up", "down", "on", "out"],
+      sentenceMeaning: "立ち上がりなさい。",
+      fullWords: ["Stand", "up,", "please."],
+      fullSentence: "Stand up, please."
+    },
+    {
+      id: "sit_down",
+      phrase: "sit down",
+      phraseMeaning: "座る",
+      s1Target: "sit",
+      s1Options: ["sit", "stand", "put", "wait"],
+      s2Target: "down",
+      s2Options: ["down", "up", "off", "in"],
+      sentenceMeaning: "どうぞ座ってください。",
+      fullWords: ["Please", "sit", "down."],
+      fullSentence: "Please sit down."
+    },
+    {
+      id: "get_up",
+      phrase: "get up",
+      phraseMeaning: "起きる",
+      s1Target: "get",
+      // wake との混同を避ける
+      s1Options: ["get", "stand", "come", "open"],
+      s2Target: "up",
+      s2Options: ["up", "down", "on", "to"],
+      sentenceMeaning: "明日の朝は早く起きなさい。",
+      fullWords: ["Get", "up", "early", "tomorrow."],
+      fullSentence: "Get up early tomorrow."
+    },
+    {
+      id: "go_to_bed",
+      phrase: "go to (bed)",
+      phraseMeaning: "寝る（ベッドに行く）",
+      s1Target: "go",
+      // sleep との混同を避ける
+      s1Options: ["go", "come", "run", "make"],
+      s2Target: "to",
+      s2Options: ["to", "at", "in", "for"],
+      trailer: "bed", // ご要望：toを選ぶときに後ろにbedを配置
+      sentenceMeaning: "10時に寝なさい。",
+      fullWords: ["Go", "to", "bed", "at", "ten."],
+      fullSentence: "Go to bed at ten."
+    },
+    {
+      id: "listen_to",
+      phrase: "listen to",
+      phraseMeaning: "〜を聞く・耳を傾ける",
+      s1Target: "listen",
+      // hear との混同を避ける
+      s1Options: ["listen", "look", "talk", "speak"],
+      s2Target: "to",
+      s2Options: ["to", "at", "with", "for"],
+      sentenceMeaning: "音楽を聴こう。",
+      fullWords: ["Let's", "listen", "to", "music."],
+      fullSentence: "Let's listen to music."
+    },
+    {
+      id: "look_at",
+      phrase: "look at",
+      phraseMeaning: "〜を見る",
+      s1Target: "look",
+      // see や watch との混同を避ける
+      s1Options: ["look", "listen", "point", "read"],
+      s2Target: "at",
+      s2Options: ["at", "to", "on", "up"],
+      sentenceMeaning: "その絵を見てごらん。",
+      fullWords: ["Look", "at", "the", "picture."],
+      fullSentence: "Look at the picture."
+    }
+  ];
+
+  const celebrations = ["Great!", "Excellent!", "Perfect!", "Wonderful!", "Awesome!", "Good job!"];
+
+  let quizData = [];
+  let currentIdx = 0;
+  let userSort = [];
+  let mistakes = [];
+
+  function initQuiz() {
+    quizData = shuffle(rawQuizData);
+    mistakes = [];
+
+    const progressBar = document.getElementById('progress-bar');
+    progressBar.innerHTML = '';
+    quizData.forEach((_, index) => {
+      const dot = document.createElement('div');
+      dot.className = `progress-dot ${index === 0 ? 'active' : ''}`;
+      dot.id = `dot-${index}`;
+      progressBar.appendChild(dot);
+    });
+
+    loadQuestion();
+  }
+
+  function loadQuestion() {
+    if (window.speechSynthesis) window.speechSynthesis.cancel();
+    const data = quizData[currentIdx];
+
+    // Card Reset
+    document.getElementById('step1-card').style.display = 'block';
+    document.getElementById('step2-card').style.display = 'none';
+    document.getElementById('scramble-card').style.display = 'none';
+    document.getElementById('celebration-area').style.display = 'none';
+
+    document.getElementById('s1-feedback').textContent = '';
+    document.getElementById('s2-feedback').textContent = '';
+    document.getElementById('scramble-feedback').textContent = '';
+
+    // STEP 1 Display: 動詞のみを選ばせる
+    document.getElementById('s1-phrase-meaning').textContent = `${data.phraseMeaning}`;
+    const s1Area = document.getElementById('s1-select-area');
+    const shuffledS1 = shuffle(data.s1Options);
+    s1Area.innerHTML = `
+      <select id="s1-select">
+        <option value="">-- 動詞を選ぶ --</option>
+        ${shuffledS1.map(v => `<option value="${v}">${v}</option>`).join('')}
+      </select>
+      <span style="color:#94a3b8; font-weight:normal; margin-left:8px;">＋ （...？）</span>
+    `;
+
+    // STEP 2 Display: 動詞を見せた状態で、副詞・前置詞を選ぶ
+    // go to (bed) の場合は、後ろに bed を置いておく
+    document.getElementById('s2-phrase-meaning').textContent = `${data.phraseMeaning}`;
+    const s2Area = document.getElementById('s2-select-area');
+    const shuffledS2 = shuffle(data.s2Options);
+    const trailerHtml = data.trailer ? `<span class="fixed-trailer">${data.trailer}</span>` : '';
+
+    s2Area.innerHTML = `
+      <span class="fixed-verb">${data.s1Target}</span>
+      ＋
+      <select id="s2-select" style="margin-left:8px;">
+        <option value="">-- 前置詞・副詞を選ぶ --</option>
+        ${shuffledS2.map(word => `<option value="${word}">${word}</option>`).join('')}
+      </select>
+      ${trailerHtml}
+    `;
+
+    // STEP 3 (並べ替え): 文全体の意味を提示
+    document.getElementById('scramble-sentence-meaning').textContent = data.sentenceMeaning;
+    setupScramble(data);
+  }
+
+  function checkStep1() {
+    const data = quizData[currentIdx];
+    const selectEl = document.getElementById('s1-select');
+    const val = selectEl ? selectEl.value : "";
+    const fb = document.getElementById('s1-feedback');
+
+    if (val === data.s1Target) {
+      fb.textContent = '';
+      document.getElementById('step1-card').style.display = 'none';
+      document.getElementById('step2-card').style.display = 'block';
+    } else {
+      fb.textContent = "Try again!";
+      mistakes.push(`・${data.phrase} (${data.phraseMeaning}) [STEP 1: 動詞]`);
+    }
+  }
+
+  function checkStep2() {
+    const data = quizData[currentIdx];
+    const selectEl = document.getElementById('s2-select');
+    const val = selectEl ? selectEl.value : "";
+    const fb = document.getElementById('s2-feedback');
+
+    if (val === data.s2Target) {
+      fb.textContent = '';
+      document.getElementById('step2-card').style.display = 'none';
+      document.getElementById('scramble-card').style.display = 'block';
+    } else {
+      fb.textContent = "Try again!";
+      mistakes.push(`・${data.phrase} (${data.phraseMeaning}) [STEP 2: 前置詞・副詞]`);
+    }
+  }
+
+  function setupScramble(data) {
+    userSort = [];
+    const dropZone = document.getElementById('scramble-drop-zone');
+    const wordPool = document.getElementById('scramble-word-pool');
+    
+    dropZone.innerHTML = '<span id="scramble-placeholder" style="color:#aaa;">下の単語バブルをタップして並べ替えてください</span>';
+    wordPool.innerHTML = '';
+    document.getElementById('scramble-btn').style.display = 'none';
+
+    const shuffledWords = shuffle([...data.fullWords]);
+    shuffledWords.forEach(w => {
+      const btn = document.createElement('button');
+      btn.className = 'word-btn';
+      btn.textContent = w;
+      btn.onclick = () => {
+        if (btn.classList.contains('used')) return;
+        
+        btn.classList.add('used');
+        userSort.push({ text: w, btn: btn });
+        renderScrambleSort();
+      };
+      wordPool.appendChild(btn);
+    });
+  }
+
+  function renderScrambleSort() {
+    const dropZone = document.getElementById('scramble-drop-zone');
+    dropZone.innerHTML = '';
+
+    if (userSort.length === 0) {
+      dropZone.innerHTML = '<span id="scramble-placeholder" style="color:#aaa;">下の単語バブルをタップして並べ替えてください</span>';
+    } else {
+      userSort.forEach((item, idx) => {
+        const placed = document.createElement('div');
+        placed.className = 'placed-word';
+        placed.textContent = item.text;
+        placed.onclick = () => {
+          item.btn.classList.remove('used');
+          userSort.splice(idx, 1);
+          renderScrambleSort();
+        };
+        dropZone.appendChild(placed);
+      });
+    }
+
+    const checkBtn = document.getElementById('scramble-btn');
+    if (userSort.length === quizData[currentIdx].fullWords.length) {
+      checkBtn.style.display = 'block';
+    } else {
+      checkBtn.style.display = 'none';
+    }
+  }
+
+  function checkScramble() {
+    const data = quizData[currentIdx];
+    const userSentence = userSort.map(i => i.text).join(' ');
+    const fb = document.getElementById('scramble-feedback');
+
+    if (userSentence === data.fullSentence) {
+      fb.textContent = '';
+      document.getElementById('scramble-card').style.display = 'none';
+      
+      const randomCeleb = celebrations[Math.floor(Math.random() * celebrations.length)];
+      document.getElementById('celebration-title').textContent = randomCeleb;
+      document.getElementById('celebration-phrasal').textContent = `✨ ${data.phrase} : ${data.phraseMeaning}`;
+      document.getElementById('celebration-phrase').textContent = data.fullSentence;
+      
+      document.getElementById('celebration-area').style.display = 'block';
+      document.getElementById(`dot-${currentIdx}`).classList.add('completed');
+    } else {
+      fb.textContent = "Try again!";
+      mistakes.push(`・${data.fullSentence} [STEP 3: 並べ替え]`);
+    }
+  }
+
+  function nextQuestion() {
+    if (window.speechSynthesis) window.speechSynthesis.cancel();
+    document.getElementById(`dot-${currentIdx}`).classList.remove('active');
+    
+    currentIdx++;
+    if (currentIdx < quizData.length) {
+      document.getElementById(`dot-${currentIdx}`).classList.add('active');
+      loadQuestion();
+    } else {
+      showFinalResult();
+    }
+  }
+
+  function showFinalResult() {
+    document.getElementById('quiz-content').style.display = 'none';
+    const resScreen = document.getElementById('result-screen');
+    resScreen.style.display = 'block';
+
+    const desc = document.getElementById('result-desc');
+    const mistContainer = document.getElementById('mistake-container');
+    const mistList = document.getElementById('mistake-list');
+    const reportContainer = document.getElementById('report-container');
+
+    if (mistakes.length === 0) {
+      desc.textContent = "全問パーフェクトクリアです！Tamaki先生に完了報告を送ろう！";
+      mistContainer.style.display = 'none';
+      reportContainer.style.display = 'block';
+    } else {
+      const uniqueMistakes = [...new Set(mistakes)];
+      desc.textContent = "惜しい！間違えた箇所があります。全問正解するとTamaki先生に報告できます。";
+      mistList.innerHTML = uniqueMistakes.map(m => `<div class="mistake-item">${m}</div>`).join('');
+      mistContainer.style.display = 'block';
+      reportContainer.style.display = 'none';
+    }
+  }
+
+  function sendEmailReport() {
+    const nameInput = document.getElementById('student-name');
+    const name = nameInput.value.trim();
+
+    if (!name) {
+      alert("お名前を入力してください。");
+      return;
+    }
+
+    const recipient = "tamaki@eigostudio-stepforward.com";
+    const subject = encodeURIComponent(`【課題完了報告】Step by Step Towards EIKEN Grade 5 p69 (${name})`);
+    const body = encodeURIComponent(`Tamaki先生\n\nStep by Step Towards EIKEN Grade 5 p69 のアクティビティを全問正解で完了しました！\n\n生徒名: ${name}`);
+
+    window.location.href = `mailto:${recipient}?subject=${subject}&body=${body}`;
+  }
+
+  window.onload = initQuiz;
+</script>
+
+</body>
+</html>
