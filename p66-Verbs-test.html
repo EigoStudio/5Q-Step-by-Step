@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Step by Step Towards EIKEN Grade 5 p62-66 Mastery Test</title>
+<script src="auth.js"></script>
+<style>
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  :root {
+    --green: #4CAF50;
+    --green-hover: #388E3C;
+    --orange: #ff9800;
+    --grey: #9E9E9E;
+    --dark-grey: #4a4a4a;
+    --border-color: #cbd5e0;
+    --white: #ffffff;
+    --black: #333333;
+    --bg-color: #eef2f7;
+    --card-bg: #f8fafc;
+    --primary-blue: #1e88e5;
+    --red: #e53e3e;
+    --purple: #7e57c2;
+    --teal: #00897b;
+  }
+
+  body {
+    font-family: 'Hiragino Kaku Gothic ProN', 'Meiryo', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--black);
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .container {
+    max-width: 750px;
+    width: 100%;
+    background: var(--white);
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  }
+
+  h1 {
+    color: var(--primary-blue);
+    text-align: center;
+    border-bottom: 3px solid var(--orange);
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 22px;
+    padding-bottom: 10px;
+  }
+
+  .subtitle {
+    text-align: center;
+    color: var(--dark-grey);
+    font-size: 0.95rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+
+  /* Progress Bar */
+  .progress-wrapper {
+    margin-bottom: 22px;
+    text-align: center;
+  }
+
+  .progress-counter {
+    font-weight: bold;
+    color: var(--primary-blue);
+    font-size: 1.05rem;
+    margin-bottom: 8px;
+  }
+
+  .progress-bar {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .progress-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #cbd5e0;
+    transition: all 0.3s;
+  }
+
+  .progress-dot.active {
+    background-color: var(--orange);
+    transform: scale(1.25);
+  }
+
+  .progress-dot.completed {
+    background-color: var(--green);
+  }
+
+  /* Question Card */
+  .question-card {
+    background: var(--card-bg);
+    border: 2px solid #bbdefb;
+    border-radius: 18px;
+    padding: 24px;
+    margin-bottom: 20px;
+  }
+
+  .q-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+
+  .q-badge {
+    background-color: var(--primary-blue);
+    color: white;
+    padding: 4px 14px;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    font-weight: bold;
+  }
+
+  .q-badge.scramble {
+    background-color: var(--purple);
+  }
+
+  .q-badge.dialogue {
+    background-color: var(--teal);
+  }
+
+  .japanese-text {
+    font-size: 1.15rem;
+    font-weight: bold;
+    color: #2c3e50;
+    margin-bottom: 18px;
+    text-align: center;
+    background: #fff9db;
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid #ffe066;
+    line-height: 1.5;
+  }
+
+  /* Fill-in-the-blank & Dialogue Area */
+  .sentence-display {
+    font-size: 1.35rem;
+    font-weight: bold;
+    text-align: center;
+    background: white;
+    padding: 24px 18px;
+    border-radius: 12px;
+    border: 2px solid #e2e8f0;
+    margin-bottom: 20px;
+    line-height: 1.7;
+  }
+
+  .dialogue-box {
+    text-align: left;
+    background: white;
+    padding: 20px 24px;
+    border-radius: 14px;
+    border: 2px solid #b2dfdb;
+    margin-bottom: 20px;
+    font-size: 1.25rem;
+    font-weight: bold;
+    line-height: 1.8;
+  }
+
+  .dialogue-line {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+
+  .dialogue-line:last-child {
+    margin-bottom: 0;
+  }
+
+  .speaker-label {
+    color: var(--teal);
+    min-width: 75px;
+    font-weight: 900;
+  }
+
+  .blank-box {
+    display: inline-block;
+    min-width: 110px;
+    padding: 2px 12px;
+    margin: 0 4px;
+    border-bottom: 3px solid var(--primary-blue);
+    color: var(--primary-blue);
+    background-color: #f0f9ff;
+    border-radius: 6px;
+    text-align: center;
+  }
+
+  .choices-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+
+  .choice-btn {
+    background-color: var(--white);
+    border: 2px solid var(--border-color);
+    padding: 14px 10px;
+    border-radius: 12px;
+    font-size: 1.15rem;
+    font-weight: bold;
+    color: var(--black);
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: inherit;
+  }
+
+  .choice-btn:hover {
+    border-color: var(--primary-blue);
+    background-color: #f0f9ff;
+  }
+
+  .choice-btn.selected {
+    background-color: var(--primary-blue);
+    color: white;
+    border-color: var(--primary-blue);
+  }
+
+  /* Scramble Area */
+  .drop-zone {
+    min-height: 72px;
+    border: 2px dashed var(--border-color);
+    border-radius: 15px;
+    margin-bottom: 18px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    padding: 12px;
+    background: var(--white);
+  }
+
+  .word-pool {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 10px;
+    justify-content: center;
+  }
+
+  .word-btn {
+    background-color: var(--white);
+    color: var(--black);
+    border: 2px solid var(--primary-blue);
+    padding: 10px 18px;
+    border-radius: 25px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s;
+    user-select: none;
+    font-family: inherit;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  }
+
+  .word-btn:hover {
+    transform: translateY(-2px);
+    border-color: var(--orange);
+  }
+
+  .word-btn.used {
+    border-color: #e2e8f0;
+    color: #cbd5e0;
+    background-color: #f7fafc;
+    pointer-events: none;
+    opacity: 0.4;
+    transform: none;
+    box-shadow: none;
+  }
+
+  .placed-word {
+    background-color: #e3f2fd;
+    border: 2px solid var(--primary-blue);
+    color: var(--black);
+    padding: 10px 18px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1.1rem;
+    animation: popIn 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+
+  .placed-word:hover {
+    background-color: #ffebee;
+    border-color: var(--red);
+  }
+
+  /* Feedback Message */
+  .error-feedback {
+    color: var(--red);
+    font-weight: bold;
+    font-size: 1.1rem;
+    text-align: center;
+    margin-top: 10px;
+    min-height: 24px;
+  }
+
+  /* Celebration Area */
+  .celebration-box {
+    text-align: center;
+    padding: 24px 15px;
+    background: #f0fdf4;
+    border: 2px solid #bbf7d0;
+    border-radius: 18px;
+    animation: popIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    margin-bottom: 20px;
+  }
+
+  .celebration-title {
+    font-size: 1.8rem;
+    color: #16a34a;
+    font-weight: bold;
+    margin-bottom: 12px;
+  }
+
+  .final-sentence {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #1e3a8a;
+    margin-bottom: 8px;
+    line-height: 1.6;
+  }
+
+  .final-ja {
+    font-size: 1.05rem;
+    font-weight: bold;
+    color: #475569;
+    margin-bottom: 16px;
+  }
+
+  .speaker-btn {
+    background: var(--purple);
+    color: white;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 50px;
+    font-size: 1.05rem;
+    font-family: inherit;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 0 #5e35b1;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .speaker-btn:hover { background: #673ab7; }
+  .speaker-btn:active { transform: translateY(2px); box-shadow: 0 2px 0 #5e35b1; }
+
+  /* Action Buttons */
+  .action-btn {
+    padding: 12px 40px;
+    font-size: 1.15rem;
+    background-color: var(--green);
+    color: white;
+    border: none;
+    border-radius: 35px;
+    cursor: pointer;
+    font-weight: bold;
+    box-shadow: 0 4px 0 #2e7d32;
+    display: block;
+    margin: 15px auto 0 auto;
+    font-family: inherit;
+  }
+
+  .action-btn:hover { background-color: var(--green-hover); }
+  .action-btn:active { transform: translateY(4px); box-shadow: none; }
+
+  .next-btn {
+    background-color: var(--orange);
+    box-shadow: 0 4px 0 #b36b00;
+  }
+  .next-btn:hover { background-color: #e68a00; }
+
+  /* Result Screen & Report System */
+  .result-screen {
+    display: none;
+    text-align: center;
+    padding: 20px 10px;
+  }
+
+  .result-screen h2 {
+    color: var(--green);
+    font-size: 28px;
+    margin-bottom: 15px;
+  }
+
+  .mistake-list-box {
+    background: #fff5f5;
+    border: 2px dashed var(--red);
+    border-radius: 12px;
+    padding: 18px;
+    margin: 20px 0;
+    text-align: left;
+  }
+
+  .mistake-list-title {
+    color: var(--red);
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+  }
+
+  .mistake-item {
+    color: #c53030;
+    font-size: 1rem;
+    margin-bottom: 8px;
+    line-height: 1.5;
+  }
+
+  .name-input-group {
+    margin: 25px 0 15px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .name-input-group input {
+    font-size: 1.1rem;
+    padding: 10px 14px;
+    border: 2px solid var(--border-color);
+    border-radius: 10px;
+    width: 220px;
+  }
+
+  .report-btn {
+    background-color: var(--primary-blue);
+    box-shadow: 0 4px 0 #1565c0;
+  }
+
+  .restart-btn {
+    background-color: var(--orange);
+    color: white;
+    padding: 12px 30px;
+    font-size: 1.05rem;
+    border-radius: 25px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 20px;
+    box-shadow: 0 4px 0 #b36b00;
+    font-family: inherit;
+  }
+
+  @keyframes popIn {
+    0% { transform: scale(0.7); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+
+  @media (max-width: 600px) {
+    .container { padding: 16px; }
+    .choices-grid { grid-template-columns: 1fr; }
+    .sentence-display { font-size: 1.2rem; }
+    .dialogue-box { font-size: 1.05rem; padding: 14px; }
+    .word-btn, .placed-word { font-size: 0.95rem; padding: 8px 14px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Step by Step Towards EIKEN Grade 5 p62-66 Mastery Test</h1>
+  <div class="subtitle">命令・禁止・お誘い・お願い・許可・可能・不可能（全15問）</div>
+
+  <div id="quiz-content">
+    <div class="progress-wrapper">
+      <div class="progress-counter" id="progress-counter">Question 1 / 15</div>
+      <div class="progress-bar" id="progress-bar"></div>
+    </div>
+
+    <!-- FILL-IN-THE-BLANK & DIALOGUE CARD -->
+    <div class="question-card" id="fill-card" style="display: none;">
+      <div class="q-header">
+        <span class="q-badge" id="fill-badge">穴埋め問題</span>
+      </div>
+      <div id="fill-content-area"></div>
+      <div class="choices-grid" id="fill-choices"></div>
+      <div class="error-feedback" id="fill-feedback"></div>
+      <button class="action-btn" onclick="checkFill()">答え合わせ</button>
+    </div>
+
+    <!-- SCRAMBLE CARD -->
+    <div class="question-card" id="scramble-card" style="display: none;">
+      <div class="q-header">
+        <span class="q-badge scramble">並べ替え問題</span>
+      </div>
+      <div class="japanese-text" id="scramble-ja"></div>
+      <div class="drop-zone" id="scramble-drop-zone">
+        <span style="color:#aaa;">下の単語をタップして並べ替えてください</span>
+      </div>
+      <div class="word-pool" id="scramble-word-pool"></div>
+      <div class="error-feedback" id="scramble-feedback"></div>
+      <button class="action-btn" id="scramble-btn" onclick="checkScramble()" style="display:none;">答え合わせ</button>
+    </div>
+
+    <!-- CELEBRATION AREA -->
+    <div id="celebration-area" style="display: none;">
+      <div class="celebration-box">
+        <div class="celebration-title" id="celebration-title">Correct!</div>
+        <div class="final-sentence" id="celebration-phrase"></div>
+        <div class="final-ja" id="celebration-ja"></div>
+        <button class="speaker-btn" onclick="speakCurrentPhrase()">🔊 Listen</button>
+      </div>
+      <button class="action-btn next-btn" onclick="nextQuestion()">Next ➔</button>
+    </div>
+  </div>
+
+  <!-- RESULT SCREEN -->
+  <div class="result-screen" id="result-screen">
+    <h2>🎉 Test Completed! 🎉</h2>
+    <p id="result-desc"></p>
+
+    <div id="mistake-container" style="display: none;">
+      <div class="mistake-list-box">
+        <div class="mistake-list-title">⚠️ 間違えた問題（要復習）：</div>
+        <div id="mistake-list"></div>
+      </div>
+    </div>
+
+    <div id="report-container" style="display: none;">
+      <div class="name-input-group">
+        <label for="student-name"><b>お名前:</b></label>
+        <input type="text" id="student-name" placeholder="名前を入力してください">
+      </div>
+      <button class="action-btn report-btn" onclick="sendEmailReport()">Tamaki先生に報告する 📧</button>
+    </div>
+
+    <button class="restart-btn" onclick="location.reload()">もう一度挑戦する 🔄</button>
+  </div>
+</div>
+
+<script>
+  let preferredVoice = null;
+  function loadVoices() {
+    if (!window.speechSynthesis) return;
+    const voices = window.speechSynthesis.getVoices();
+    if (voices.length === 0) return;
+    preferredVoice = 
+      voices.find(v => v.lang === "en-US" && v.name.includes("Google US English")) ||
+      voices.find(v => v.lang === "en-US" && v.name.includes("Samantha")) ||
+      voices.find(v => v.lang.startsWith("en-US")) ||
+      voices.find(v => v.lang.startsWith("en"));
+  }
+
+  if (typeof window !== 'undefined' && window.speechSynthesis) {
+    window.speechSynthesis.onvoiceschanged = loadVoices;
+    loadVoices();
+  }
+
+  function speak(text) {
+    const synth = window.speechSynthesis;
+    if (!synth) return;
+    synth.cancel();
+    const uttr = new SpeechSynthesisUtterance(text);
+    if (preferredVoice) uttr.voice = preferredVoice;
+    uttr.rate = 0.85;
+    uttr.pitch = 1.0;
+    synth.speak(uttr);
+  }
+
+  function speakCurrentPhrase() {
+    const data = quizData[currentIdx];
+    if (data) speak(data.speakText || data.fullSentence);
+  }
+
+  function shuffle(array) {
+    let arr = [...array];
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }
+
+  // 全15問（英検5級頻出の超基本語彙・定番表現のみで構成）
+  const rawQuizData = [
+    // --- ダイアログ形式（5問 = 全体の1/3：和訳なし） ---
+    // 1. ダイアログ：許可（息子が母に許可を得る）
+    {
+      format: "dialogue",
+      category: "許可",
+      ja: "息子：お母さん、今クッキーを食べてもいい？ / 母：いいわよ、どうぞ。",
+      lines: [
+        { speaker: "Son:", text: "Mom, (  ?  ) a cookie now?" },
+        { speaker: "Mother:", text: "Sure, go ahead." }
+      ],
+      answer: "can I eat",
+      options: ["can I eat", "can you eat", "do I eat", "I can eat"],
+      fullSentence: "Son: Mom, can I eat a cookie now? / Mother: Sure, go ahead.",
+      speakText: "Mom, can I eat a cookie now? Sure, go ahead."
+    },
+    // 2. ダイアログ：お誘い（女の子が男の子を誘う）
+    {
+      format: "dialogue",
+      category: "お誘い",
+      ja: "ミカ：放課後にテニスをしようよ、ケン！ / ケン：いいね！そうしよう。",
+      lines: [
+        { speaker: "Mika:", text: "(  ?  ) tennis after school, Ken!" },
+        { speaker: "Ken:", text: "Sounds good! Let's do that." }
+      ],
+      answer: "Let's play",
+      options: ["Let's play", "Let's playing", "Play", "Can I play"],
+      fullSentence: "Mika: Let's play tennis after school, Ken! / Ken: Sounds good! Let's do that.",
+      speakText: "Let's play tennis after school, Ken! Sounds good! Let's do that."
+    },
+    // 3. ダイアログ：お誘いを断る（女の子が男の子のお誘いを断る）
+    {
+      format: "dialogue",
+      category: "お誘い・断り",
+      ja: "レオ：今度の土曜日に泳ぎに行こうよ。 / ユイ：ごめんなさい、行けないの。ピアノのレッスンがあるの。",
+      lines: [
+        { speaker: "Leo:", text: "Let's go swimming this Saturday." },
+        { speaker: "Yui:", text: "Sorry, (  ?  ). I have a piano lesson." }
+      ],
+      answer: "I can't",
+      options: ["I can't", "I don't", "can I", "let's not"],
+      fullSentence: "Leo: Let's go swimming this Saturday. / Yui: Sorry, I can't. I have a piano lesson.",
+      speakText: "Let's go swimming this Saturday. Sorry, I can't. I have a piano lesson."
+    },
+    // 4. ダイアログ：お願い（友だちへの依頼：英検5級定番の open / close / help 系）
+    {
+      format: "dialogue",
+      category: "お願い",
+      ja: "トム：リン、私の英語の宿題を手伝ってくれる？ / リン：もちろん！",
+      lines: [
+        { speaker: "Tom:", text: "Rin, (  ?  ) help me with my English homework?" },
+        { speaker: "Rin:", text: "Sure!" }
+      ],
+      answer: "can you",
+      options: ["can you", "can I", "do you", "are you"],
+      fullSentence: "Tom: Rin, can you help me with my English homework? / Rin: Sure!",
+      speakText: "Rin, can you help me with my English homework? Sure!"
+    },
+    // 5. ダイアログ：禁止（母が息子に注意する：英検5級定番の watch TV / play games）
+    {
+      format: "dialogue",
+      category: "禁止",
+      ja: "息子：お母さん、今テレビを見てもいい？ / 母：だめよ、ユウタ！夜にテレビを見ちゃだめ。もう10時よ。",
+      lines: [
+        { speaker: "Son:", text: "Mom, can I watch TV now?" },
+        { speaker: "Mother:", text: "No, Yuta! (  ?  ) TV at night. It's ten o'clock." }
+      ],
+      answer: "Don't watch",
+      options: ["Don't watch", "Doesn't watch", "Not watch", "Let's watch"],
+      fullSentence: "Son: Mom, can I watch TV now? / Mother: No, Yuta! Don't watch TV at night. It's ten o'clock.",
+      speakText: "Mom, can I watch TV now? No, Yuta! Don't watch TV at night. It's ten o'clock."
+    },
+
+    // --- 通常の穴埋め問題（5問：和訳なし・英検5級基本語彙） ---
+    // 6. 命令
+    {
+      format: "fill",
+      category: "命令",
+      ja: "お父さんの部屋を掃除しなさい。とても汚れていますよ。",
+      template: "(  ?  ) your father's room. It is very dirty.",
+      answer: "Clean",
+      options: ["Clean", "Cleans", "Cleaning", "To clean"],
+      fullSentence: "Clean your father's room. It is very dirty."
+    },
+    // 7. 禁止
+    {
+      format: "fill",
+      category: "禁止",
+      ja: "ここでは写真を撮らないでください。ここは美術館です。",
+      template: "Please (  ?  ) pictures here. This is a museum.",
+      answer: "don't take",
+      options: ["don't take", "doesn't take", "not take", "don't takes"],
+      fullSentence: "Please don't take pictures here. This is a museum."
+    },
+    // 8. お誘い（go ~ing）
+    {
+      format: "fill",
+      category: "お誘い",
+      ja: "日曜日に川へ釣りに行こう。とても楽しいよ！",
+      template: "Let's (  ?  ) in the river on Sunday. It's fun!",
+      answer: "go fishing",
+      options: ["go fishing", "going fishing", "go fish", "went fishing"],
+      fullSentence: "Let's go fishing in the river on Sunday. It's fun!"
+    },
+    // 9. 可能
+    {
+      format: "fill",
+      category: "可能",
+      ja: "私の弟は上手に絵を描くことができます。彼は絵を描くのが大好きです。",
+      template: "My little brother can (  ?  ) pictures well. He likes art.",
+      answer: "draw",
+      options: ["draw", "draws", "drawing", "to draw"],
+      fullSentence: "My little brother can draw pictures well. He likes art."
+    },
+    // 10. 不可能
+    {
+      format: "fill",
+      category: "不可能",
+      ja: "エミは今日自転車に乗ることができません。雨がたくさん降っています。",
+      template: "Emi (  ?  ) her bike today. It is raining hard.",
+      answer: "can't ride",
+      options: ["can't ride", "can't rides", "doesn't can ride", "can't riding"],
+      fullSentence: "Emi can't ride her bike today. It is raining hard."
+    },
+
+    // --- 並べ替え問題（5問：和訳あり・英検5級基本語彙） ---
+    // 11. 命令
+    {
+      format: "scramble",
+      category: "命令",
+      ja: "朝食の前に顔を洗いなさい。",
+      words: ["Wash", "your", "face", "before", "breakfast."],
+      fullSentence: "Wash your face before breakfast."
+    },
+    // 12. 禁止
+    {
+      format: "scramble",
+      category: "禁止",
+      ja: "教室の中を走ってはいけません！",
+      words: ["Don't", "run", "in", "the", "classroom!"],
+      fullSentence: "Don't run in the classroom!"
+    },
+    // 13. お願い
+    {
+      format: "scramble",
+      category: "お願い",
+      ja: "ドアを閉めてくれますか？",
+      words: ["Can", "you", "close", "the", "door?"],
+      fullSentence: "Can you close the door?"
+    },
+    // 14. 許可
+    {
+      format: "scramble",
+      category: "許可",
+      ja: "あなたの鉛筆を使ってもいいですか？",
+      words: ["Can", "I", "use", "your", "pencil?"],
+      fullSentence: "Can I use your pencil?"
+    },
+    // 15. 可能
+    {
+      format: "scramble",
+      category: "可能",
+      ja: "私たちの犬はとても高くジャンプできます。",
+      words: ["Our", "dog", "can", "jump", "very", "high."],
+      fullSentence: "Our dog can jump very high."
+    }
+  ];
+
+  const celebrations = ["Great!", "Excellent!", "Perfect!", "Wonderful!", "Awesome!", "Good job!"];
+
+  let quizData = [];
+  let currentIdx = 0;
+  let selectedChoice = null;
+  let userSort = [];
+  let mistakes = [];
+
+  function initQuiz() {
+    quizData = shuffle(rawQuizData);
+    mistakes = [];
+
+    const progressBar = document.getElementById('progress-bar');
+    progressBar.innerHTML = '';
+    quizData.forEach((_, index) => {
+      const dot = document.createElement('div');
+      dot.className = `progress-dot ${index === 0 ? 'active' : ''}`;
+      dot.id = `dot-${index}`;
+      progressBar.appendChild(dot);
+    });
+
+    loadQuestion();
+  }
+
+  function loadQuestion() {
+    if (window.speechSynthesis) window.speechSynthesis.cancel();
+    const data = quizData[currentIdx];
+
+    document.getElementById('progress-counter').textContent = `Question ${currentIdx + 1} / ${quizData.length}`;
+    document.getElementById('fill-card').style.display = 'none';
+    document.getElementById('scramble-card').style.display = 'none';
+    document.getElementById('celebration-area').style.display = 'none';
+
+    if (data.format === "fill" || data.format === "dialogue") {
+      setupFillOrDialogue(data);
+    } else {
+      setupScramble(data);
+    }
+  }
+
+  function setupFillOrDialogue(data) {
+    selectedChoice = null;
+    document.getElementById('fill-card').style.display = 'block';
+    document.getElementById('fill-feedback').textContent = '';
+
+    const badge = document.getElementById('fill-badge');
+    if (data.format === "dialogue") {
+      badge.textContent = "ダイアログ問題（会話）";
+      badge.className = "q-badge dialogue";
+    } else {
+      badge.textContent = "穴埋め問題";
+      badge.className = "q-badge";
+    }
+
+    updateFillDisplay(data);
+
+    const grid = document.getElementById('fill-choices');
+    grid.innerHTML = '';
+    shuffle(data.options).forEach(opt => {
+      const btn = document.createElement('button');
+      btn.className = 'choice-btn';
+      btn.textContent = opt;
+      btn.onclick = () => {
+        document.querySelectorAll('#fill-choices .choice-btn').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        selectedChoice = opt;
+        updateFillDisplay(data);
+      };
+      grid.appendChild(btn);
+    });
+  }
+
+  function updateFillDisplay(data) {
+    const text = selectedChoice ? selectedChoice : "　?　";
+    const area = document.getElementById('fill-content-area');
+
+    if (data.format === "dialogue") {
+      const linesHtml = data.lines.map(line => {
+        const replaced = line.text.replace("(  ?  )", `<span class="blank-box">${text}</span>`);
+        return `<div class="dialogue-line"><span class="speaker-label">${line.speaker}</span><span>${replaced}</span></div>`;
+      }).join('');
+      area.innerHTML = `<div class="dialogue-box">${linesHtml}</div>`;
+    } else {
+      const html = data.template.replace("(  ?  )", `<span class="blank-box">${text}</span>`);
+      area.innerHTML = `<div class="sentence-display">${html}</div>`;
+    }
+  }
+
+  function checkFill() {
+    const data = quizData[currentIdx];
+    const fb = document.getElementById('fill-feedback');
+
+    if (!selectedChoice) {
+      fb.textContent = "選択肢を選んでください。";
+      return;
+    }
+
+    if (selectedChoice === data.answer) {
+      fb.textContent = '';
+      document.getElementById('fill-card').style.display = 'none';
+      showCelebration(data);
+    } else {
+      fb.textContent = "Try again!";
+      mistakes.push(`・[${data.category}] ${data.fullSentence}（${data.ja}）`);
+    }
+  }
+
+  function setupScramble(data) {
+    userSort = [];
+    document.getElementById('scramble-card').style.display = 'block';
+    document.getElementById('scramble-ja').innerHTML = data.ja;
+    document.getElementById('scramble-feedback').textContent = '';
+    document.getElementById('scramble-btn').style.display = 'none';
+
+    const dropZone = document.getElementById('scramble-drop-zone');
+    const wordPool = document.getElementById('scramble-word-pool');
+    dropZone.innerHTML = '<span style="color:#aaa;">下の単語をタップして並べ替えてください</span>';
+    wordPool.innerHTML = '';
+
+    shuffle(data.words).forEach(w => {
+      const btn = document.createElement('button');
+      btn.className = 'word-btn';
+      btn.textContent = w;
+      btn.onclick = () => {
+        if (btn.classList.contains('used')) return;
+        btn.classList.add('used');
+        userSort.push({ text: w, btn: btn });
+        renderScrambleSort();
+      };
+      wordPool.appendChild(btn);
+    });
+  }
+
+  function renderScrambleSort() {
+    const dropZone = document.getElementById('scramble-drop-zone');
+    dropZone.innerHTML = '';
+
+    if (userSort.length === 0) {
+      dropZone.innerHTML = '<span style="color:#aaa;">下の単語をタップして並べ替えてください</span>';
+    } else {
+      userSort.forEach((item, idx) => {
+        const placed = document.createElement('div');
+        placed.className = 'placed-word';
+        placed.textContent = item.text;
+        placed.onclick = () => {
+          item.btn.classList.remove('used');
+          userSort.splice(idx, 1);
+          renderScrambleSort();
+        };
+        dropZone.appendChild(placed);
+      });
+    }
+
+    const checkBtn = document.getElementById('scramble-btn');
+    checkBtn.style.display = (userSort.length === quizData[currentIdx].words.length) ? 'block' : 'none';
+  }
+
+  function checkScramble() {
+    const data = quizData[currentIdx];
+    const userSentence = userSort.map(i => i.text).join(' ');
+    const fb = document.getElementById('scramble-feedback');
+
+    if (userSentence === data.fullSentence) {
+      fb.textContent = '';
+      document.getElementById('scramble-card').style.display = 'none';
+      showCelebration(data);
+    } else {
+      fb.textContent = "Try again!";
+      mistakes.push(`・[${data.category}] ${data.fullSentence}（${data.ja}）`);
+    }
+  }
+
+  function showCelebration(data) {
+    const randomCeleb = celebrations[Math.floor(Math.random() * celebrations.length)];
+    document.getElementById('celebration-title').textContent = randomCeleb;
+    const phraseEl = document.getElementById('celebration-phrase');
+    if (data.format === "dialogue") {
+      phraseEl.innerHTML = data.fullSentence.replace(' / ', '<br>');
+    } else {
+      phraseEl.textContent = data.fullSentence;
+    }
+    document.getElementById('celebration-ja').textContent = data.ja;
+    document.getElementById('celebration-area').style.display = 'block';
+    document.getElementById(`dot-${currentIdx}`).classList.add('completed');
+  }
+
+  function nextQuestion() {
+    if (window.speechSynthesis) window.speechSynthesis.cancel();
+    document.getElementById(`dot-${currentIdx}`).classList.remove('active');
+    
+    currentIdx++;
+    if (currentIdx < quizData.length) {
+      document.getElementById(`dot-${currentIdx}`).classList.add('active');
+      loadQuestion();
+    } else {
+      showFinalResult();
+    }
+  }
+
+  function showFinalResult() {
+    document.getElementById('quiz-content').style.display = 'none';
+    const resScreen = document.getElementById('result-screen');
+    resScreen.style.display = 'block';
+
+    const desc = document.getElementById('result-desc');
+    const mistContainer = document.getElementById('mistake-container');
+    const mistList = document.getElementById('mistake-list');
+    const reportContainer = document.getElementById('report-container');
+
+    if (mistakes.length === 0) {
+      desc.textContent = "全15問パーフェクトクリアです！Tamaki先生に完了報告を送ろう！";
+      mistContainer.style.display = 'none';
+      reportContainer.style.display = 'block';
+    } else {
+      const uniqueMistakes = [...new Set(mistakes)];
+      desc.textContent = "惜しい！間違えた問題があります。全問ノーミスでクリアするとTamaki先生に報告できます。";
+      mistList.innerHTML = uniqueMistakes.map(m => `<div class="mistake-item">${m}</div>`).join('');
+      mistContainer.style.display = 'block';
+      reportContainer.style.display = 'none';
+    }
+  }
+
+  function sendEmailReport() {
+    const nameInput = document.getElementById('student-name');
+    const name = nameInput.value.trim();
+
+    if (!name) {
+      alert("お名前を入力してください。");
+      return;
+    }
+
+    const recipient = "tamaki@eigostudio-stepforward.com";
+    const subject = encodeURIComponent(`【テスト合格報告】Step by Step Towards EIKEN Grade 5 p62-66 Mastery Test (${name})`);
+    const body = encodeURIComponent(`Tamaki先生\n\nStep by Step Towards EIKEN Grade 5 p62-66 Mastery Test（全15問）を全問正解でクリアしました！\n\n生徒名: ${name}`);
+
+    window.location.href = `mailto:${recipient}?subject=${subject}&body=${body}`;
+  }
+
+  window.onload = initQuiz;
+</script>
+
+</body>
+</html>
