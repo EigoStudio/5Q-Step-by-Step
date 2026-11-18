@@ -1,0 +1,1325 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>質問上手は、会話上手！</title>
+<style>
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  :root {
+    --primary-orange: #ff9800;
+    --dark-orange: #e65100;
+    --primary-blue: #1e88e5;
+    --soft-blue: #e3f2fd;
+    --green: #4CAF50;
+    --green-dark: #2e7d32;
+    --pink: #ec407a;
+    --soft-pink: #fce4ec;
+    --purple: #7e57c2;
+    --red: #e53e3e;
+    --bg-color: #eef2f7;
+    --text-black: #333333;
+    --border-color: #cbd5e0;
+  }
+
+  body {
+    font-family: 'Hiragino Kaku Gothic ProN', 'Meiryo', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-black);
+    margin: 0;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .container {
+    max-width: 980px;
+    width: 100%;
+    background: #ffffff;
+    padding: 28px 34px;
+    border-radius: 20px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  }
+
+  h1 {
+    color: var(--primary-blue);
+    text-align: center;
+    border-bottom: 3px solid var(--primary-orange);
+    margin: 0 0 20px 0;
+    font-size: 1.55rem;
+    padding-bottom: 10px;
+  }
+
+  /* 4つのタブ */
+  .tab-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+
+  .tab-btn {
+    padding: 9px 18px;
+    border: 2px solid var(--primary-blue);
+    background-color: #ffffff;
+    color: var(--primary-blue);
+    font-weight: bold;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    transition: all 0.15s;
+    font-family: inherit;
+  }
+
+  .tab-btn:hover {
+    background-color: var(--soft-blue);
+  }
+
+  .tab-btn.active {
+    background-color: var(--primary-blue);
+    color: #ffffff;
+  }
+
+  .tab-btn.ultra-tab {
+    border-color: var(--purple);
+    color: var(--purple);
+  }
+
+  .tab-btn.ultra-tab.active {
+    background-color: var(--purple);
+    color: #ffffff;
+  }
+
+  /* プログレスバー */
+  .progress-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+
+  .progress-bar-bg {
+    flex: 1;
+    height: 10px;
+    background-color: #e2e8f0;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    background-color: var(--green);
+    width: 0%;
+    transition: width 0.3s ease;
+  }
+
+  .progress-label {
+    font-weight: bold;
+    color: #4a5568;
+    font-size: 0.9rem;
+    white-space: nowrap;
+  }
+
+  /* もとの文カード（シンプル表示） */
+  .base-sentence-card {
+    background: #fff9db;
+    border: 2px solid #ffe066;
+    border-radius: 14px;
+    padding: 14px 18px;
+    margin-bottom: 18px;
+    text-align: center;
+  }
+
+  .base-en {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #1a202c;
+    letter-spacing: 0.02em;
+  }
+
+  /* ステップカード */
+  .step-card {
+    background: #f8fafc;
+    border: 2px dashed #bbdefb;
+    border-radius: 18px;
+    padding: 22px 26px;
+    margin-bottom: 16px;
+  }
+
+  .step-card.step2-box {
+    border-color: #f8bbd0;
+  }
+
+  .step-card.step3-box {
+    border-color: #c8e6c9;
+  }
+
+  /* STEPバッジ＋すぐ横の指示 */
+  .step-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+
+  .step-badge {
+    background-color: var(--primary-blue);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    white-space: nowrap;
+  }
+
+  .step-badge.step2 { background-color: var(--pink); }
+  .step-badge.step3 { background-color: var(--green); }
+
+  .step-action-text {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #2d3748;
+  }
+
+  /* 会話の相手セリフ（Step 3用） */
+  .partner-answer-box {
+    background: #ffffff;
+    border: 2px solid #a5d6a7;
+    border-radius: 12px;
+    padding: 10px 16px;
+    margin-bottom: 16px;
+    font-size: 1.15rem;
+    font-weight: bold;
+    color: var(--green-dark);
+    text-align: center;
+  }
+
+  /* 選択肢グリッド */
+  .choice-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    margin-bottom: 10px;
+  }
+
+  .choice-btn {
+    padding: 14px 18px;
+    border: 2px solid var(--primary-blue);
+    background: #ffffff;
+    border-radius: 14px;
+    cursor: pointer;
+    font-size: 1.05rem;
+    font-weight: bold;
+    color: var(--text-black);
+    transition: all 0.15s;
+    font-family: inherit;
+    white-space: nowrap;
+  }
+
+  .choice-btn:hover {
+    border-color: var(--primary-orange);
+    background: #f0f7ff;
+  }
+
+  .choice-btn.selected {
+    background: var(--soft-blue);
+    border-color: var(--primary-blue);
+    color: #0d47a1;
+    box-shadow: 0 0 0 2px rgba(30, 136, 229, 0.25);
+  }
+
+  /* ◯❌UI */
+  .ox-sentence-display {
+    font-size: 1.4rem;
+    font-weight: bold;
+    text-align: center;
+    background: #ffffff;
+    padding: 14px;
+    border-radius: 12px;
+    border: 2px solid #f8bbd0;
+    margin-bottom: 16px;
+    color: #2d3748;
+  }
+
+  .ox-grid {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    margin-bottom: 12px;
+  }
+
+  .ox-btn {
+    width: 105px;
+    height: 75px;
+    font-size: 2rem;
+    font-weight: bold;
+    border: 3px solid #f48fb1;
+    background: #ffffff;
+    border-radius: 16px;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: inherit;
+  }
+
+  .ox-btn:hover {
+    background: var(--soft-pink);
+  }
+
+  .ox-btn.selected {
+    background: var(--pink);
+    color: white;
+    border-color: #ad1457;
+  }
+
+  /* 穴埋めセレクト */
+  .fill-area {
+    font-size: 1.35rem;
+    font-weight: bold;
+    text-align: center;
+    background: #ffffff;
+    padding: 18px;
+    border-radius: 12px;
+    border: 2px solid #cfd8dc;
+    margin-bottom: 10px;
+    line-height: 1.8;
+  }
+
+  select.inline-select {
+    font-family: inherit;
+    font-size: 1.2rem;
+    font-weight: bold;
+    padding: 6px 14px;
+    border: 2px solid var(--green);
+    border-radius: 10px;
+    background: #f0fdf4;
+    color: #166534;
+    cursor: pointer;
+  }
+
+  /* バブル並べ替え */
+  .drop-zone {
+    min-height: 64px;
+    border: 2px dashed var(--border-color);
+    border-radius: 14px;
+    background: #ffffff;
+    padding: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 14px;
+  }
+
+  .word-pool {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    margin-bottom: 10px;
+  }
+
+  .word-bubble {
+    font-family: inherit;
+    background: #ffffff;
+    border: 2px solid var(--primary-blue);
+    color: var(--text-black);
+    padding: 8px 16px;
+    border-radius: 22px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.1s;
+  }
+
+  .word-bubble:hover {
+    border-color: var(--primary-orange);
+    transform: translateY(-2px);
+  }
+
+  .word-bubble.used {
+    opacity: 0.3;
+    pointer-events: none;
+  }
+
+  .placed-bubble {
+    font-family: inherit;
+    background: var(--soft-blue);
+    border: 2px solid var(--primary-blue);
+    color: #0d47a1;
+    padding: 8px 16px;
+    border-radius: 22px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  .placed-bubble:hover {
+    background: #ffebee;
+    border-color: var(--red);
+  }
+
+  /* 正誤フィードバック（シンプル） */
+  .feedback-msg {
+    font-weight: bold;
+    font-size: 1.1rem;
+    text-align: center;
+    margin-top: 8px;
+    min-height: 24px;
+  }
+
+  .feedback-msg.error {
+    color: var(--red);
+  }
+
+  .feedback-msg.success {
+    color: var(--green-dark);
+  }
+
+  /* ボタン */
+  .action-btn {
+    padding: 11px 36px;
+    font-size: 1.05rem;
+    background-color: var(--green);
+    color: white;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    font-weight: bold;
+    box-shadow: 0 4px 0 var(--green-dark);
+    display: block;
+    margin: 12px auto 0;
+    font-family: inherit;
+    transition: transform 0.1s;
+  }
+
+  .action-btn:active {
+    transform: translateY(3px);
+    box-shadow: none;
+  }
+
+  .next-btn {
+    background-color: var(--primary-orange);
+    box-shadow: 0 4px 0 var(--dark-orange);
+  }
+
+  /* クリア祝福エリア */
+  .celebration-card {
+    background: #f0fdf4;
+    border: 2px solid #bbf7d0;
+    border-radius: 18px;
+    padding: 22px;
+    text-align: center;
+  }
+
+  .celeb-title {
+    font-size: 1.7rem;
+    font-weight: bold;
+    color: #16a34a;
+    margin-bottom: 14px;
+  }
+
+  .dialogue-final {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 14px 18px;
+    margin: 0 auto 14px;
+    max-width: 600px;
+    text-align: left;
+    border: 1px solid #dcfce7;
+  }
+
+  .dialogue-line {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px dashed #e2e8f0;
+  }
+
+  .dialogue-line:last-child {
+    border-bottom: none;
+  }
+
+  .line-text {
+    font-size: 1.15rem;
+    font-weight: bold;
+    color: #1e3a8a;
+  }
+
+  .speak-mini-btn {
+    background: var(--purple);
+    color: white;
+    border: none;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    cursor: pointer;
+    font-family: inherit;
+    white-space: nowrap;
+  }
+
+  /* 完了レポート画面 */
+  .complete-screen {
+    text-align: center;
+    padding: 20px 10px;
+  }
+
+  .complete-screen h2 {
+    color: var(--green-dark);
+    font-size: 1.6rem;
+  }
+
+  .mistake-box {
+    background: #fff5f5;
+    border: 2px dashed var(--red);
+    border-radius: 12px;
+    padding: 16px;
+    margin: 16px 0;
+    text-align: left;
+  }
+
+  .report-form {
+    margin-top: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .report-form input {
+    padding: 10px 14px;
+    font-size: 1.05rem;
+    border: 2px solid var(--border-color);
+    border-radius: 10px;
+    font-family: inherit;
+  }
+
+  @media (max-width: 720px) {
+    .container { padding: 16px; }
+    .choice-grid { grid-template-columns: 1fr; }
+    .choice-btn { white-space: normal; }
+    .base-en { font-size: 1.25rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>質問上手は、会話上手！</h1>
+
+  <!-- 4つのタブ -->
+  <div class="tab-container">
+    <button class="tab-btn active" onclick="switchTab('general', this)">一般動詞の現在形</button>
+    <button class="tab-btn" onclick="switchTab('be', this)">be動詞</button>
+    <button class="tab-btn" onclick="switchTab('progressive', this)">現在進行形</button>
+    <button class="tab-btn ultra-tab" onclick="switchTab('ultra', this)">Ultra Mix</button>
+  </div>
+
+  <!-- プログレス -->
+  <div class="progress-wrapper">
+    <div class="progress-bar-bg">
+      <div class="progress-bar-fill" id="progressBar"></div>
+    </div>
+    <div class="progress-label" id="progressLabel">1 / 3</div>
+  </div>
+
+  <!-- メイン演習エリア -->
+  <div id="quizArea">
+    <!-- もとの文 -->
+    <div class="base-sentence-card">
+      <div class="base-en" id="baseEn">You like dogs.</div>
+    </div>
+
+    <!-- STEP 1 -->
+    <div class="step-card" id="step1Card">
+      <div class="step-header">
+        <span class="step-badge">STEP 1</span>
+        <span class="step-action-text" id="s1Action">Yes/No疑問文に変換したい。まず、何する？</span>
+      </div>
+      <div class="choice-grid" id="s1Choices"></div>
+      <div class="feedback-msg" id="s1Feedback"></div>
+      <button class="action-btn" id="s1CheckBtn" style="display:none;" onclick="checkStep1()">OK</button>
+    </div>
+
+    <!-- STEP 2 -->
+    <div class="step-card step2-box" id="step2Card" style="display:none;">
+      <div class="step-header">
+        <span class="step-badge step2">STEP 2</span>
+        <span class="step-action-text" id="s2Action">Yes / No の疑問文にしよう</span>
+      </div>
+      <div id="s2InteractiveArea"></div>
+      <div class="feedback-msg" id="s2Feedback"></div>
+      <button class="action-btn" id="s2CheckBtn" style="display:none;" onclick="checkStep2()">OK</button>
+    </div>
+
+    <!-- STEP 3 -->
+    <div class="step-card step3-box" id="step3Card" style="display:none;">
+      <div class="step-header">
+        <span class="step-badge step3">STEP 3</span>
+        <span class="step-action-text" id="s3Action">この答えを引き出す質問を作ろう</span>
+      </div>
+      <div class="partner-answer-box" id="s3PartnerBox"></div>
+      <div id="s3InteractiveArea"></div>
+      <div class="feedback-msg" id="s3Feedback"></div>
+      <button class="action-btn" id="s3CheckBtn" style="display:none;" onclick="checkStep3()">OK</button>
+    </div>
+
+    <!-- 1問クリア画面 -->
+    <div class="celebration-card" id="celebrationCard" style="display:none;">
+      <div class="celeb-title">Great!</div>
+      <div class="dialogue-final" id="finalDialogueBox"></div>
+      <button class="action-btn next-btn" onclick="nextQuestion()">Next ➔</button>
+    </div>
+  </div>
+
+  <!-- タブ全問クリア画面 -->
+  <div class="complete-screen" id="completeScreen" style="display:none;"></div>
+</div>
+
+<script>
+  // 音声読み上げ機能
+  let preferredVoice = null;
+  function loadVoices() {
+    if (!window.speechSynthesis) return;
+    const voices = window.speechSynthesis.getVoices();
+    preferredVoice =
+      voices.find(v => v.lang === "en-US" && v.name.includes("Google US English")) ||
+      voices.find(v => v.lang === "en-US" && v.name.includes("Samantha")) ||
+      voices.find(v => v.lang.startsWith("en-US")) ||
+      voices.find(v => v.lang.startsWith("en"));
+  }
+  if (typeof window !== 'undefined' && window.speechSynthesis) {
+    window.speechSynthesis.onvoiceschanged = loadVoices;
+    loadVoices();
+  }
+
+  function speak(text) {
+    if (!window.speechSynthesis) return;
+    window.speechSynthesis.cancel();
+    const uttr = new SpeechSynthesisUtterance(text);
+    if (preferredVoice) uttr.voice = preferredVoice;
+    uttr.lang = 'en-US';
+    uttr.rate = 0.85;
+    window.speechSynthesis.speak(uttr);
+  }
+
+  function shuffle(arr) {
+    const a = [...arr];
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  const STEP1_PROMPT = "Yes/No疑問文に変換したい。まず、何する？";
+
+  // 問題データ（文法用語なしのシンプルなアクション表記に統一）
+  const questionBank = {
+    general: [
+      {
+        baseEn: "You like dogs.",
+        s1Action: STEP1_PROMPT,
+        s1Choices: [
+          "do + like に分ける",
+          "does + like に分ける",
+          "are + liking に分ける",
+          "like を主語の前に出す"
+        ],
+        s1Ans: "do + like に分ける",
+        s2Type: "scramble",
+        s2Action: "並べ替えて Yes / No の疑問文にしよう",
+        s2Words: ["Do", "you", "like", "dogs?"],
+        s2Ans: "Do you like dogs?",
+        s3Type: "scramble",
+        s3Action: "この答えを引き出す質問を作ろう",
+        s3PartnerAns: "Dogs, cats, and rabbits!",
+        s3Words: ["What", "animals", "do", "you", "like?"],
+        s3Ans: "What animals do you like?"
+      },
+      {
+        baseEn: "She plays basketball after school.",
+        s1Action: STEP1_PROMPT,
+        s1Choices: [
+          "does + play に分ける",
+          "is + playing に分ける",
+          "do + play に分ける",
+          "plays を主語の前に出す"
+        ],
+        s1Ans: "does + play に分ける",
+        s2Type: "ox",
+        s2Action: "正しい疑問文なら ◯、間違っていたら ❌ を選ぼう",
+        s2Sentence: "She does play basketball after school?",
+        s2IsCorrect: false,
+        s2Corrections: [
+          "Does を文頭に出す",
+          "play を plays に変える",
+          "does を is に変える"
+        ],
+        s2CorrectFix: "Does を文頭に出す",
+        s2Ans: "Does she play basketball after school?",
+        s3Type: "fill",
+        s3Action: "「いつ」を聞く疑問詞を選ぼう",
+        s3PartnerAns: "After school.",
+        s3Before: "",
+        s3Options: ["When", "Where", "Who", "What"],
+        s3After: "does she play basketball?",
+        s3Ans: "When does she play basketball?"
+      },
+      {
+        baseEn: "Ken studies math every day.",
+        s1Action: STEP1_PROMPT,
+        s1Choices: [
+          "does + study に分ける",
+          "does + studies に分ける",
+          "do + study に分ける",
+          "is + studying に分ける"
+        ],
+        s1Ans: "does + study に分ける",
+        s2Type: "scramble",
+        s2Action: "並べ替えて Yes / No の疑問文にしよう",
+        s2Words: ["Does", "Ken", "study", "math", "every", "day?"],
+        s2Ans: "Does Ken study math every day?",
+        s3Type: "scramble",
+        s3Action: "この答えを引き出す質問を作ろう",
+        s3PartnerAns: "Math.",
+        s3Words: ["What", "subject", "does", "Ken", "study", "every", "day?"],
+        s3Ans: "What subject does Ken study every day?"
+      }
+    ],
+    be: [
+      {
+        baseEn: "That is Tom's jacket.",
+        s1Action: STEP1_PROMPT,
+        s1Choices: [
+          "is を主語の前に出す",
+          "does + be に分ける",
+          "do + is に分ける",
+          "is + being に分ける"
+        ],
+        s1Ans: "is を主語の前に出す",
+        s2Type: "scramble",
+        s2Action: "並べ替えて Yes / No の疑問文にしよう",
+        s2Words: ["Is", "that", "Tom's", "jacket?"],
+        s2Ans: "Is that Tom's jacket?",
+        s3Type: "scramble",
+        s3Action: "この答えを引き出す質問を作ろう",
+        s3PartnerAns: "Tom's.",
+        s3Words: ["Whose", "jacket", "is", "that?"],
+        s3Ans: "Whose jacket is that?"
+      },
+      {
+        baseEn: "The green bag is yours.",
+        s1Action: STEP1_PROMPT,
+        s1Choices: [
+          "is を主語の前に出す",
+          "does + is に分ける",
+          "do + bag に分ける",
+          "is + greening に分ける"
+        ],
+        s1Ans: "is を主語の前に出す",
+        s2Type: "ox",
+        s2Action: "正しい疑問文なら ◯、間違っていたら ❌ を選ぼう",
+        s2Sentence: "Does the green bag is yours?",
+        s2IsCorrect: false,
+        s2Corrections: [
+          "Does を消して Is を文頭に出す",
+          "is を be に変える",
+          "Does を Do に変える"
+        ],
+        s2CorrectFix: "Does を消して Is を文頭に出す",
+        s2Ans: "Is the green bag yours?",
+        s3Type: "fill",
+        s3Action: "「どっちの」を聞く疑問詞を選ぼう",
+        s3PartnerAns: "The green one.",
+        s3Before: "",
+        s3Options: ["Which", "Whose", "Where", "When"],
+        s3After: "bag is yours?",
+        s3Ans: "Which bag is yours?"
+      },
+      {
+        baseEn: "Ms. Brown is our English teacher.",
+        s1Action: STEP1_PROMPT,
+        s1Choices: [
+          "is を主語の前に出す",
+          "does + teach に分ける",
+          "do + is に分ける",
+          "is + teaching に分ける"
+        ],
+        s1Ans: "is を主語の前に出す",
+        s2Type: "scramble",
+        s2Action: "並べ替えて Yes / No の疑問文にしよう",
+        s2Words: ["Is", "Ms. Brown", "your", "English", "teacher?"],
+        s2Ans: "Is Ms. Brown your English teacher?",
+        s3Type: "fill",
+        s3Action: "「だれ」を聞く疑問詞を選ぼう",
+        s3PartnerAns: "Ms. Brown.",
+        s3Before: "",
+        s3Options: ["Who", "Which", "Where", "Whose"],
+        s3After: "is your English teacher?",
+        s3Ans: "Who is your English teacher?"
+      }
+    ],
+    progressive: [
+      {
+        baseEn: "He is reading a book in the library.",
+        s1Action: STEP1_PROMPT,
+        s1Choices: [
+          "is を主語の前に出す",
+          "does + read に分ける",
+          "do + reading に分ける",
+          "reading を主語の前に出す"
+        ],
+        s1Ans: "is を主語の前に出す",
+        s2Type: "scramble",
+        s2Action: "並べ替えて Yes / No の疑問文にしよう",
+        s2Words: ["Is", "he", "reading", "a", "book", "in", "the", "library?"],
+        s2Ans: "Is he reading a book in the library?",
+        s3Type: "scramble",
+        s3Action: "「どこで」を聞く質問に並べ替えよう",
+        s3PartnerAns: "In the library.",
+        s3Words: ["Where", "is", "he", "reading", "a", "book?"],
+        s3Ans: "Where is he reading a book?"
+      },
+      {
+        baseEn: "They are making curry now.",
+        s1Action: STEP1_PROMPT,
+        s1Choices: [
+          "are を主語の前に出す",
+          "do + make に分ける",
+          "does + make に分ける",
+          "making を主語の前に出す"
+        ],
+        s1Ans: "are を主語の前に出す",
+        s2Type: "ox",
+        s2Action: "正しい疑問文なら ◯、間違っていたら ❌ を選ぼう",
+        s2Sentence: "Do they making curry now?",
+        s2IsCorrect: false,
+        s2Corrections: [
+          "Do を Are に変える",
+          "making を make に変える",
+          "Do を Does に変える"
+        ],
+        s2CorrectFix: "Do を Are に変える",
+        s2Ans: "Are they making curry now?",
+        s3Type: "scramble",
+        s3Action: "「何を」を聞く質問に並べ替えよう",
+        s3PartnerAns: "Curry!",
+        s3Words: ["What", "are", "they", "making", "now?"],
+        s3Ans: "What are they making now?"
+      }
+    ],
+    ultra: [
+      {
+        baseEn: "She plays the piano every Sunday.",
+        s1Action: STEP1_PROMPT,
+        s1Choices: [
+          "does + play に分ける",
+          "is + playing に分ける",
+          "do + play に分ける",
+          "plays を主語の前に出す"
+        ],
+        s1Ans: "does + play に分ける",
+        s2Type: "ox",
+        s2Action: "正しい疑問文なら ◯、間違っていたら ❌ を選ぼう",
+        s2Sentence: "Does she plays the piano every Sunday?",
+        s2IsCorrect: false,
+        s2Corrections: [
+          "plays を原形の play に戻す",
+          "Does を Is に変える",
+          "Does を Do に変える"
+        ],
+        s2CorrectFix: "plays を原形の play に戻す",
+        s2Ans: "Does she play the piano every Sunday?",
+        s3Type: "scramble",
+        s3Action: "「いつ」を聞く質問に並べ替えよう",
+        s3PartnerAns: "Every Sunday.",
+        s3Words: ["When", "does", "she", "play", "the", "piano?"],
+        s3Ans: "When does she play the piano?"
+      },
+      {
+        baseEn: "Your notebook is on the desk.",
+        s1Action: STEP1_PROMPT,
+        s1Choices: [
+          "is を主語の前に出す",
+          "does + be に分ける",
+          "is + being に分ける",
+          "do + is に分ける"
+        ],
+        s1Ans: "is を主語の前に出す",
+        s2Type: "scramble",
+        s2Action: "並べ替えて Yes / No の疑問文にしよう",
+        s2Words: ["Is", "your", "notebook", "on", "the", "desk?"],
+        s2Ans: "Is your notebook on the desk?",
+        s3Type: "fill",
+        s3Action: "「どこに」を聞く疑問詞を選ぼう",
+        s3PartnerAns: "On the desk.",
+        s3Before: "",
+        s3Options: ["Where", "When", "What", "Who"],
+        s3After: "is my notebook?",
+        s3Ans: "Where is my notebook?"
+      },
+      {
+        baseEn: "Ken is washing his bike now.",
+        s1Action: STEP1_PROMPT,
+        s1Choices: [
+          "is を主語の前に出す",
+          "does + wash に分ける",
+          "washing を主語の前に出す",
+          "do + washing に分ける"
+        ],
+        s1Ans: "is を主語の前に出す",
+        s2Type: "ox",
+        s2Action: "正しい疑問文なら ◯、間違っていたら ❌ を選ぼう",
+        s2Sentence: "Is Ken washing his bike now?",
+        s2IsCorrect: true,
+        s2Ans: "Is Ken washing his bike now?",
+        s3Type: "scramble",
+        s3Action: "「何を」を聞く質問に並べ替えよう",
+        s3PartnerAns: "His bike.",
+        s3Words: ["What", "is", "Ken", "washing", "now?"],
+        s3Ans: "What is Ken washing now?"
+      },
+      {
+        baseEn: "This pen is 200 yen.",
+        s1Action: STEP1_PROMPT,
+        s1Choices: [
+          "is を主語の前に出す",
+          "does + cost に分ける",
+          "is + yen に分ける",
+          "do + is に分ける"
+        ],
+        s1Ans: "is を主語の前に出す",
+        s2Type: "scramble",
+        s2Action: "並べ替えて Yes / No の疑問文にしよう",
+        s2Words: ["Is", "this", "pen", "200", "yen?"],
+        s2Ans: "Is this pen 200 yen?",
+        s3Type: "scramble",
+        s3Action: "「いくら」を聞く質問に並べ替えよう",
+        s3PartnerAns: "200 yen.",
+        s3Words: ["How", "much", "is", "this", "pen?"],
+        s3Ans: "How much is this pen?"
+      }
+    ]
+  };
+
+  let currentTab = 'general';
+  let currentIdx = 0;
+  let mistakes = [];
+
+  let s1Selected = null;
+  let s2SelectedOX = null;
+  let s2SelectedFix = null;
+  let s2OxPhase = 1;
+  let s2Sorted = [];
+  let s3Sorted = [];
+
+  function switchTab(tabName, btnEl) {
+    currentTab = tabName;
+    currentIdx = 0;
+    mistakes = [];
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btnEl.classList.add('active');
+
+    document.getElementById('quizArea').style.display = 'block';
+    document.getElementById('completeScreen').style.display = 'none';
+    loadQuestion();
+  }
+
+  function loadQuestion() {
+    const list = questionBank[currentTab];
+    const q = list[currentIdx];
+
+    document.getElementById('progressBar').style.width = `${(currentIdx / list.length) * 100}%`;
+    document.getElementById('progressLabel').textContent = `${currentIdx + 1} / ${list.length}`;
+
+    document.getElementById('baseEn').textContent = q.baseEn;
+
+    document.getElementById('step1Card').style.display = 'block';
+    document.getElementById('step2Card').style.display = 'none';
+    document.getElementById('step3Card').style.display = 'none';
+    document.getElementById('celebrationCard').style.display = 'none';
+
+    setupStep1(q);
+  }
+
+  /* --- STEP 1 --- */
+  function setupStep1(q) {
+    s1Selected = null;
+    document.getElementById('s1Action').textContent = q.s1Action;
+    const fb = document.getElementById('s1Feedback');
+    fb.className = 'feedback-msg';
+    fb.textContent = '';
+    const checkBtn = document.getElementById('s1CheckBtn');
+    checkBtn.style.display = 'none';
+
+    const grid = document.getElementById('s1Choices');
+    grid.innerHTML = '';
+    shuffle(q.s1Choices).forEach(choice => {
+      const btn = document.createElement('button');
+      btn.className = 'choice-btn';
+      btn.textContent = choice;
+      btn.onclick = () => {
+        document.querySelectorAll('#s1Choices .choice-btn').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        s1Selected = choice;
+        checkBtn.style.display = 'block';
+      };
+      grid.appendChild(btn);
+    });
+  }
+
+  function checkStep1() {
+    const q = questionBank[currentTab][currentIdx];
+    const fb = document.getElementById('s1Feedback');
+    if (s1Selected === q.s1Ans) {
+      fb.className = 'feedback-msg';
+      document.getElementById('step1Card').style.display = 'none';
+      setupStep2(q);
+      document.getElementById('step2Card').style.display = 'block';
+    } else {
+      fb.className = 'feedback-msg error';
+      fb.textContent = 'Try again!';
+      mistakes.push(`・${q.baseEn} (STEP 1)`);
+    }
+  }
+
+  /* --- STEP 2 --- */
+  function setupStep2(q) {
+    const area = document.getElementById('s2InteractiveArea');
+    const fb = document.getElementById('s2Feedback');
+    const checkBtn = document.getElementById('s2CheckBtn');
+    area.innerHTML = '';
+    fb.className = 'feedback-msg';
+    fb.textContent = '';
+    checkBtn.style.display = 'none';
+    document.getElementById('s2Action').textContent = q.s2Action;
+
+    if (q.s2Type === 'scramble') {
+      s2Sorted = [];
+      renderScrambleUI(area, q.s2Words, s2Sorted, () => {
+        checkBtn.style.display = (s2Sorted.length === q.s2Words.length) ? 'block' : 'none';
+      });
+    } else if (q.s2Type === 'ox') {
+      s2SelectedOX = null;
+      s2SelectedFix = null;
+      s2OxPhase = 1;
+
+      const sentDiv = document.createElement('div');
+      sentDiv.className = 'ox-sentence-display';
+      sentDiv.textContent = q.s2Sentence;
+      area.appendChild(sentDiv);
+
+      const oxGrid = document.createElement('div');
+      oxGrid.className = 'ox-grid';
+
+      const btnO = document.createElement('button');
+      btnO.className = 'ox-btn';
+      btnO.textContent = '◯';
+      btnO.onclick = () => {
+        document.querySelectorAll('.ox-btn').forEach(b => b.classList.remove('selected'));
+        btnO.classList.add('selected');
+        s2SelectedOX = true;
+        checkBtn.style.display = 'block';
+      };
+
+      const btnX = document.createElement('button');
+      btnX.className = 'ox-btn';
+      btnX.textContent = '❌';
+      btnX.onclick = () => {
+        document.querySelectorAll('.ox-btn').forEach(b => b.classList.remove('selected'));
+        btnX.classList.add('selected');
+        s2SelectedOX = false;
+        checkBtn.style.display = 'block';
+      };
+
+      oxGrid.appendChild(btnO);
+      oxGrid.appendChild(btnX);
+      area.appendChild(oxGrid);
+
+      const fixContainer = document.createElement('div');
+      fixContainer.id = 's2FixContainer';
+      area.appendChild(fixContainer);
+    }
+  }
+
+  function checkStep2() {
+    const q = questionBank[currentTab][currentIdx];
+    const fb = document.getElementById('s2Feedback');
+    const checkBtn = document.getElementById('s2CheckBtn');
+
+    if (q.s2Type === 'scramble') {
+      const userStr = s2Sorted.map(item => item.word).join(' ');
+      if (userStr === q.s2Ans) {
+        goToStep3(q);
+      } else {
+        fb.className = 'feedback-msg error';
+        fb.textContent = 'Try again!';
+        mistakes.push(`・${q.s2Ans} (STEP 2)`);
+      }
+    } else if (q.s2Type === 'ox') {
+      if (s2OxPhase === 1) {
+        if (s2SelectedOX === q.s2IsCorrect) {
+          if (q.s2IsCorrect === true) {
+            goToStep3(q);
+          } else {
+            s2OxPhase = 2;
+            checkBtn.style.display = 'none';
+            document.getElementById('s2Action').textContent = 'どこを直すか選ぼう';
+            fb.className = 'feedback-msg';
+            fb.textContent = '';
+
+            const fixContainer = document.getElementById('s2FixContainer');
+            fixContainer.innerHTML = '';
+            const grid = document.createElement('div');
+            grid.className = 'choice-grid';
+            grid.style.marginTop = '12px';
+
+            shuffle(q.s2Corrections).forEach(fix => {
+              const btn = document.createElement('button');
+              btn.className = 'choice-btn';
+              btn.textContent = fix;
+              btn.onclick = () => {
+                document.querySelectorAll('#s2FixContainer .choice-btn').forEach(b => b.classList.remove('selected'));
+                btn.classList.add('selected');
+                s2SelectedFix = fix;
+                checkBtn.style.display = 'block';
+              };
+              grid.appendChild(btn);
+            });
+            fixContainer.appendChild(grid);
+          }
+        } else {
+          fb.className = 'feedback-msg error';
+          fb.textContent = 'Try again!';
+          mistakes.push(`・${q.s2Sentence} (STEP 2)`);
+        }
+      } else if (s2OxPhase === 2) {
+        if (s2SelectedFix === q.s2CorrectFix) {
+          goToStep3(q);
+        } else {
+          fb.className = 'feedback-msg error';
+          fb.textContent = 'Try again!';
+          mistakes.push(`・${q.s2Sentence} (STEP 2 修正)`);
+        }
+      }
+    }
+  }
+
+  function goToStep3(q) {
+    document.getElementById('step2Card').style.display = 'none';
+    setupStep3(q);
+    document.getElementById('step3Card').style.display = 'block';
+  }
+
+  /* --- STEP 3 --- */
+  function setupStep3(q) {
+    const area = document.getElementById('s3InteractiveArea');
+    const fb = document.getElementById('s3Feedback');
+    const checkBtn = document.getElementById('s3CheckBtn');
+    area.innerHTML = '';
+    fb.className = 'feedback-msg';
+    fb.textContent = '';
+    checkBtn.style.display = 'none';
+
+    document.getElementById('s3Action').textContent = q.s3Action;
+    document.getElementById('s3PartnerBox').textContent = `Answer: "${q.s3PartnerAns}"`;
+
+    if (q.s3Type === 'scramble') {
+      s3Sorted = [];
+      renderScrambleUI(area, q.s3Words, s3Sorted, () => {
+        checkBtn.style.display = (s3Sorted.length === q.s3Words.length) ? 'block' : 'none';
+      });
+    } else if (q.s3Type === 'fill') {
+      const fillDiv = document.createElement('div');
+      fillDiv.className = 'fill-area';
+      const optsHtml = `<option value="">-- ? --</option>` +
+        shuffle(q.s3Options).map(o => `<option value="${o}">${o}</option>`).join('');
+      fillDiv.innerHTML = `${q.s3Before} <select class="inline-select" id="s3Select">${optsHtml}</select> ${q.s3After}`;
+      area.appendChild(fillDiv);
+
+      document.getElementById('s3Select').onchange = (e) => {
+        checkBtn.style.display = e.target.value ? 'block' : 'none';
+      };
+    }
+  }
+
+  function checkStep3() {
+    const q = questionBank[currentTab][currentIdx];
+    const fb = document.getElementById('s3Feedback');
+
+    if (q.s3Type === 'scramble') {
+      const userStr = s3Sorted.map(item => item.word).join(' ');
+      if (userStr === q.s3Ans) {
+        showCelebration(q);
+      } else {
+        fb.className = 'feedback-msg error';
+        fb.textContent = 'Try again!';
+        mistakes.push(`・${q.s3Ans} (STEP 3)`);
+      }
+    } else if (q.s3Type === 'fill') {
+      const val = document.getElementById('s3Select').value;
+      const constructed = `${q.s3Before} ${val} ${q.s3After}`.trim().replace(/\s+/g, ' ');
+      if (constructed === q.s3Ans) {
+        showCelebration(q);
+      } else {
+        fb.className = 'feedback-msg error';
+        fb.textContent = 'Try again!';
+        mistakes.push(`・${q.s3Ans} (STEP 3)`);
+      }
+    }
+  }
+
+  /* --- バブル並べ替えUI --- */
+  function renderScrambleUI(container, wordsList, stateArray, onChangeCallback) {
+    const dropZone = document.createElement('div');
+    dropZone.className = 'drop-zone';
+
+    const poolZone = document.createElement('div');
+    poolZone.className = 'word-pool';
+
+    function redraw() {
+      dropZone.innerHTML = '';
+      if (stateArray.length === 0) {
+        dropZone.innerHTML = '<span style="color:#a0aec0; font-size:0.95rem;">単語をタップして並べよう</span>';
+      } else {
+        stateArray.forEach((item, idx) => {
+          const placed = document.createElement('span');
+          placed.className = 'placed-bubble';
+          placed.textContent = item.word;
+          placed.onclick = () => {
+            item.btnEl.classList.remove('used');
+            stateArray.splice(idx, 1);
+            redraw();
+            onChangeCallback();
+          };
+          dropZone.appendChild(placed);
+        });
+      }
+    }
+
+    shuffle(wordsList).forEach(w => {
+      const btn = document.createElement('button');
+      btn.className = 'word-bubble';
+      btn.textContent = w;
+      btn.onclick = () => {
+        if (btn.classList.contains('used')) return;
+        btn.classList.add('used');
+        stateArray.push({ word: w, btnEl: btn });
+        redraw();
+        onChangeCallback();
+      };
+      poolZone.appendChild(btn);
+    });
+
+    redraw();
+    container.appendChild(dropZone);
+    container.appendChild(poolZone);
+  }
+
+  /* --- 1問クリア表示 --- */
+  function showCelebration(q) {
+    document.getElementById('step3Card').style.display = 'none';
+    const celeb = document.getElementById('celebrationCard');
+    celeb.style.display = 'block';
+
+    const box = document.getElementById('finalDialogueBox');
+    box.innerHTML = `
+      <div class="dialogue-line">
+        <div class="line-text">Q1: ${q.s2Ans}</div>
+        <button class="speak-mini-btn" onclick="speak('${q.s2Ans.replace(/'/g, "\\'")}')">🔊 Listen</button>
+      </div>
+      <div class="dialogue-line">
+        <div class="line-text">Q2: ${q.s3Ans}</div>
+        <button class="speak-mini-btn" onclick="speak('${q.s3Ans.replace(/'/g, "\\'")}')">🔊 Listen</button>
+      </div>
+      <div class="dialogue-line">
+        <div class="line-text" style="color:#2e7d32;">A: ${q.s3PartnerAns}</div>
+        <button class="speak-mini-btn" onclick="speak('${q.s3PartnerAns.replace(/'/g, "\\'")}')">🔊 Listen</button>
+      </div>
+    `;
+    speak(q.s3Ans);
+  }
+
+  function nextQuestion() {
+    const list = questionBank[currentTab];
+    currentIdx++;
+    if (currentIdx < list.length) {
+      loadQuestion();
+    } else {
+      showTabComplete();
+    }
+  }
+
+  function showTabComplete() {
+    const list = questionBank[currentTab];
+    document.getElementById('progressBar').style.width = '100%';
+    document.getElementById('progressLabel').textContent = `${list.length} / ${list.length}`;
+    document.getElementById('quizArea').style.display = 'none';
+
+    const comp = document.getElementById('completeScreen');
+    comp.style.display = 'block';
+
+    const uniqueMistakes = [...new Set(mistakes)];
+    const tabNames = {
+      general: "一般動詞の現在形",
+      be: "be動詞",
+      progressive: "現在進行形",
+      ultra: "Ultra Mix"
+    };
+
+    if (uniqueMistakes.length === 0) {
+      comp.innerHTML = `
+        <h2>🎉 ${tabNames[currentTab]} Perfect Clear! 🎉</h2>
+        <div class="report-form">
+          <input type="text" id="studentNameInput" placeholder="お名前を入力してください">
+          <button class="action-btn" style="margin:0;" onclick="sendReport('${tabNames[currentTab]}')">Tamaki先生に報告する 📧</button>
+        </div>
+        <button class="action-btn next-btn" style="margin-top:20px;" onclick="restartTab()">Try Again 🔄</button>
+      `;
+    } else {
+      const mistakeHtml = uniqueMistakes.map(m => `<div>${m}</div>`).join('');
+      comp.innerHTML = `
+        <h2>Good job!</h2>
+        <div class="mistake-box">
+          <div style="font-weight:bold; color:var(--red); margin-bottom:8px;">⚠️ 間違えた箇所：</div>
+          ${mistakeHtml}
+        </div>
+        <button class="action-btn next-btn" onclick="restartTab()">Try Again 🔄</button>
+      `;
+    }
+  }
+
+  function restartTab() {
+    currentIdx = 0;
+    mistakes = [];
+    document.getElementById('completeScreen').style.display = 'none';
+    document.getElementById('quizArea').style.display = 'block';
+    loadQuestion();
+  }
+
+  function sendReport(tabLabel) {
+    const name = document.getElementById('studentNameInput').value.trim();
+    if (!name) {
+      alert("お名前を入力してください。");
+      return;
+    }
+    const recipient = "tamaki@eigostudio-stepforward.com";
+    const subject = encodeURIComponent(`【質問上手アクティビティ完了】${tabLabel} (${name})`);
+    const body = encodeURIComponent(`Tamaki先生\n\n「質問上手は、会話上手！」の【${tabLabel}】を全問正解で完了しました！\n\n生徒名: ${name}`);
+    window.location.href = `mailto:${recipient}?subject=${subject}&body=${body}`;
+  }
+
+  window.onload = loadQuestion;
+</script>
+</body>
+</html>
