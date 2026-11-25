@@ -1,0 +1,1454 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Step by Step Towards EIKEN Grade 5 p86-90 Simple Phrases for Conversation</title>
+<script src="auth.js"></script>
+<style>
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  :root {
+    --green: #4CAF50;
+    --green-hover: #388E3C;
+    --orange: #ff9800;
+    --dark-orange: #e65100;
+    --grey: #9E9E9E;
+    --dark-grey: #4a4a4a;
+    --border-color: #cbd5e0;
+    --white: #ffffff;
+    --black: #333333;
+    --bg-color: #eef2f7;
+    --card-bg: #f8fafc;
+    --primary-blue: #1e88e5;
+    --soft-blue: #e3f2fd;
+    --red: #e53e3e;
+    --purple: #7e57c2;
+    --teal: #00897b;
+    --pink: #ec407a;
+  }
+
+  body {
+    font-family: 'Hiragino Kaku Gothic ProN', 'Meiryo', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--black);
+    margin: 0;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .container {
+    max-width: 820px;
+    width: 100%;
+    background: var(--white);
+    padding: 28px 32px;
+    border-radius: 20px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  }
+
+  h1 {
+    color: var(--primary-blue);
+    text-align: center;
+    border-bottom: 3px solid var(--orange);
+    margin: 0 0 18px 0;
+    font-size: 1.45rem;
+    padding-bottom: 10px;
+    line-height: 1.4;
+  }
+
+  /* タブ切り替え */
+  .tab-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+
+  .tab-btn {
+    padding: 10px 18px;
+    border: 2px solid var(--primary-blue);
+    background-color: var(--white);
+    color: var(--primary-blue);
+    font-weight: bold;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    transition: all 0.15s;
+    font-family: inherit;
+  }
+
+  .tab-btn:hover {
+    background-color: var(--soft-blue);
+  }
+
+  .tab-btn.active {
+    background-color: var(--primary-blue);
+    color: var(--white);
+  }
+
+  .tab-btn.part4-tab {
+    border-color: var(--teal);
+    color: var(--teal);
+  }
+
+  .tab-btn.part4-tab.active {
+    background-color: var(--teal);
+    color: var(--white);
+  }
+
+  /* プログレスバー */
+  .progress-wrapper {
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .progress-counter {
+    font-weight: bold;
+    color: var(--primary-blue);
+    font-size: 1rem;
+    margin-bottom: 8px;
+  }
+
+  .progress-bar {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .progress-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #cbd5e0;
+    transition: all 0.3s;
+  }
+
+  .progress-dot.active {
+    background-color: var(--orange);
+    transform: scale(1.25);
+  }
+
+  .progress-dot.completed {
+    background-color: var(--green);
+  }
+
+  /* 問題カード */
+  .question-card {
+    background: var(--card-bg);
+    border: 2px solid #bbdefb;
+    border-radius: 18px;
+    padding: 24px;
+    margin-bottom: 18px;
+  }
+
+  .question-card.step2-card {
+    border-color: #f8bbd0;
+  }
+
+  .question-card.dialogue-card {
+    border-color: #b2dfdb;
+  }
+
+  .step-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+
+  .step-badge {
+    background-color: var(--primary-blue);
+    color: white;
+    padding: 4px 14px;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    font-weight: bold;
+  }
+
+  .step-badge.step2 {
+    background-color: var(--pink);
+  }
+
+  .step-badge.dialogue {
+    background-color: var(--teal);
+  }
+
+  .step-instruction {
+    font-size: 1.05rem;
+    font-weight: bold;
+    color: var(--dark-grey);
+  }
+
+  /* 音声再生エリア */
+  .audio-box {
+    background: var(--white);
+    border: 2px solid #e2e8f0;
+    border-radius: 14px;
+    padding: 20px;
+    text-align: center;
+    margin-bottom: 18px;
+  }
+
+  .big-speaker-btn {
+    background: var(--purple);
+    color: white;
+    border: none;
+    padding: 14px 32px;
+    border-radius: 50px;
+    font-size: 1.2rem;
+    font-family: inherit;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 0 #5e35b1;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.1s;
+  }
+
+  .big-speaker-btn:hover {
+    background: #673ab7;
+  }
+
+  .big-speaker-btn:active {
+    transform: translateY(3px);
+    box-shadow: 0 1px 0 #5e35b1;
+  }
+
+  .audio-hint {
+    font-size: 0.85rem;
+    color: #64748b;
+    margin-top: 8px;
+  }
+
+  /* Step 2 英語フレーズ表示 */
+  .target-en-box {
+    background: #fff9db;
+    border: 2px solid #ffe066;
+    border-radius: 14px;
+    padding: 16px;
+    text-align: center;
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .target-en-text {
+    font-size: 1.45rem;
+    font-weight: bold;
+    color: #1e293b;
+  }
+
+  .mini-speaker-btn {
+    background: var(--purple);
+    color: white;
+    border: none;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    cursor: pointer;
+    font-family: inherit;
+  }
+
+  /* ダイアログボックス（Part 4） */
+  .dialogue-box {
+    text-align: left;
+    background: var(--white);
+    padding: 20px 24px;
+    border-radius: 14px;
+    border: 2px solid #b2dfdb;
+    margin-bottom: 18px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    line-height: 1.85;
+  }
+
+  .dialogue-line {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+
+  .dialogue-line:last-child {
+    margin-bottom: 0;
+  }
+
+  .speaker-label {
+    color: var(--teal);
+    min-width: 75px;
+    font-weight: 900;
+  }
+
+  .blank-box {
+    display: inline-block;
+    min-width: 140px;
+    padding: 2px 12px;
+    margin: 0 4px;
+    border-bottom: 3px solid var(--teal);
+    color: var(--teal);
+    background-color: #e0f2f1;
+    border-radius: 6px;
+    text-align: center;
+  }
+
+  /* 4択ボタン */
+  .choices-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+
+  .choice-btn {
+    background-color: var(--white);
+    border: 2px solid var(--border-color);
+    padding: 14px 12px;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: var(--black);
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: inherit;
+    line-height: 1.4;
+  }
+
+  .choice-btn:hover {
+    border-color: var(--primary-blue);
+    background-color: #f0f9ff;
+  }
+
+  .choice-btn.selected {
+    background-color: var(--primary-blue);
+    color: white;
+    border-color: var(--primary-blue);
+  }
+
+  .dialogue-card .choice-btn.selected {
+    background-color: var(--teal);
+    border-color: var(--teal);
+  }
+
+  /* フィードバック */
+  .error-feedback {
+    color: var(--red);
+    font-weight: bold;
+    font-size: 1.1rem;
+    text-align: center;
+    margin-top: 10px;
+    min-height: 24px;
+  }
+
+  /* お祝い画面 */
+  .celebration-box {
+    text-align: center;
+    padding: 24px 16px;
+    background: #f0fdf4;
+    border: 2px solid #bbf7d0;
+    border-radius: 18px;
+    animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    margin-bottom: 18px;
+  }
+
+  .celebration-title {
+    font-size: 1.75rem;
+    color: #16a34a;
+    font-weight: bold;
+    margin-bottom: 12px;
+  }
+
+  .final-sentence {
+    font-size: 1.35rem;
+    font-weight: bold;
+    color: #1e3a8a;
+    margin-bottom: 8px;
+    line-height: 1.6;
+  }
+
+  .final-ja {
+    font-size: 1.05rem;
+    font-weight: bold;
+    color: #475569;
+    margin-bottom: 16px;
+  }
+
+  /* アクションボタン */
+  .action-btn {
+    padding: 12px 38px;
+    font-size: 1.1rem;
+    background-color: var(--green);
+    color: white;
+    border: none;
+    border-radius: 35px;
+    cursor: pointer;
+    font-weight: bold;
+    box-shadow: 0 4px 0 #2e7d32;
+    display: block;
+    margin: 14px auto 0 auto;
+    font-family: inherit;
+  }
+
+  .action-btn:hover { background-color: var(--green-hover); }
+  .action-btn:active { transform: translateY(3px); box-shadow: none; }
+
+  .next-btn {
+    background-color: var(--orange);
+    box-shadow: 0 4px 0 var(--dark-orange);
+  }
+  .next-btn:hover { background-color: #fb8c00; }
+
+  /* 結果画面 */
+  .result-screen {
+    display: none;
+    text-align: center;
+    padding: 20px 10px;
+  }
+
+  .result-screen h2 {
+    color: var(--green);
+    font-size: 26px;
+    margin-bottom: 12px;
+  }
+
+  .mistake-list-box {
+    background: #fff5f5;
+    border: 2px dashed var(--red);
+    border-radius: 12px;
+    padding: 18px;
+    margin: 18px 0;
+    text-align: left;
+  }
+
+  .mistake-list-title {
+    color: var(--red);
+    font-weight: bold;
+    font-size: 1.05rem;
+    margin-bottom: 10px;
+  }
+
+  .mistake-item {
+    color: #c53030;
+    font-size: 0.98rem;
+    margin-bottom: 8px;
+    line-height: 1.5;
+  }
+
+  .name-input-group {
+    margin: 22px 0 14px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .name-input-group input {
+    font-size: 1.05rem;
+    padding: 10px 14px;
+    border: 2px solid var(--border-color);
+    border-radius: 10px;
+    width: 220px;
+    font-family: inherit;
+  }
+
+  .report-btn {
+    background-color: var(--primary-blue);
+    box-shadow: 0 4px 0 #1565c0;
+  }
+
+  .restart-btn {
+    background-color: var(--orange);
+    color: white;
+    padding: 12px 30px;
+    font-size: 1.05rem;
+    border-radius: 25px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 18px;
+    box-shadow: 0 4px 0 var(--dark-orange);
+    font-family: inherit;
+  }
+
+  @keyframes popIn {
+    0% { transform: scale(0.8); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+
+  @media (max-width: 640px) {
+    .container { padding: 16px; }
+    h1 { font-size: 1.2rem; }
+    .choices-grid { grid-template-columns: 1fr; }
+    .dialogue-box { font-size: 1.05rem; padding: 14px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Step by Step Towards EIKEN Grade 5<br>p86-90 Simple Phrases for Conversation</h1>
+
+  <!-- タブ切り替え -->
+  <div class="tab-container">
+    <button class="tab-btn active" onclick="switchTab('part1', this)">Part 1 (17問)</button>
+    <button class="tab-btn" onclick="switchTab('part2', this)">Part 2 (16問)</button>
+    <button class="tab-btn" onclick="switchTab('part3', this)">Part 3 (16問)</button>
+    <button class="tab-btn part4-tab" onclick="switchTab('part4', this)">Part 4: 会話ダイアログ (20問)</button>
+  </div>
+
+  <div id="quiz-content">
+    <div class="progress-wrapper">
+      <div class="progress-counter" id="progress-counter">Question 1 / 17</div>
+      <div class="progress-bar" id="progress-bar"></div>
+    </div>
+
+    <!-- STEP 1: リスニング（Part 1-3） -->
+    <div class="question-card" id="step1-card" style="display: none;">
+      <div class="step-header">
+        <span class="step-badge">STEP 1</span>
+        <span class="step-instruction">音声を聞いて、正しい英語のフレーズを選ぼう</span>
+      </div>
+      <div class="audio-box">
+        <button class="big-speaker-btn" onclick="speakTarget()">🔊 音声を聞く</button>
+        <div class="audio-hint">※ボタンを押すと何度でも聞けます</div>
+      </div>
+      <div class="choices-grid" id="s1-choices"></div>
+      <div class="error-feedback" id="s1-feedback"></div>
+      <button class="action-btn" onclick="checkStep1()">答え合わせ</button>
+    </div>
+
+    <!-- STEP 2: 和訳選択（Part 1-3） -->
+    <div class="question-card step2-card" id="step2-card" style="display: none;">
+      <div class="step-header">
+        <span class="step-badge step2">STEP 2</span>
+        <span class="step-instruction">会話の中で一番しっくりくる日本語訳を選ぼう</span>
+      </div>
+      <div class="target-en-box">
+        <span class="target-en-text" id="s2-en-text"></span>
+        <button class="mini-speaker-btn" onclick="speakTarget()">🔊 聞く</button>
+      </div>
+      <div class="choices-grid" id="s2-choices"></div>
+      <div class="error-feedback" id="s2-feedback"></div>
+      <button class="action-btn" onclick="checkStep2()">答え合わせ</button>
+    </div>
+
+    <!-- PART 4: ダイアログ穴埋め -->
+    <div class="question-card dialogue-card" id="dialogue-card" style="display: none;">
+      <div class="step-header">
+        <span class="step-badge dialogue">Part 4</span>
+        <span class="step-instruction">会話が成り立つように、( ? ) に入るフレーズを選ぼう</span>
+      </div>
+      <div id="dialogue-display-area"></div>
+      <div class="choices-grid" id="dialogue-choices"></div>
+      <div class="error-feedback" id="dialogue-feedback"></div>
+      <button class="action-btn" onclick="checkDialogue()">答え合わせ</button>
+    </div>
+
+    <!-- 正解時の祝福表示 -->
+    <div id="celebration-area" style="display: none;">
+      <div class="celebration-box">
+        <div class="celebration-title" id="celebration-title">Great!</div>
+        <div class="final-sentence" id="celebration-en"></div>
+        <div class="final-ja" id="celebration-ja"></div>
+        <button class="mini-speaker-btn" style="padding:10px 24px; font-size:1.05rem;" onclick="speakCelebration()">🔊 Listen</button>
+      </div>
+      <button class="action-btn next-btn" onclick="nextQuestion()">Next ➔</button>
+    </div>
+  </div>
+
+  <!-- 結果・報告画面 -->
+  <div class="result-screen" id="result-screen">
+    <h2 id="result-title">🎉 Completed! 🎉</h2>
+    <p id="result-desc"></p>
+
+    <div id="mistake-container" style="display: none;">
+      <div class="mistake-list-box">
+        <div class="mistake-list-title">⚠️ 間違えた問題（要復習）：</div>
+        <div id="mistake-list"></div>
+      </div>
+    </div>
+
+    <div id="report-container" style="display: none;">
+      <div class="name-input-group">
+        <label for="student-name"><b>お名前:</b></label>
+        <input type="text" id="student-name" placeholder="名前を入力してください">
+      </div>
+      <button class="action-btn report-btn" onclick="sendEmailReport()">Tamaki先生に報告する 📧</button>
+    </div>
+
+    <button class="restart-btn" onclick="restartCurrentTab()">もう一度挑戦する 🔄</button>
+  </div>
+</div>
+
+<script>
+  let preferredVoice = null;
+  function loadVoices() {
+    if (!window.speechSynthesis) return;
+    const voices = window.speechSynthesis.getVoices();
+    if (voices.length === 0) return;
+    preferredVoice =
+      voices.find(v => v.lang === "en-US" && v.name.includes("Google US English")) ||
+      voices.find(v => v.lang === "en-US" && v.name.includes("Samantha")) ||
+      voices.find(v => v.lang.startsWith("en-US")) ||
+      voices.find(v => v.lang.startsWith("en"));
+  }
+
+  if (typeof window !== 'undefined' && window.speechSynthesis) {
+    window.speechSynthesis.onvoiceschanged = loadVoices;
+    loadVoices();
+  }
+
+  function speak(text) {
+    const synth = window.speechSynthesis;
+    if (!synth) return;
+    synth.cancel();
+    const uttr = new SpeechSynthesisUtterance(text);
+    if (preferredVoice) uttr.voice = preferredVoice;
+    uttr.lang = 'en-US';
+    uttr.rate = 0.85;
+    uttr.pitch = 1.0;
+    synth.speak(uttr);
+  }
+
+  function shuffle(array) {
+    let arr = [...array];
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }
+
+  // 全49フレーズ
+  const phrasesBank = {
+    part1: [
+      {
+        en: "Nice to meet you.",
+        ja: "はじめまして。",
+        enDistractors: ["Nice to see you again.", "How do you do?", "See you tomorrow."],
+        jaDistractors: ["また会いましょう。", "お元気ですか。", "よい週末を。"]
+      },
+      {
+        en: "Have a nice weekend.",
+        ja: "よい週末を。",
+        enDistractors: ["Have a nice day!", "Have a good time.", "See you next week."],
+        jaDistractors: ["よい一日を！", "また来週。", "はじめまして。"]
+      },
+      {
+        en: "Let's go see a movie.",
+        ja: "映画を見に行きましょう。",
+        enDistractors: ["Let's watch a movie.", "Let's go to school.", "Let's play a game."],
+        jaDistractors: ["学校に行きましょう。", "本を読みましょう。", "昼食を食べましょう。"]
+      },
+      {
+        en: "I like studying.",
+        ja: "私は勉強することが好きです。",
+        enDistractors: ["I like reading.", "I'm studying now.", "I don't like math."],
+        jaDistractors: ["私は走ることが好きです。", "私は今勉強しています。", "私は音楽を聴きます。"]
+      },
+      {
+        en: "I'm going to school now.",
+        ja: "私は今から学校へ行くところです。",
+        enDistractors: ["I'm coming home now.", "I go to school.", "I'm at school now."],
+        jaDistractors: ["私は今家に帰るところです。", "私は学校にいます。", "もう寝る時間です。"]
+      },
+      {
+        en: "Have a nice day!",
+        ja: "よい一日を！",
+        enDistractors: ["Have a nice weekend.", "Good morning!", "Have a good trip!"],
+        jaDistractors: ["よい週末を。", "おやすみなさい。", "おかえりなさい。"]
+      },
+      {
+        en: "Good morning!",
+        ja: "おはようございます！",
+        enDistractors: ["Good night.", "Good afternoon!", "Good evening!"],
+        jaDistractors: ["おやすみなさい。", "こんにちは！", "こんばんは！"]
+      },
+      {
+        en: "How are you?",
+        ja: "お元気ですか。",
+        enDistractors: ["Who are you?", "How old are you?", "Where are you?"],
+        jaDistractors: ["あなたは何歳ですか。", "あなたはだれですか。", "どこにいますか。"]
+      },
+      {
+        en: "I'm fine, thank you.",
+        ja: "元気です、ありがとう。",
+        enDistractors: ["Thank you so much!", "I'm sorry.", "You're welcome."],
+        jaDistractors: ["どういたしまして。", "ごめんなさい。", "私もそう思います。"]
+      },
+      {
+        en: "Good idea!",
+        ja: "いい考えですね！",
+        enDistractors: ["Good job!", "That's great!", "Sounds nice."],
+        jaDistractors: ["よくできました！", "その通りです！", "いいですね。"]
+      },
+      {
+        en: "Here I am.",
+        ja: "ここにいますよ。",
+        enDistractors: ["Here you are.", "Over there.", "I'm home."],
+        jaDistractors: ["はい、どうぞ。", "あそこです。", "ただいま。"]
+      },
+      {
+        en: "Thank you for the present!",
+        ja: "プレゼントをありがとう！",
+        enDistractors: ["This is for you.", "Thank you so much!", "You're welcome."],
+        jaDistractors: ["これはあなたへのものです。", "本当にありがとう！", "どういたしまして。"]
+      },
+      {
+        en: "It's time for bed.",
+        ja: "寝る時間ですよ。",
+        enDistractors: ["It's time for lunch.", "Good night.", "Breakfast is ready!"],
+        jaDistractors: ["昼食の時間ですよ。", "おやすみなさい。", "朝ごはんができましたよ！"]
+      },
+      {
+        en: "Sounds nice.",
+        ja: "いいですね。",
+        enDistractors: ["Good idea!", "That's great!", "That's too bad."],
+        jaDistractors: ["それは残念ですね。", "いい考えですね！", "その通りです！"]
+      },
+      {
+        en: "Let's have breakfast.",
+        ja: "朝ごはんを食べましょう。",
+        enDistractors: ["Breakfast is ready!", "Let's have dinner.", "Dinner is ready."],
+        jaDistractors: ["朝ごはんができましたよ！", "夕ごはんを食べましょう。", "夕ごはんができましたよ。"]
+      },
+      {
+        en: "Good night.",
+        ja: "おやすみなさい。",
+        enDistractors: ["Good morning!", "It's time for bed.", "Have a nice day!"],
+        jaDistractors: ["おはようございます！", "寝る時間ですよ。", "よい一日を！"]
+      },
+      {
+        en: "Do you want some?",
+        ja: "少しほしくないですか。",
+        enDistractors: ["Do you have a pet?", "Do you like dogs?", "Can I have some?"],
+        jaDistractors: ["ペットを飼っていますか。", "少しもらえますか。", "犬は好きですか。"]
+      }
+    ],
+    part2: [
+      {
+        en: "Yes, please.",
+        ja: "はい、お願いします。",
+        enDistractors: ["No, thanks.", "Yes, let's!", "Yes, I do."],
+        jaDistractors: ["いいえ、けっこうです。", "はい、そうしましょう！", "もちろん。"]
+      },
+      {
+        en: "No, thanks.",
+        ja: "いいえ、けっこうです。",
+        enDistractors: ["Yes, please.", "Sorry, I can't.", "Not at all."],
+        jaDistractors: ["はい、お願いします。", "ごめんなさい、できません。", "どういたしまして。"]
+      },
+      {
+        en: "I'm sorry.",
+        ja: "ごめんなさい。",
+        enDistractors: ["Excuse me.", "I'm not sure.", "I'm coming."],
+        jaDistractors: ["すみません、ちょっといいですか。", "よくわかりません。", "今行きます。"]
+      },
+      {
+        en: "I don't know.",
+        ja: "知りません。",
+        enDistractors: ["I'm not sure.", "I don't think so.", "I do, too."],
+        jaDistractors: ["よくわかりません。", "私もそうします。", "そうは思いません。"]
+      },
+      {
+        en: "Thank you so much!",
+        ja: "本当にありがとうございます！",
+        enDistractors: ["You're welcome.", "Thank you for the present!", "Excuse me."],
+        jaDistractors: ["どういたしまして。", "プレゼントをありがとう！", "すみません。"]
+      },
+      {
+        en: "Of course.",
+        ja: "もちろんです。",
+        enDistractors: ["All right.", "Sure.", "That's right!"],
+        jaDistractors: ["わかりました。", "その通りです！", "いいですよ。"]
+      },
+      {
+        en: "Excuse me.",
+        ja: "すみません、ちょっといいですか。",
+        enDistractors: ["I'm sorry.", "You're welcome.", "Welcome back."],
+        jaDistractors: ["ごめんなさい。", "どういたしまして。", "おかえりなさい。"]
+      },
+      {
+        en: "You're welcome.",
+        ja: "どういたしまして。",
+        enDistractors: ["Thank you so much!", "Welcome back.", "You, too."],
+        jaDistractors: ["本当にありがとう！", "おかえりなさい。", "あなたもね。"]
+      },
+      {
+        en: "I like dogs. How about you?",
+        ja: "私は犬が好きです。あなたはどうですか。",
+        enDistractors: ["Do you have a pet?", "I like studying.", "Me, too."],
+        jaDistractors: ["ペットを飼っていますか。", "私は勉強が好きです。", "私もです。"]
+      },
+      {
+        en: "Do you have a pet?",
+        ja: "ペットを飼っていますか。",
+        enDistractors: ["Do you want some?", "I like dogs. How about you?", "Is this your dog?"],
+        jaDistractors: ["少しほしくないですか。", "犬は好きですか。あなたはどう？", "これはあなたの犬ですか。"]
+      },
+      {
+        en: "Please come this way.",
+        ja: "どうぞこちらへ来てください。",
+        enDistractors: ["Over there.", "Here I am.", "I'm coming."],
+        jaDistractors: ["あそこです。", "ここにいますよ。", "今行きます。"]
+      },
+      {
+        en: "That's great!",
+        ja: "それはすごいですね！",
+        enDistractors: ["That's right!", "That's too bad.", "Good idea!"],
+        jaDistractors: ["その通りです！", "それは残念ですね。", "いい考えですね！"]
+      },
+      {
+        en: "You, too.",
+        ja: "あなたもね。",
+        enDistractors: ["Me, too.", "I do, too.", "You're welcome."],
+        jaDistractors: ["私もです。", "私もそうします。", "どういたしまして。"]
+      },
+      {
+        en: "All right.",
+        ja: "わかりました。",
+        enDistractors: ["That's right!", "Of course.", "Good night."],
+        jaDistractors: ["その通りです！", "もちろんです。", "おやすみなさい。"]
+      },
+      {
+        en: "Me, too.",
+        ja: "私もです。",
+        enDistractors: ["You, too.", "I do, too.", "I think so, too."],
+        jaDistractors: ["あなたもね。", "私もそうします。", "私もそう思います。"]
+      },
+      {
+        en: "This is for you.",
+        ja: "これはあなたへのものです。",
+        enDistractors: ["Thank you for the present!", "That isn't mine.", "Here I am."],
+        jaDistractors: ["プレゼントをありがとう！", "あれは私のではありません。", "ここにいますよ。"]
+      }
+    ],
+    part3: [
+      {
+        en: "It's a fine day.",
+        ja: "いい天気ですね。",
+        enDistractors: ["Have a nice day!", "It's time for bed.", "It's rainy today."],
+        jaDistractors: ["よい一日を！", "寝る時間ですよ。", "今日は雨です。"]
+      },
+      {
+        en: "That isn't mine.",
+        ja: "あれは私のものではありません。",
+        enDistractors: ["This is for you.", "That's right!", "That's too bad."],
+        jaDistractors: ["これはあなたへのものです。", "その通りです！", "それは残念ですね。"]
+      },
+      {
+        en: "I'm not sure.",
+        ja: "よくわかりません。",
+        enDistractors: ["I don't know.", "I'm sorry.", "I'm coming."],
+        jaDistractors: ["知りません。", "ごめんなさい。", "今行きます。"]
+      },
+      {
+        en: "Over there.",
+        ja: "あそこです。",
+        enDistractors: ["Here I am.", "Please come this way.", "Right here."],
+        jaDistractors: ["ここにいますよ。", "どうぞこちらへ来てください。", "すぐここに。"]
+      },
+      {
+        en: "Sorry, I can't.",
+        ja: "ごめんなさい、できません。",
+        enDistractors: ["I'm sorry.", "No, thanks.", "Yes, let's!"],
+        jaDistractors: ["ごめんなさい。", "いいえ、けっこうです。", "はい、そうしましょう！"]
+      },
+      {
+        en: "I think so, too.",
+        ja: "私もそう思います。",
+        enDistractors: ["I do, too.", "Me, too.", "That's right!"],
+        jaDistractors: ["私もそうします。", "私もです。", "その通りです！"]
+      },
+      {
+        en: "I do, too.",
+        ja: "私もそうします。",
+        enDistractors: ["I think so, too.", "Me, too.", "You, too."],
+        jaDistractors: ["私もそう思います。", "私もです。", "あなたもね。"]
+      },
+      {
+        en: "That's too bad.",
+        ja: "それは残念ですね。",
+        enDistractors: ["That's great!", "That's right!", "That isn't mine."],
+        jaDistractors: ["それはすごいですね！", "その通りです！", "あれは私のではありません。"]
+      },
+      {
+        en: "That's right!",
+        ja: "その通りです！",
+        enDistractors: ["All right.", "That's great!", "That's too bad."],
+        jaDistractors: ["わかりました。", "それはすごいですね！", "それは残念ですね。"]
+      },
+      {
+        en: "Yes, let's!",
+        ja: "はい、そうしましょう！",
+        enDistractors: ["Yes, please.", "Of course.", "Good idea!"],
+        jaDistractors: ["はい、お願いします。", "もちろんです。", "いい考えですね！"]
+      },
+      {
+        en: "Sure.",
+        ja: "いいですよ。",
+        enDistractors: ["I'm not sure.", "Of course.", "All right."],
+        jaDistractors: ["よくわかりません。", "もちろんです。", "わかりました。"]
+      },
+      {
+        en: "Welcome back.",
+        ja: "おかえりなさい。",
+        enDistractors: ["You're welcome.", "I'm home.", "Good morning!"],
+        jaDistractors: ["どういたしまして。", "ただいま。", "おはようございます！"]
+      },
+      {
+        en: "Dinner is ready.",
+        ja: "夕ごはんができましたよ。",
+        enDistractors: ["Breakfast is ready!", "Let's have breakfast.", "It's time for bed."],
+        jaDistractors: ["朝ごはんができましたよ！", "朝ごはんを食べましょう。", "寝る時間ですよ。"]
+      },
+      {
+        en: "I'm home.",
+        ja: "ただいま。",
+        enDistractors: ["Welcome back.", "I'm coming.", "Here I am."],
+        jaDistractors: ["おかえりなさい。", "今行きます。", "ここにいますよ。"]
+      },
+      {
+        en: "I'm coming.",
+        ja: "今行きます。",
+        enDistractors: ["I'm home.", "I'm going to school now.", "Please come this way."],
+        jaDistractors: ["ただいま。", "今から学校へ行きます。", "どうぞこちらへ来てください。"]
+      },
+      {
+        en: "Breakfast is ready!",
+        ja: "朝ごはんができましたよ！",
+        enDistractors: ["Dinner is ready.", "Let's have breakfast.", "Good morning!"],
+        jaDistractors: ["夕ごはんができましたよ。", "朝ごはんを食べましょう。", "おはようございます！"]
+      }
+    ]
+  };
+
+  // Part 4: ダイアログ穴埋め問題（全20問）
+  const dialogueBank = [
+    {
+      lines: [
+        { speaker: "A:", text: "Hi, I'm Ken. (  ?  )" },
+        { speaker: "B:", text: "I'm Lisa. Nice to meet you, too." }
+      ],
+      answer: "Nice to meet you.",
+      options: ["Nice to meet you.", "Welcome back.", "You're welcome.", "See you tomorrow."],
+      fullText: "Hi, I'm Ken. Nice to meet you. I'm Lisa. Nice to meet you, too.",
+      ja: "A: やあ、僕はケンです。はじめまして。 / B: 私はリサです。こちらこそはじめまして。"
+    },
+    {
+      lines: [
+        { speaker: "A:", text: "Good morning, Mom!" },
+        { speaker: "B:", text: "(  ?  ) Wash your face." }
+      ],
+      answer: "Good morning!",
+      options: ["Good morning!", "Good night.", "Welcome back.", "That's too bad."],
+      fullText: "Good morning, Mom! Good morning! Wash your face.",
+      ja: "A: おはよう、お母さん！ / B: おはよう！顔を洗いなさい。"
+    },
+    {
+      lines: [
+        { speaker: "A:", text: "Hello, Yuki. (  ?  )" },
+        { speaker: "B:", text: "I'm fine, thank you. And you?" }
+      ],
+      answer: "How are you?",
+      options: ["How are you?", "Who are you?", "How old are you?", "Where are you?"],
+      fullText: "Hello, Yuki. How are you? I'm fine, thank you. And you?",
+      ja: "A: こんにちは、ユキ。お元気ですか。 / B: 元気です、ありがとう。あなたは？"
+    },
+    {
+      lines: [
+        { speaker: "A:", text: "Have a nice weekend, Tom!" },
+        { speaker: "B:", text: "Thanks! (  ?  )" }
+      ],
+      answer: "You, too.",
+      options: ["You, too.", "Me, too.", "I do, too.", "I think so, too."],
+      fullText: "Have a nice weekend, Tom! Thanks! You, too.",
+      ja: "A: よい週末を、トム！ / B: ありがとう！あなたもね。"
+    },
+    {
+      lines: [
+        { speaker: "A:", text: "Let's go see a movie this Sunday." },
+        { speaker: "B:", text: "(  ?  ) I love movies." }
+      ],
+      answer: "Good idea!",
+      options: ["Good idea!", "That's too bad.", "You're welcome.", "I'm not sure."],
+      fullText: "Let's go see a movie this Sunday. Good idea! I love movies.",
+      ja: "A: 今度の日曜日に映画を見に行こうよ。 / B: いい考えだね！映画は大好きなんだ。"
+    },
+    {
+      lines: [
+        { speaker: "A:", text: "Let's play tennis after school." },
+        { speaker: "B:", text: "(  ?  ) I have a piano lesson." }
+      ],
+      answer: "Sorry, I can't.",
+      options: ["Sorry, I can't.", "Yes, let's!", "Of course.", "All right."],
+      fullText: "Let's play tennis after school. Sorry, I can't. I have a piano lesson.",
+      ja: "A: 放課後にテニスをしようよ。 / B: ごめんなさい、できません。ピアノのレッスンがあるの。"
+    },
+    {
+      lines: [
+        { speaker: "A:", text: "I have some cookies. (  ?  )" },
+        { speaker: "B:", text: "Yes, please. Thank you!" }
+      ],
+      answer: "Do you want some?",
+      options: ["Do you want some?", "Do you have a pet?", "What do you want?", "Are you hungry?"],
+      fullText: "I have some cookies. Do you want some? Yes, please. Thank you!",
+      ja: "A: クッキーがあるよ。少しほしくない？ / B: はい、お願いします。ありがとう！"
+    },
+    {
+      lines: [
+        { speaker: "A:", text: "Do you want some milk?" },
+        { speaker: "B:", text: "(  ?  ) I'm full." }
+      ],
+      answer: "No, thanks.",
+      options: ["No, thanks.", "Yes, please.", "Yes, let's!", "You're welcome."],
+      fullText: "Do you want some milk? No, thanks. I'm full.",
+      ja: "A: 牛乳はいかがですか。 / B: いいえ、けっこうです。おなかいっぱいです。"
+    },
+    {
+      lines: [
+        { speaker: "A:", text: "Thank you so much for your help!" },
+        { speaker: "B:", text: "(  ?  )" }
+      ],
+      answer: "You're welcome.",
+      options: ["You're welcome.", "Welcome back.", "Thank you, too.", "I'm sorry."],
+      fullText: "Thank you so much for your help! You're welcome.",
+      ja: "A: 手伝ってくれて本当にありがとう！ / B: どういたしまして。"
+    },
+    {
+      lines: [
+        { speaker: "A:", text: "(  ?  ) Where is the station?" },
+        { speaker: "B:", text: "Go straight and turn left." }
+      ],
+      answer: "Excuse me.",
+      options: ["Excuse me.", "I'm sorry.", "You're welcome.", "Good night."],
+      fullText: "Excuse me. Where is the station? Go straight and turn left.",
+      ja: "A: すみません、ちょっといいですか。駅はどこですか。 / B: まっすぐ行って左に曲がってください。"
+    },
+    {
+      lines: [
+        { speaker: "A:", text: "Happy birthday, Ken! (  ?  )" },
+        { speaker: "B:", text: "Wow! Thank you for the present!" }
+      ],
+      answer: "This is for you.",
+      options: ["This is for you.", "That isn't mine.", "Over there.", "Here I am."],
+      fullText: "Happy birthday, Ken! This is for you. Wow! Thank you for the present!",
+      ja: "A: 誕生日おめでとう、ケン！これ、プレゼントだよ。 / B: わあ！プレゼントをありがとう！"
+    },
+    {
+      lines: [
+        { speaker: "A:", text: "Where is my bag?" },
+        { speaker: "B:", text: "Look! It's (  ?  ) on the sofa." }
+      ],
+      answer: "over there",
+      options: ["over there", "here I am", "in my bag", "this way"],
+      fullText: "Where is my bag? Look! It's over there on the sofa.",
+      ja: "A: 私のかばんはどこ？ / B: 見て！あそこのソファの上にあるよ。"
+    },
+    {
+      lines: [
+        { speaker: "A:", text: "Can you help me with my homework?" },
+        { speaker: "B:", text: "(  ?  ) Let's do it together." }
+      ],
+      answer: "Of course.",
+      options: ["Of course.", "Sorry, I can't.", "I'm not sure.", "I don't know."],
+      fullText: "Can you help me with my homework? Of course. Let's do it together.",
+      ja: "A: 宿題を手伝ってくれる？ / B: もちろんだよ。一緒にやろう。"
+    },
+    {
+      lines: [
+        { speaker: "A:", text: "What time does the movie start?" },
+        { speaker: "B:", text: "(  ?  ) Maybe at three." }
+      ],
+      answer: "I'm not sure.",
+      options: ["I'm not sure.", "That's right!", "Of course.", "I think so, too."],
+      fullText: "What time does the movie start? I'm not sure. Maybe at three.",
+      ja: "A: 映画は何時に始まるの？ / B: よくわからないな。たぶん3時だと思う。"
+    },
+    {
+      lines: [
+        { speaker: "A:", text: "I can't go to the park today. I have a cold." },
+        { speaker: "B:", text: "(  ?  ) Take care." }
+      ],
+      answer: "That's too bad.",
+      options: ["That's too bad.", "That's great!", "Good idea!", "Sounds nice."],
+      fullText: "I can't go to the park today. I have a cold. That's too bad. Take care.",
+      ja: "A: 今日は公園に行けないんだ。風邪をひいちゃって。 / B: それは残念だね。お大事にね。"
+    },
+    {
+      lines: [
+        { speaker: "A:", text: "Ms. Green is a very good teacher." },
+        { speaker: "B:", text: "(  ?  ) Her class is fun." }
+      ],
+      answer: "I think so, too.",
+      options: ["I think so, too.", "I do, too.", "You, too.", "Me, too."],
+      fullText: "Ms. Green is a very good teacher. I think so, too. Her class is fun.",
+      ja: "A: グリーン先生はとてもいい先生だね。 / B: 私もそう思うよ。先生の授業は楽しいね。"
+    },
+    {
+      lines: [
+        { speaker: "A:", text: "I play soccer every day." },
+        { speaker: "B:", text: "Really? (  ?  )" }
+      ],
+      answer: "I do, too.",
+      options: ["I do, too.", "I think so, too.", "You, too.", "Yes, let's!"],
+      fullText: "I play soccer every day. Really? I do, too.",
+      ja: "A: 僕は毎日サッカーをするんだ。 / B: 本当？僕もだよ。"
+    },
+    {
+      lines: [
+        { speaker: "A:", text: "(  ?  )" },
+        { speaker: "B:", text: "Welcome back, Yuta! Wash your hands." }
+      ],
+      answer: "I'm home.",
+      options: ["I'm home.", "I'm coming.", "I'm going to school now.", "Good night."],
+      fullText: "I'm home. Welcome back, Yuta! Wash your hands.",
+      ja: "A: ただいま。 / B: おかえり、ユウタ！手を洗いなさい。"
+    },
+    {
+      lines: [
+        { speaker: "A:", text: "Ken! (  ?  ) Come downstairs." },
+        { speaker: "B:", text: "OK, Mom! I'm coming." }
+      ],
+      answer: "Dinner is ready.",
+      options: ["Dinner is ready.", "It's time for bed.", "Have a nice day!", "Good night."],
+      fullText: "Ken! Dinner is ready. Come downstairs. OK, Mom! I'm coming.",
+      ja: "A: ケン！夕ごはんができたわよ。下に降りてきなさい。 / B: わかった、お母さん！今行くよ。"
+    },
+    {
+      lines: [
+        { speaker: "A:", text: "It's ten o'clock. (  ?  )" },
+        { speaker: "B:", text: "All right. Good night, Dad." }
+      ],
+      answer: "It's time for bed.",
+      options: ["It's time for bed.", "Breakfast is ready!", "Let's have breakfast.", "Have a nice day!"],
+      fullText: "It's ten o'clock. It's time for bed. All right. Good night, Dad.",
+      ja: "A: 10時だよ。もう寝る時間だよ。 / B: わかった。おやすみなさい、お父さん。"
+    }
+  ];
+
+  const celebrations = ["Great!", "Excellent!", "Perfect!", "Wonderful!", "Awesome!", "Good job!"];
+
+  let currentTab = 'part1';
+  let currentList = [];
+  let currentIdx = 0;
+  let selectedChoice = null;
+  let mistakes = [];
+
+  function switchTab(tabName, btnEl) {
+    if (window.speechSynthesis) window.speechSynthesis.cancel();
+    currentTab = tabName;
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btnEl.classList.add('active');
+    initTab();
+  }
+
+  function initTab() {
+    currentIdx = 0;
+    mistakes = [];
+    document.getElementById('quiz-content').style.display = 'block';
+    document.getElementById('result-screen').style.display = 'none';
+
+    if (currentTab === 'part4') {
+      currentList = shuffle(dialogueBank);
+    } else {
+      currentList = shuffle(phrasesBank[currentTab]);
+    }
+
+    const progressBar = document.getElementById('progress-bar');
+    progressBar.innerHTML = '';
+    currentList.forEach((_, index) => {
+      const dot = document.createElement('div');
+      dot.className = `progress-dot ${index === 0 ? 'active' : ''}`;
+      dot.id = `dot-${index}`;
+      progressBar.appendChild(dot);
+    });
+
+    loadQuestion();
+  }
+
+  function loadQuestion() {
+    if (window.speechSynthesis) window.speechSynthesis.cancel();
+    selectedChoice = null;
+
+    document.getElementById('progress-counter').textContent = `Question ${currentIdx + 1} / ${currentList.length}`;
+    document.getElementById('step1-card').style.display = 'none';
+    document.getElementById('step2-card').style.display = 'none';
+    document.getElementById('dialogue-card').style.display = 'none';
+    document.getElementById('celebration-area').style.display = 'none';
+
+    if (currentTab === 'part4') {
+      setupDialogue();
+    } else {
+      setupStep1();
+    }
+  }
+
+  /* --- STEP 1: リスニング --- */
+  function setupStep1() {
+    const data = currentList[currentIdx];
+    selectedChoice = null;
+    document.getElementById('step1-card').style.display = 'block';
+    document.getElementById('s1-feedback').textContent = '';
+
+    const options = shuffle([data.en, ...data.enDistractors]);
+    const grid = document.getElementById('s1-choices');
+    grid.innerHTML = '';
+
+    options.forEach(opt => {
+      const btn = document.createElement('button');
+      btn.className = 'choice-btn';
+      btn.textContent = opt;
+      btn.onclick = () => {
+        document.querySelectorAll('#s1-choices .choice-btn').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        selectedChoice = opt;
+      };
+      grid.appendChild(btn);
+    });
+
+    setTimeout(() => speak(data.en), 200);
+  }
+
+  function speakTarget() {
+    const data = currentList[currentIdx];
+    if (data && data.en) speak(data.en);
+  }
+
+  function checkStep1() {
+    const data = currentList[currentIdx];
+    const fb = document.getElementById('s1-feedback');
+
+    if (!selectedChoice) {
+      fb.textContent = "選択肢を選んでください。";
+      return;
+    }
+
+    if (selectedChoice === data.en) {
+      fb.textContent = '';
+      document.getElementById('step1-card').style.display = 'none';
+      setupStep2();
+    } else {
+      fb.textContent = "Try again! もう一度聞いてみよう。";
+      mistakes.push(`・${data.en}（${data.ja}）[STEP 1: リスニング]`);
+    }
+  }
+
+  /* --- STEP 2: 和訳選択 --- */
+  function setupStep2() {
+    const data = currentList[currentIdx];
+    selectedChoice = null;
+    document.getElementById('step2-card').style.display = 'block';
+    document.getElementById('s2-feedback').textContent = '';
+    document.getElementById('s2-en-text').textContent = data.en;
+
+    const options = shuffle([data.ja, ...data.jaDistractors]);
+    const grid = document.getElementById('s2-choices');
+    grid.innerHTML = '';
+
+    options.forEach(opt => {
+      const btn = document.createElement('button');
+      btn.className = 'choice-btn';
+      btn.textContent = opt;
+      btn.onclick = () => {
+        document.querySelectorAll('#s2-choices .choice-btn').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        selectedChoice = opt;
+      };
+      grid.appendChild(btn);
+    });
+  }
+
+  function checkStep2() {
+    const data = currentList[currentIdx];
+    const fb = document.getElementById('s2-feedback');
+
+    if (!selectedChoice) {
+      fb.textContent = "意味を選んでください。";
+      return;
+    }
+
+    if (selectedChoice === data.ja) {
+      fb.textContent = '';
+      document.getElementById('step2-card').style.display = 'none';
+      showCelebration(data.en, data.ja);
+    } else {
+      fb.textContent = "Try again!";
+      mistakes.push(`・${data.en}（${data.ja}）[STEP 2: 意味]`);
+    }
+  }
+
+  /* --- PART 4: ダイアログ穴埋め --- */
+  function setupDialogue() {
+    const data = currentList[currentIdx];
+    selectedChoice = null;
+    document.getElementById('dialogue-card').style.display = 'block';
+    document.getElementById('dialogue-feedback').textContent = '';
+
+    updateDialogueDisplay();
+
+    const grid = document.getElementById('dialogue-choices');
+    grid.innerHTML = '';
+    shuffle(data.options).forEach(opt => {
+      const btn = document.createElement('button');
+      btn.className = 'choice-btn';
+      btn.textContent = opt;
+      btn.onclick = () => {
+        document.querySelectorAll('#dialogue-choices .choice-btn').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        selectedChoice = opt;
+        updateDialogueDisplay();
+      };
+      grid.appendChild(btn);
+    });
+  }
+
+  function updateDialogueDisplay() {
+    const data = currentList[currentIdx];
+    const text = selectedChoice ? selectedChoice : " ? ";
+    const area = document.getElementById('dialogue-display-area');
+
+    const linesHtml = data.lines.map(line => {
+      const replaced = line.text.replace("(  ?  )", `<span class="blank-box">${text}</span>`);
+      return `<div class="dialogue-line"><span class="speaker-label">${line.speaker}</span><span>${replaced}</span></div>`;
+    }).join('');
+
+    area.innerHTML = `<div class="dialogue-box">${linesHtml}</div>`;
+  }
+
+  function checkDialogue() {
+    const data = currentList[currentIdx];
+    const fb = document.getElementById('dialogue-feedback');
+
+    if (!selectedChoice) {
+      fb.textContent = "選択肢を選んでください。";
+      return;
+    }
+
+    if (selectedChoice === data.answer) {
+      fb.textContent = '';
+      document.getElementById('dialogue-card').style.display = 'none';
+      const completedLines = data.lines.map(l => `${l.speaker} ${l.text.replace("(  ?  )", data.answer)}`).join('<br>');
+      showCelebration(completedLines, data.ja, true);
+    } else {
+      fb.textContent = "Try again!";
+      mistakes.push(`・正解: ${data.answer}（${data.ja}）`);
+    }
+  }
+
+  /* --- お祝い表示 --- */
+  function showCelebration(enHtml, jaText, isHtml = false) {
+    const randomCeleb = celebrations[Math.floor(Math.random() * celebrations.length)];
+    document.getElementById('celebration-title').textContent = randomCeleb;
+
+    const enEl = document.getElementById('celebration-en');
+    if (isHtml) {
+      enEl.innerHTML = enHtml;
+    } else {
+      enEl.textContent = enHtml;
+    }
+
+    document.getElementById('celebration-ja').textContent = jaText;
+    document.getElementById('celebration-area').style.display = 'block';
+    document.getElementById(`dot-${currentIdx}`).classList.add('completed');
+
+    speakCelebration();
+  }
+
+  function speakCelebration() {
+    const data = currentList[currentIdx];
+    if (!data) return;
+    if (currentTab === 'part4') {
+      speak(data.fullText);
+    } else {
+      speak(data.en);
+    }
+  }
+
+  function nextQuestion() {
+    if (window.speechSynthesis) window.speechSynthesis.cancel();
+    document.getElementById(`dot-${currentIdx}`).classList.remove('active');
+
+    currentIdx++;
+    if (currentIdx < currentList.length) {
+      document.getElementById(`dot-${currentIdx}`).classList.add('active');
+      loadQuestion();
+    } else {
+      showFinalResult();
+    }
+  }
+
+  function showFinalResult() {
+    document.getElementById('quiz-content').style.display = 'none';
+    const resScreen = document.getElementById('result-screen');
+    resScreen.style.display = 'block';
+
+    const tabLabels = {
+      part1: "Part 1",
+      part2: "Part 2",
+      part3: "Part 3",
+      part4: "Part 4（会話ダイアログ）"
+    };
+
+    const desc = document.getElementById('result-desc');
+    const mistContainer = document.getElementById('mistake-container');
+    const mistList = document.getElementById('mistake-list');
+    const reportContainer = document.getElementById('report-container');
+
+    if (mistakes.length === 0) {
+      desc.textContent = `【${tabLabels[currentTab]}】全${currentList.length}問パーフェクトクリアです！Tamaki先生に完了報告を送ろう！`;
+      mistContainer.style.display = 'none';
+      reportContainer.style.display = 'block';
+    } else {
+      const uniqueMistakes = [...new Set(mistakes)];
+      desc.textContent = `【${tabLabels[currentTab]}】惜しい！間違えた問題があります。全問ノーミスでクリアするとTamaki先生に報告できます。`;
+      mistList.innerHTML = uniqueMistakes.map(m => `<div class="mistake-item">${m}</div>`).join('');
+      mistContainer.style.display = 'block';
+      reportContainer.style.display = 'none';
+    }
+  }
+
+  function restartCurrentTab() {
+    initTab();
+  }
+
+  function sendEmailReport() {
+    const nameInput = document.getElementById('student-name');
+    const name = nameInput.value.trim();
+
+    if (!name) {
+      alert("お名前を入力してください。");
+      return;
+    }
+
+    const tabLabels = {
+      part1: "Part 1",
+      part2: "Part 2",
+      part3: "Part 3",
+      part4: "Part 4: 会話ダイアログ"
+    };
+
+    const recipient = "tamaki@eigostudio-stepforward.com";
+    const subject = encodeURIComponent(`【課題完了報告】Step by Step Towards EIKEN Grade 5 p86-90 [${tabLabels[currentTab]}] (${name})`);
+    const body = encodeURIComponent(`Tamaki先生\n\nStep by Step Towards EIKEN Grade 5 p86-90 Simple Phrases for Conversation の【${tabLabels[currentTab]}】を全問正解でクリアしました！\n\n生徒名: ${name}`);
+
+    window.location.href = `mailto:${recipient}?subject=${subject}&body=${body}`;
+  }
+
+  window.onload = initTab;
+</script>
+
+</body>
+</html>
